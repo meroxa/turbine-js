@@ -1,4 +1,4 @@
-# DAFT-func -- Data Application Framework To Functions 
+# DAFT-func -- Data Application Framework To Functions -- a working title
 
 ## To run sample app in local mode ("I am just locally testing that my data app works")
 Prereqs
