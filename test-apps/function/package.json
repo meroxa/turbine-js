@@ -1,0 +1,11 @@
+{
+  "name": "function",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.4.5",
+    "@grpc/proto-loader": "^0.6.7",
+    "google-protobuf": "^3.19.1"
+  }
+}

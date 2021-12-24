@@ -1,3 +1,5 @@
+// A daft-func CLI app could run this
+
 const { App } = require("./test-apps/simple/index");
 const { MeroxaAPI } = require("./meroxa-api");
 
