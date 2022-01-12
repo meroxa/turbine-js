@@ -2,6 +2,7 @@
   "name": "function",
   "version": "1.0.0",
   "main": "index.js",
+  "author": "James Martinez <james@meroxa.io>",
   "license": "MIT",
   "dependencies": {
     "@grpc/grpc-js": "^1.4.5",

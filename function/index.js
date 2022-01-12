@@ -4,7 +4,7 @@ const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDRESS;
 const PROTO_PATH = __dirname + "/proto/service.proto";
 
 // TODO figure out best way to write in / pass in user's data app package
-const dataApp = require("../simple/index");
+const dataApp = require("../test-apps/simple/index");
 
 function Process(call, callback) {
   // TODO solve discrepancy between Record and list of Records for function argument
