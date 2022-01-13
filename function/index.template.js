@@ -1,10 +1,12 @@
 // TODO figure out best way to write in / pass function name
-const FUNCTION_NAME = "Anonymize";
+const args = process.argv.slice(2);
+console.log(args);
+const FUNCTION_NAME = args[0];
 const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDRESS;
 const PROTO_PATH = __dirname + "/proto/service.proto";
 
-// TODO figure out best way to write in / pass in user's data app package
-const dataApp = require("../test-apps/simple/index");
+// TODO figure out best way to write in / pass in identifier for user's data app package
+const dataApp = require("{{PACKAGE_NAME}}");
 
 function Process(call, callback) {
   // TODO solve discrepancy between Record and list of Records for function argument

@@ -1,0 +1,6 @@
+{
+  "name": "daft-func",
+  "dependencies": {
+    "template-file": "^6.0.0"
+  }
+}
