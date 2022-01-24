@@ -11,22 +11,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlatformRuntime = void 0;
 class PlatformRuntime {
-    constructor(meroxaJS) {
+    constructor(meroxaJS, imageName) {
         this.registeredFunctions = {};
         this.client = meroxaJS;
+        this.imageName = imageName;
     }
     resources(resourceName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resource = yield this.client.getResource(resourceName);
+            const resource = yield this.client.resources.get(resourceName);
             return new PlatformResource(resource, this.client);
         });
     }
     process(records, fn) {
         return __awaiter(this, void 0, void 0, function* () {
             this.registeredFunctions[fn.name] = fn;
-            // TODO deploy function, etc. etc.
+            const functionInput = {
+                input_stream: records.stream,
+                command: ["node"],
+                args: ["index.js", fn.name],
+                image: this.imageName,
+                pipeline: {
+                    name: "default",
+                },
+                env_vars: {},
+            };
             console.log(`deploying function: ${fn.name}`);
-            return records;
+            console.log(functionInput);
+            try {
+                const createdFunction = yield this.client.functions.create(functionInput);
+                records.stream = createdFunction.output_stream;
+                return records;
+            }
+            catch (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                }
+                throw error;
+            }
         });
     }
 }
@@ -56,7 +77,7 @@ class PlatformResource {
             };
             let connectorResponse;
             try {
-                connectorResponse = yield this.client.createConnector(connectorInput);
+                connectorResponse = yield this.client.connectors.create(connectorInput);
             }
             catch (error) {
                 if (error.response) {
@@ -91,7 +112,7 @@ class PlatformResource {
                 pipeline_name: "default",
                 pipeline_id: null,
             };
-            yield this.client.createConnector(connectorInput);
+            yield this.client.connectors.create(connectorInput);
         });
     }
 }

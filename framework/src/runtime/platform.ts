@@ -6,26 +6,29 @@ import {
   RegisteredFunctions,
 } from "../types";
 
-import type {
-  ConnectorConfig,
-  CreateConnectorRequest,
-  ConnectorResponse,
-  MeroxaJS,
+import {
+  Client,
   ResourceResponse,
+  ConnectorConfig,
+  CreateConnectorParams,
+  ConnectorResponse,
+  CreateFunctionParams,
+  FunctionResponse,
 } from "meroxa-js";
 
 export class PlatformRuntime implements Runtime {
   registeredFunctions: RegisteredFunctions = {};
-  client: MeroxaJS;
+  client: Client;
+  imageName: string;
 
-  constructor(meroxaJS: MeroxaJS) {
+  constructor(meroxaJS: Client, imageName: string) {
     this.client = meroxaJS;
+    this.imageName = imageName;
   }
 
   async resources(resourceName: string): Promise<Resource> {
-    const resource: ResourceResponse = await this.client.getResource(
-      resourceName
-    );
+    const resource = await this.client.resources.get(resourceName);
+
     return new PlatformResource(resource, this.client);
   }
 
@@ -34,18 +37,39 @@ export class PlatformRuntime implements Runtime {
     fn: (rr: Record[]) => Record[]
   ): Promise<Records> {
     this.registeredFunctions[fn.name] = fn;
-    // TODO deploy function, etc. etc.
+    const functionInput: CreateFunctionParams = {
+      input_stream: records.stream,
+      command: ["node"],
+      args: ["index.js", fn.name],
+      image: this.imageName,
+      pipeline: {
+        name: "default",
+      },
+      env_vars: {},
+    };
     console.log(`deploying function: ${fn.name}`);
+    console.log(functionInput);
 
-    return records;
+    try {
+      const createdFunction: FunctionResponse =
+        await this.client.functions.create(functionInput);
+      records.stream = createdFunction.output_stream;
+
+      return records;
+    } catch (error: any) {
+      if (error.response) {
+        console.log(error.response.data);
+      }
+      throw error;
+    }
   }
 }
 
 class PlatformResource implements Resource {
   resource: ResourceResponse;
-  client: MeroxaJS;
+  client: Client;
 
-  constructor(resource: ResourceResponse, client: MeroxaJS) {
+  constructor(resource: ResourceResponse, client: Client) {
     this.resource = resource;
     this.client = client;
   }
@@ -60,7 +84,7 @@ class PlatformResource implements Resource {
       input: `public.${collection}`,
     };
 
-    const connectorInput: CreateConnectorRequest = {
+    const connectorInput: CreateConnectorParams = {
       // Yep you guessed it, another hardcode hack
       name: "a-source",
       config: connectorConfig,
@@ -74,7 +98,7 @@ class PlatformResource implements Resource {
 
     let connectorResponse: ConnectorResponse;
     try {
-      connectorResponse = await this.client.createConnector(connectorInput);
+      connectorResponse = await this.client.connectors.create(connectorInput);
     } catch (error: any) {
       if (error.response) {
         console.log(error.response);
@@ -101,7 +125,7 @@ class PlatformResource implements Resource {
       input: records.stream,
     };
 
-    const connectorInput: CreateConnectorRequest = {
+    const connectorInput: CreateConnectorParams = {
       name: "a-destination",
       config: connectorConfig,
       metadata: {
@@ -112,6 +136,6 @@ class PlatformResource implements Resource {
       pipeline_id: null,
     };
 
-    await this.client.createConnector(connectorInput);
+    await this.client.connectors.create(connectorInput);
   }
 }
