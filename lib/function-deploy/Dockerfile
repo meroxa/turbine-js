@@ -1,0 +1,24 @@
+# Build data app
+FROM node:16-alpine as DATA_APP_BUILDER
+WORKDIR /app/data-app
+COPY ./data-app/package.json package.json
+COPY ./data-app/yarn.lock yarn.lock
+RUN yarn install --frozen-lockfile
+COPY ./data-app .
+
+# Build function app
+FROM node:16-alpine as FUNCTION_APP_BUILDER
+WORKDIR /app/function-app
+COPY ./function-app/package.json package.json
+COPY ./function-app/yarn.lock yarn.lock
+RUN yarn install --frozen-lockfile
+COPY ./function-app .
+
+# Build everything together
+FROM node:16-alpine as BUILDER
+WORKDIR /app/data-app
+COPY --from=DATA_APP_BUILDER ./app/data-app .
+WORKDIR /app/function-app
+COPY --from=FUNCTION_APP_BUILDER ./app/function-app .
+
+CMD [ "node", "index.js" ]

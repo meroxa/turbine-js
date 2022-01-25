@@ -1,0 +1,15 @@
+#! /usr/bin/env node
+
+// Do we use something like OCLIF here to build a node specific CLI?
+// Or do we hook into a unified CLI (across languages) that can call this?
+require("dotenv").config();
+const args = process.argv.slice(2);
+
+const { run } = require("../lib/runner");
+if (args[0] === "test") {
+  return run("local", "docker-local", process.cwd());
+} else if (args[0] === "deploy") {
+  return run("production", "docker-local", process.cwd());
+} else if (args[0] === "deploy-github") {
+  return run("production", "docker-github", process.cwd());
+}
