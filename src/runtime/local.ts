@@ -1,4 +1,4 @@
-import { Resource, Record, Records, Runtime } from "../types";
+import { Resource, Record, Records, Runtime } from "./types";
 import { readFile } from "fs/promises";
 
 export class LocalRuntime implements Runtime {
@@ -39,7 +39,7 @@ class LocalResource implements Resource {
     console.log(
       `=====================to ${this.name} resource=====================`
     );
-    records.records.forEach((record) => {
+    records.records.forEach((record: Record) => {
       console.log({ record });
     });
   }

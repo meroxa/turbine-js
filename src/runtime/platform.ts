@@ -4,7 +4,7 @@ import {
   Records,
   Runtime,
   RegisteredFunctions,
-} from "../types";
+} from "./types";
 
 import {
   Client,

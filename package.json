@@ -1,0 +1,22 @@
+{
+  "name": "daft-func",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "author": "James Martinez <james@meroxa.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.4",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@octokit/rest": "^18.12.0",
+    "dockerode": "^3.3.1",
+    "dotenv": "^14.3.0",
+    "fs-extra": "^10.0.0",
+    "meroxa-js": "ssh://git@github.com:meroxa/meroxa-js.git#70430043fec9cded26aedb80b8c3135bdf30d447",
+    "tar-fs": "^2.1.1"
+  },
+  "bin": {
+    "daft-func": "bin/daft-func"
+  }
+}

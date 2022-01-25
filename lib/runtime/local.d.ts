@@ -1,4 +1,4 @@
-import { Resource, Record, Records, Runtime } from "../types";
+import { Resource, Record, Records, Runtime } from "./types";
 export declare class LocalRuntime implements Runtime {
     fixturesPath: string;
     constructor(fixturesPath: string);

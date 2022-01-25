@@ -1,4 +1,4 @@
-import { Resource, Record, Records, Runtime, RegisteredFunctions } from "../types";
+import { Resource, Record, Records, Runtime, RegisteredFunctions } from "./types";
 import { Client } from "meroxa-js";
 export declare class PlatformRuntime implements Runtime {
     registeredFunctions: RegisteredFunctions;
