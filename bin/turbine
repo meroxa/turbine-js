@@ -9,5 +9,5 @@ if (args[0] === "test") {
 } else if (args[0] === "deploy") {
   return run("production", "docker-local", process.cwd());
 } else {
-  throw new Error("Invalid daft-func command");
+  throw new Error("Invalid turbine command");
 }
