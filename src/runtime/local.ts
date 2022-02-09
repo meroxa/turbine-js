@@ -57,7 +57,7 @@ async function readFixtures(
   let records: Record[] = collectionKeys.map((key) => {
     return {
       key,
-      payload: collectionFixtures[key],
+      value: collectionFixtures[key],
       timestamp: Date.now(),
     };
   });

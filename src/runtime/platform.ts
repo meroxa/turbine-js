@@ -84,6 +84,20 @@ class PlatformResource implements Resource {
       input: `public.${collection}`,
     };
 
+    // TODO JDBC Source support
+    // switch (this.resource.type) {
+    //   case "redshift":
+    //   case "postgres":
+    //   case "mysql":
+    //     connectorConfig["transforms"] = "createKey,extractInt";
+    //     connectorConfig["transforms.createKey.fields"] = "id";
+    //     connectorConfig["transforms.createKey.type"] =
+    //       "org.apache.kafka.connect.transforms.ValueToKey";
+    //     connectorConfig["transforms.extractInt.field"] = "id";
+    //     connectorConfig["transforms.extractInt.type"] =
+    //       "org.apache.kafka.connect.transforms.ExtractField$Key";
+    // }
+
     const connectorInput: CreateConnectorParams = {
       // Yep you guessed it, another hardcode hack
       name: "a-source",
@@ -124,6 +138,28 @@ class PlatformResource implements Resource {
     const connectorConfig: ConnectorConfig = {
       input: records.stream,
     };
+
+    switch (this.resource.type) {
+      case "redshift":
+      case "postgres":
+      case "mysql":
+        // TODO JDBC Sink Config
+        // connectorConfig["table.name.format"] = collection.toLowerCase();
+        // connectorConfig["pk.mode"] = "record_value";
+        // connectorConfig["pk.fields"] = "id";
+        // this.resource.type != "redshift"
+        //   ? (connectorConfig["insert.mode"] = "upsert")
+        //   : null;
+        break;
+      case "s3":
+        connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
+        connectorConfig["value.converter"] =
+          "org.apache.kafka.connect.json.JsonConverter";
+        connectorConfig["value.converter.schemas.enable"] = "true";
+        connectorConfig["format.output.type"] = "jsonl";
+        connectorConfig["format.output.envelope"] = "true";
+        break;
+    }
 
     const connectorInput: CreateConnectorParams = {
       name: "a-destination",

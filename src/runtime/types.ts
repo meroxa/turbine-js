@@ -13,7 +13,7 @@ export interface Resource {
 
 export interface Record {
   key: string;
-  payload: any;
+  value: any;
   timestamp: number;
 }
 
