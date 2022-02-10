@@ -18,3 +18,14 @@ export interface Records {
 export interface RegisteredFunctions {
     [index: string]: (rr: Record[]) => Record[];
 }
+export interface AppConfig {
+    name: string;
+    language: "js";
+    environment: string;
+    pipeline: string;
+    resources: AppConfigResources;
+}
+interface AppConfigResources {
+    [index: string]: string;
+}
+export {};

@@ -4,6 +4,7 @@ import {
   Records,
   Runtime,
   RegisteredFunctions,
+  AppConfig,
 } from "./types";
 
 import {
@@ -20,16 +21,18 @@ export class PlatformRuntime implements Runtime {
   registeredFunctions: RegisteredFunctions = {};
   client: Client;
   imageName: string;
+  appConfig: AppConfig;
 
-  constructor(meroxaJS: Client, imageName: string) {
+  constructor(meroxaJS: Client, imageName: string, appConfig: AppConfig) {
     this.client = meroxaJS;
     this.imageName = imageName;
+    this.appConfig = appConfig;
   }
 
   async resources(resourceName: string): Promise<Resource> {
     const resource = await this.client.resources.get(resourceName);
 
-    return new PlatformResource(resource, this.client);
+    return new PlatformResource(resource, this.client, this.appConfig);
   }
 
   async process(
@@ -43,12 +46,12 @@ export class PlatformRuntime implements Runtime {
       args: ["index.js", fn.name],
       image: this.imageName,
       pipeline: {
-        name: "default",
+        name: this.appConfig.pipeline,
       },
+      // TODO register secrets
       env_vars: {},
     };
     console.log(`deploying function: ${fn.name}`);
-    console.log(functionInput);
 
     try {
       const createdFunction: FunctionResponse =
@@ -68,10 +71,16 @@ export class PlatformRuntime implements Runtime {
 class PlatformResource implements Resource {
   resource: ResourceResponse;
   client: Client;
+  appConfig: AppConfig;
 
-  constructor(resource: ResourceResponse, client: Client) {
+  constructor(
+    resource: ResourceResponse,
+    client: Client,
+    appConfig: AppConfig
+  ) {
     this.resource = resource;
     this.client = client;
+    this.appConfig = appConfig;
   }
 
   async records(collection: string): Promise<Records> {
@@ -106,7 +115,7 @@ class PlatformResource implements Resource {
         "mx:connectorType": "source",
       },
       resource_id: this.resource.id,
-      pipeline_name: "default",
+      pipeline_name: this.appConfig.pipeline,
       pipeline_id: null,
     };
 
