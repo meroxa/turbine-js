@@ -13,7 +13,7 @@ export interface Resource {
 
 export interface Record {
   key: string;
-  payload: any;
+  value: any;
   timestamp: number;
 }
 
@@ -24,4 +24,16 @@ export interface Records {
 
 export interface RegisteredFunctions {
   [index: string]: (rr: Record[]) => Record[];
+}
+
+export interface AppConfig {
+  name: string;
+  language: "js";
+  environment: string;
+  pipeline: string;
+  resources: AppConfigResources;
+}
+
+interface AppConfigResources {
+  [index: string]: string;
 }

@@ -1,7 +1,8 @@
-import { Resource, Record, Records, Runtime } from "./types";
+import { Resource, Record, Records, Runtime, AppConfig } from "./types";
 export declare class LocalRuntime implements Runtime {
-    fixturesPath: string;
-    constructor(fixturesPath: string);
+    appConfig: AppConfig;
+    pathToApp: string;
+    constructor(appConfig: AppConfig, pathToApp: string);
     resources(resourceName: string): Resource;
     process(records: Records, fn: (rr: Record[]) => Record[]): Records;
 }

@@ -8,6 +8,6 @@ if (args[0] === "test") {
   return run("local", null, process.cwd());
 } else if (args[0] === "deploy") {
   return run("production", "docker-local", process.cwd());
-} else if (args[0] === "deploy-github") {
-  return run("production", "docker-github", process.cwd());
+} else {
+  throw new Error("Invalid turbine command");
 }

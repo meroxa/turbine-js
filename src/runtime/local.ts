@@ -1,15 +1,20 @@
-import { Resource, Record, Records, Runtime } from "./types";
+import { Resource, Record, Records, Runtime, AppConfig } from "./types";
 import { readFile } from "fs/promises";
 
 export class LocalRuntime implements Runtime {
-  fixturesPath: string;
+  appConfig: AppConfig;
+  pathToApp: string;
 
-  constructor(fixturesPath: string) {
-    this.fixturesPath = fixturesPath;
+  constructor(appConfig: AppConfig, pathToApp: string) {
+    this.appConfig = appConfig;
+    this.pathToApp = pathToApp;
   }
 
   resources(resourceName: string): Resource {
-    const resourceFixturesPath = `${this.fixturesPath}/${resourceName}.json`;
+    const resources = this.appConfig.resources;
+    const fixturesPath = resources[resourceName];
+    const resourceFixturesPath = `${this.pathToApp}/${fixturesPath}`;
+
     return new LocalResource(resourceName, resourceFixturesPath);
   }
 
@@ -40,7 +45,7 @@ class LocalResource implements Resource {
       `=====================to ${this.name} resource=====================`
     );
     records.records.forEach((record: Record) => {
-      console.log({ record });
+      console.log(record.value.payload);
     });
   }
 }
@@ -53,11 +58,10 @@ async function readFixtures(
   const rawFixtures = await readFile(path);
   let fixtures = JSON.parse(rawFixtures.toString());
   let collectionFixtures = fixtures[collection];
-  let collectionKeys: string[] = Object.keys(collectionFixtures);
-  let records: Record[] = collectionKeys.map((key) => {
+  let records: Record[] = collectionFixtures.map((fixture: any) => {
     return {
-      key,
-      payload: collectionFixtures[key],
+      key: fixture.key,
+      value: fixture.value,
       timestamp: Date.now(),
     };
   });
@@ -67,7 +71,7 @@ async function readFixtures(
   );
 
   records.forEach((record) => {
-    console.log({ record });
+    console.log(record.value.payload);
   });
 
   return {
