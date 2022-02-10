@@ -258,9 +258,9 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-"meroxa-js@ssh://git@github.com:meroxa/meroxa-js.git#70430043fec9cded26aedb80b8c3135bdf30d447":
+"meroxa-js@https://github.com/meroxa/meroxa-js.git":
   version "1.0.0"
-  resolved "ssh://git@github.com:meroxa/meroxa-js.git#70430043fec9cded26aedb80b8c3135bdf30d447"
+  resolved "https://github.com/meroxa/meroxa-js.git#aa3c394f0bf8e45637e974b1557d47815c3ffd5e"
   dependencies:
     axios "^0.24.0"
 

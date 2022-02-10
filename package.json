@@ -13,7 +13,7 @@
     "dockerode": "^3.3.1",
     "dotenv": "^14.3.0",
     "fs-extra": "^10.0.0",
-    "meroxa-js": "ssh://git@github.com:meroxa/meroxa-js.git#70430043fec9cded26aedb80b8c3135bdf30d447",
+    "meroxa-js": "https://github.com/meroxa/meroxa-js.git",
     "tar-fs": "^2.1.1"
   },
   "bin": {
