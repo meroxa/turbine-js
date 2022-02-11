@@ -37,7 +37,8 @@ export class PlatformRuntime implements Runtime {
 
   async process(
     records: Records,
-    fn: (rr: Record[]) => Record[]
+    fn: (rr: Record[]) => Record[],
+    envVars: { [index: string]: string }
   ): Promise<Records> {
     this.registeredFunctions[fn.name] = fn;
     const functionInput: CreateFunctionParams = {
@@ -48,8 +49,7 @@ export class PlatformRuntime implements Runtime {
       pipeline: {
         name: this.appConfig.pipeline,
       },
-      // TODO register secrets
-      env_vars: {},
+      env_vars: envVars,
     };
     console.log(`deploying function: ${fn.name}`);
 
@@ -92,20 +92,6 @@ class PlatformResource implements Resource {
       // Hardcode hack this will only work for pg resources with default schema
       input: `public.${collection}`,
     };
-
-    // TODO JDBC Source support
-    // switch (this.resource.type) {
-    //   case "redshift":
-    //   case "postgres":
-    //   case "mysql":
-    //     connectorConfig["transforms"] = "createKey,extractInt";
-    //     connectorConfig["transforms.createKey.fields"] = "id";
-    //     connectorConfig["transforms.createKey.type"] =
-    //       "org.apache.kafka.connect.transforms.ValueToKey";
-    //     connectorConfig["transforms.extractInt.field"] = "id";
-    //     connectorConfig["transforms.extractInt.type"] =
-    //       "org.apache.kafka.connect.transforms.ExtractField$Key";
-    // }
 
     const connectorInput: CreateConnectorParams = {
       // Yep you guessed it, another hardcode hack
@@ -152,13 +138,6 @@ class PlatformResource implements Resource {
       case "redshift":
       case "postgres":
       case "mysql":
-        // TODO JDBC Sink Config
-        // connectorConfig["table.name.format"] = collection.toLowerCase();
-        // connectorConfig["pk.mode"] = "record_value";
-        // connectorConfig["pk.fields"] = "id";
-        // this.resource.type != "redshift"
-        //   ? (connectorConfig["insert.mode"] = "upsert")
-        //   : null;
         break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;

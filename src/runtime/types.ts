@@ -2,7 +2,8 @@ export interface Runtime {
   resources(name: string): Resource | Promise<Resource>;
   process(
     records: Records,
-    fn: (rr: Record[]) => Record[]
+    fn: (rr: Record[]) => Record[],
+    envVars: { [index: string]: string }
   ): Records | Promise<Records>;
 }
 
@@ -31,9 +32,5 @@ export interface AppConfig {
   language: "js";
   environment: string;
   pipeline: string;
-  resources: AppConfigResources;
-}
-
-interface AppConfigResources {
-  [index: string]: string;
+  resources: { [index: string]: string };
 }
