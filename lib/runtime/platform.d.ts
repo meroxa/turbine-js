@@ -7,5 +7,7 @@ export declare class PlatformRuntime implements Runtime {
     appConfig: AppConfig;
     constructor(meroxaJS: Client, imageName: string, appConfig: AppConfig);
     resources(resourceName: string): Promise<Resource>;
-    process(records: Records, fn: (rr: Record[]) => Record[]): Promise<Records>;
+    process(records: Records, fn: (rr: Record[]) => Record[], envVars: {
+        [index: string]: string;
+    }): Promise<Records>;
 }
