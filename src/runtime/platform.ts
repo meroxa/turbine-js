@@ -47,7 +47,7 @@ export class PlatformRuntime implements Runtime {
       args: ["index.js", fn.name],
       image: this.imageName,
       pipeline: {
-        name: this.appConfig.pipeline,
+        name: this.appConfig.name,
       },
       env_vars: envVars,
     };
@@ -101,7 +101,7 @@ class PlatformResource implements Resource {
         "mx:connectorType": "source",
       },
       resource_id: this.resource.id,
-      pipeline_name: this.appConfig.pipeline,
+      pipeline_name: this.appConfig.name,
       pipeline_id: null,
     };
 
@@ -156,7 +156,7 @@ class PlatformResource implements Resource {
         "mx:connectorType": "destination",
       },
       resource_id: this.resource.id,
-      pipeline_name: "default",
+      pipeline_name: this.appConfig.name,
       pipeline_id: null,
     };
 
