@@ -9,11 +9,10 @@
     "rootDir": "./src",
     "outDir": "./lib",
     "declaration": true,
-    "allowJs": true
+    "allowJs": true,
+    "sourceMap": true
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
