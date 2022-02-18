@@ -1,5 +1,4 @@
-"use strict";
 // Runtime + MeroxaJS
 const { PlatformRuntime, LocalRuntime, Client } = require("./runtime");
+
 module.exports = { PlatformRuntime, LocalRuntime, Client };
-//# sourceMappingURL=index.js.map
