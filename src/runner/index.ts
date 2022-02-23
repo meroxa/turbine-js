@@ -1,20 +1,25 @@
-const { copy } = require("fs-extra");
-const path = require("path");
+import { copy } from "fs-extra";
+import path from "path";
 import { PlatformRuntime, LocalRuntime, Client as MeroxaJS } from "../runtime";
+import localDockerBuild from "./deploy-docker";
 
-exports.run = async (
+import { assertIsError, BaseError } from "../errors";
+import { Result, Ok, Err } from "ts-results";
+
+export async function run(
   nodeEnv: string,
   buildEnv: string,
   pathToDataApp: string
-) => {
+): Promise<Result<true, BaseError>> {
   const { App } = require(path.resolve(pathToDataApp));
   const app = new App();
   const appJSON = require(path.resolve(`${pathToDataApp}/app.json`));
-  let environment;
 
+  let environment;
   if (nodeEnv != "production") {
     environment = new LocalRuntime(appJSON, pathToDataApp);
-    return app.run(environment);
+    await app.run(environment);
+    return Ok(true);
   }
 
   const meroxaJS = new MeroxaJS({
@@ -22,54 +27,45 @@ exports.run = async (
     url: process.env.MEROXA_API_URL,
   });
 
-  if (buildEnv === "docker-github") {
-    const {
-      triggerWorkflowRun,
-      waitForWorkflowRun,
-    } = require("./deploy-docker-github");
-    console.log(
-      "Triggering meroxa deploy github action from latest commit on default branch..."
-    );
-    const runID = await triggerWorkflowRun();
-    console.log("GitHub action in progress, building image...");
-    const sha = await waitForWorkflowRun(runID);
-    console.log(
-      `Docker image ${process.env.DOCKER_HUB_USERNAME}/${sha} built and pushed successfully.`
-    );
+  if (buildEnv === "docker-local") {
+    const build = await localDockerBuild(pathToDataApp);
 
-    environment = new PlatformRuntime(
-      meroxaJS,
-      `${process.env.DOCKER_HUB_USERNAME}/${sha}`,
-      appJSON
-    );
-  } else if (buildEnv === "docker-local") {
-    const build = require("./deploy-docker");
-    await build(pathToDataApp);
+    if (build.err) {
+      return Err(new BaseError("Error running local docker build", build.val));
+    }
+
     environment = new PlatformRuntime(
       meroxaJS,
       `${process.env.DOCKER_HUB_USERNAME}/${appJSON.name}`,
       appJSON
     );
   } else {
-    throw new Error("Unknown build environment");
+    return Err(new BaseError("Unknown build environment"));
   }
 
   console.log("Running data app...");
+  try {
+    await app.run(environment);
+    return Ok(true);
+  } catch (e) {
+    assertIsError(e);
+    return Err(new BaseError("Error running app", e));
+  }
+}
 
-  return app.run(environment);
-};
-
-exports.generate = (name: any) => {
+export async function generate(name: string): Promise<Result<true, BaseError>> {
   let appName = name || "my-app";
   console.log(`Generating data app ${appName}...`);
 
-  return copy(
-    "templates/javascript",
-    appName,
-    { overwrite: false, errorOnExist: true },
-    (err: any) => {
-      if (err) return console.error(err);
-      console.log("success!");
-    }
-  );
-};
+  try {
+    await copy("templates/javascript", appName, {
+      overwrite: false,
+      errorOnExist: true,
+    });
+    console.log("App generated successfully");
+    return Ok(true);
+  } catch (e) {
+    assertIsError(e);
+    return Err(new BaseError("Error generating app", e));
+  }
+}
