@@ -17,6 +17,8 @@ import {
   FunctionResponse,
 } from "meroxa-js";
 
+import { BaseError, APIError } from "../errors";
+
 export class PlatformRuntime implements Runtime {
   registeredFunctions: RegisteredFunctions = {};
   client: Client;
@@ -30,7 +32,20 @@ export class PlatformRuntime implements Runtime {
   }
 
   async resources(resourceName: string): Promise<Resource> {
-    const resource = await this.client.resources.get(resourceName);
+    let resource;
+    try {
+      resource = await this.client.resources.get(resourceName);
+    } catch (e: any) {
+      if (e.response) {
+        throw new APIError(e);
+      }
+
+      if (e.request) {
+        throw new BaseError("no server response");
+      }
+
+      throw e;
+    }
 
     return new PlatformResource(resource, this.client, this.appConfig);
   }
@@ -40,7 +55,6 @@ export class PlatformRuntime implements Runtime {
     fn: (rr: Record[]) => Record[],
     envVars: { [index: string]: string }
   ): Promise<Records> {
-    this.registeredFunctions[fn.name] = fn;
     const functionInput: CreateFunctionParams = {
       input_stream: records.stream,
       command: ["node"],
@@ -59,11 +73,16 @@ export class PlatformRuntime implements Runtime {
       records.stream = createdFunction.output_stream;
 
       return records;
-    } catch (error: any) {
-      if (error.response) {
-        console.log(error.response.data);
+    } catch (e: any) {
+      if (e.response) {
+        throw new APIError(e);
       }
-      throw error;
+
+      if (e.request) {
+        throw new BaseError("no server response");
+      }
+
+      throw e;
     }
   }
 }
@@ -108,11 +127,16 @@ class PlatformResource implements Resource {
     let connectorResponse: ConnectorResponse;
     try {
       connectorResponse = await this.client.connectors.create(connectorInput);
-    } catch (error: any) {
-      if (error.response) {
-        console.log(error.response);
+    } catch (e: any) {
+      if (e.response) {
+        throw new APIError(e);
       }
-      throw error;
+
+      if (e.request) {
+        throw new BaseError("no server response");
+      }
+
+      throw e;
     }
 
     if (typeof connectorResponse.streams.output === "object") {
@@ -121,7 +145,7 @@ class PlatformResource implements Resource {
         records: [],
       };
     } else {
-      throw new Error("no output stream in response");
+      throw new BaseError("no output stream in response");
     }
   }
 
@@ -160,6 +184,18 @@ class PlatformResource implements Resource {
       pipeline_id: null,
     };
 
-    await this.client.connectors.create(connectorInput);
+    try {
+      await this.client.connectors.create(connectorInput);
+    } catch (e: any) {
+      if (e.response) {
+        throw new APIError(e);
+      }
+
+      if (e.request) {
+        throw new BaseError("no server response");
+      }
+
+      throw e;
+    }
   }
 }
