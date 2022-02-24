@@ -39,10 +39,13 @@ export default async function (
     stream = await docker.buildImage(tarpack, {
       t: tagName,
     });
-    stream.pipe(process.stdout);
     await new Promise((resolve, reject) => {
-      docker.modem.followProgress(stream, (err: any, res: any) =>
-        err ? reject(err) : resolve(res)
+      docker.modem.followProgress(
+        stream,
+        (err: any, res: any) => (err ? reject(err) : resolve(res)),
+        (obj: any) => {
+          obj.stream && process.stdout.write(obj.stream);
+        }
       );
     });
   } catch (e) {
@@ -60,11 +63,14 @@ export default async function (
       serveraddress: "https://index.docker.io/v1/",
     },
   });
-  push.pipe(process.stdout);
+
   await new Promise((resolve, reject) => {
     docker.modem.followProgress(push, (err: any, res: any) =>
       err ? reject(err) : resolve(res)
-    );
+    ),
+      (obj: any) => {
+        obj.stream && process.stdout.write(obj.stream);
+      };
   });
 
   await cleanupTmpDir(tmpDir);
