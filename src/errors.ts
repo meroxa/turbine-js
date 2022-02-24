@@ -24,11 +24,12 @@ export class BaseError extends Error {
 }
 
 export class APIError extends BaseError {
-  constructor(message: string | AxiosError, wrappedError?: AxiosError) {
-    if (typeof message === "string") {
-      super(message, wrappedError);
+  constructor(wrappedError: AxiosError);
+  constructor(messageOrError: string | AxiosError, wrappedError?: AxiosError) {
+    if (typeof messageOrError === "string") {
+      super(messageOrError, wrappedError);
     } else {
-      const error = message;
+      const error = messageOrError;
       super("API error", error);
     }
   }
