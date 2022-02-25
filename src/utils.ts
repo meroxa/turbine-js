@@ -1,4 +1,6 @@
-const { copy, writeJson } = require("fs-extra");
+import { copy, writeJson } from "fs-extra";
+import simpleGit, { SimpleGit } from "simple-git";
+
 var path = require("path");
 
 export async function generate(name: string) {
@@ -11,8 +13,9 @@ export async function generate(name: string) {
       errorOnExist: true,
       overwrite: false,
     });
+    let git: SimpleGit = simpleGit(appName);
     await generateAppJson(appName);
-
+    await git.init();
     console.log("Success!");
   } catch (err) {
     console.error(err);
