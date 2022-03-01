@@ -1,22 +1,25 @@
 const { copy, writeJson } = require("fs-extra");
 var path = require("path");
 
-export async function generate(name: string) {
+export async function generate(name: string, pathname: string) {
   let appName = name || "my-app";
   let templatesDir = path.resolve(__dirname, "../templates");
+  let appPath = path.resolve(pathname, appName);
 
-  console.log(`Generating Data app ${appName}...`);
   try {
-    await copy(`${templatesDir}/javascript`, appName, {
+    await copy(`${templatesDir}/javascript`, appPath, {
       errorOnExist: true,
       overwrite: false,
     });
-    await generateAppJson(appName);
-
-    console.log("Success!");
+    await generateAppJson(appPath);
   } catch (err) {
     console.error(err);
   }
+
+  console.log("Application successfully initialized!");
+  console.log(
+    `You can start interacting with Meroxa in your app located at \"${pathname}/${name}\"`
+  );
 }
 
 async function generateAppJson(appName: string) {
@@ -24,8 +27,6 @@ async function generateAppJson(appName: string) {
     name: appName,
     language: "javascript",
   };
-
-  console.log("Generating app.json...");
 
   try {
     await writeJson(`${appName}/app.json`, appJson);
