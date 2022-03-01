@@ -15,6 +15,11 @@ export async function generate(pathname: string, name: string) {
   } catch (err) {
     console.error(err);
   }
+
+  console.log("Application successfully initialized!");
+  console.log(
+    `You can start interacting with Meroxa in your app located at \"${pathname}/${name}\"`
+  );
 }
 
 async function generateAppJson(appName: string) {
