@@ -1,19 +1,17 @@
 const { copy, writeJson } = require("fs-extra");
 var path = require("path");
 
-export async function generate(name: string) {
+export async function generate(pathname: string, name: string) {
   let appName = name || "my-app";
   let templatesDir = path.resolve(__dirname, "../templates");
+  let appPath = path.resolve(pathname, appName);
 
-  console.log(`Generating Data app ${appName}...`);
   try {
-    await copy(`${templatesDir}/javascript`, appName, {
+    await copy(`${templatesDir}/javascript`, appPath, {
       errorOnExist: true,
       overwrite: false,
     });
-    await generateAppJson(appName);
-
-    console.log("Success!");
+    await generateAppJson(appPath);
   } catch (err) {
     console.error(err);
   }
