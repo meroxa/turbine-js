@@ -1,7 +1,7 @@
 const { copy, writeJson } = require("fs-extra");
 var path = require("path");
 
-export async function generate(pathname: string, name: string) {
+export async function generate(name: string, pathname: string) {
   let appName = name || "my-app";
   let templatesDir = path.resolve(__dirname, "../templates");
   let appPath = path.resolve(pathname, appName);
@@ -27,8 +27,6 @@ async function generateAppJson(appName: string) {
     name: appName,
     language: "javascript",
   };
-
-  console.log("Generating app.json...");
 
   try {
     await writeJson(`${appName}/app.json`, appJson);
