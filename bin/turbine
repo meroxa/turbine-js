@@ -19,7 +19,7 @@ async function executeCommand() {
   }
 
   if (commandRun.err) {
-    console.log(commandRun.val.unwrapMessage());
+    console.error(commandRun.val.unwrapMessage());
   }
 }
 
