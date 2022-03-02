@@ -7,7 +7,7 @@ import { assertIsError, BaseError } from "../errors";
 import { Result, Ok, Err } from "ts-results";
 
 export async function run(
-  nodeEnv: string,
+  runtime: string,
   buildEnv: string,
   pathToDataApp: string
 ): Promise<Result<true, BaseError>> {
@@ -16,7 +16,7 @@ export async function run(
   const appJSON = require(path.resolve(`${pathToDataApp}/app.json`));
 
   let environment;
-  if (nodeEnv != "production") {
+  if (runtime != "platform") {
     environment = new LocalRuntime(appJSON, pathToDataApp);
     await app.run(environment);
     return Ok(true);
