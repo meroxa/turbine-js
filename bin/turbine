@@ -1,6 +1,9 @@
 #! /usr/bin/env node
 
-require("dotenv").config();
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config();
+}
+
 const args = process.argv.slice(2);
 
 const { run } = require("../lib/runner");
@@ -11,7 +14,7 @@ async function executeCommand() {
   if (args[0] === "test") {
     commandRun = await run("local", null, process.cwd());
   } else if (args[0] === "deploy") {
-    commandRun = await run("production", "docker-local", args[1]);
+    commandRun = await run("platform", "docker-local", args[1]);
   } else if (args[0] === "generate") {
     return generate(args[1], args[2]);
   } else {
