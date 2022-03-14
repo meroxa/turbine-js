@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const { run } = require("../lib/runner");
+const { run, listFunctions } = require("../lib/runner");
 const { generate } = require("../lib/utils");
 
 async function executeCommand() {
@@ -17,6 +17,11 @@ async function executeCommand() {
     commandRun = await run("platform", "docker-local", args[1]);
   } else if (args[0] === "generate") {
     return generate(args[1], args[2]);
+  } else if (args[0] === "functions") {
+    commandRun = await listFunctions(args[1] || process.cwd());
+    if (commandRun.val) {
+      console.log(commandRun.val);
+    }
   } else {
     throw new Error("Invalid turbine command");
   }

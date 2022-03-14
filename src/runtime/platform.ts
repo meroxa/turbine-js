@@ -1,11 +1,4 @@
-import {
-  Resource,
-  Record,
-  Records,
-  Runtime,
-  RegisteredFunctions,
-  AppConfig,
-} from "./types";
+import { Resource, Record, Records, Runtime, AppConfig } from "./types";
 
 import {
   Client,
@@ -20,7 +13,6 @@ import {
 import { BaseError, APIError } from "../errors";
 
 export class PlatformRuntime implements Runtime {
-  registeredFunctions: RegisteredFunctions = {};
   client: Client;
   imageName: string;
   appConfig: AppConfig;
