@@ -5,6 +5,7 @@ import localDockerBuild from "./deploy-docker";
 
 import { assertIsError, BaseError } from "../errors";
 import { Result, Ok, Err } from "ts-results";
+import { InfoRuntime } from "../runtime/info";
 
 export async function run(
   runtime: string,
@@ -68,4 +69,15 @@ export async function generate(name: string): Promise<Result<true, BaseError>> {
     assertIsError(e);
     return Err(new BaseError("Error generating app", e));
   }
+}
+
+export async function listFunctions(
+  pathToDataApp: string
+): Promise<Result<string[], BaseError>> {
+  const infoRuntime = new InfoRuntime();
+  const { App } = require(path.resolve(pathToDataApp));
+  const app = new App();
+  await app.run(infoRuntime);
+
+  return Ok(infoRuntime.functionsList);
 }
