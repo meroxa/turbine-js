@@ -8,6 +8,7 @@ import {
   ConnectorResponse,
   CreateFunctionParams,
   FunctionResponse,
+  PipelineResponse,
 } from "meroxa-js";
 
 import { BaseError, APIError } from "../errors";
@@ -21,9 +22,57 @@ export class PlatformRuntime implements Runtime {
     this.client = meroxaJS;
     this.imageName = imageName;
     this.appConfig = appConfig;
+    this.#validateAppConfig();
+    this.#setAppConfigPipeline();
+  }
+
+  #validateAppConfig(): void {
+    if (!this.appConfig.name) {
+      throw new BaseError(
+        "application `name` is required to be specified in your app.json"
+      );
+    }
+  }
+
+  #setAppConfigPipeline(): void {
+    if (!this.appConfig.pipeline) {
+      this.appConfig.pipeline = `turbine-pipeline-${this.appConfig.name}`;
+    }
+  }
+
+  async #findOrCreatePipeline(): Promise<PipelineResponse> {
+    let pipeline;
+    try {
+      pipeline = await this.client.pipelines.get(this.appConfig.pipeline);
+    } catch (e: any) {
+      if (e.response && e.response.status === 404) {
+        pipeline = await this.client.pipelines.create({
+          name: this.appConfig.pipeline,
+          metadata: {
+            turbine: true,
+            app: this.appConfig.name,
+          },
+        });
+        console.log(`pipeline created: ${pipeline.name} (${pipeline.id})`);
+      }
+
+      if (e.response) {
+        throw new APIError(e);
+      }
+
+      if (e.request) {
+        throw new BaseError("no server response");
+      }
+
+      throw e;
+    }
+
+    return pipeline;
   }
 
   async resources(resourceName: string): Promise<Resource> {
+    await this.#findOrCreatePipeline();
+
     let resource;
     try {
       resource = await this.client.resources.get(resourceName);

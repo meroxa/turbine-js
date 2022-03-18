@@ -1,10 +1,6 @@
-interface GenericObject {
-  [key: string]: any;
-}
-
 export class Record {
   key = null;
-  value: GenericObject = {};
+  value: { [key: string]: any } = {};
   timestamp = null;
   _rawValue = null;
 
