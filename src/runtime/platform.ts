@@ -40,21 +40,35 @@ export class PlatformRuntime implements Runtime {
     }
   }
 
-  async #findOrCreatePipeline(): Promise<PipelineResponse> {
-    let pipeline;
+  async #createPipeline(): Promise<PipelineResponse> {
     try {
-      pipeline = await this.client.pipelines.get(this.appConfig.pipeline);
+      const pipeline = await this.client.pipelines.create({
+        name: this.appConfig.pipeline,
+        metadata: { turbine: true, app: this.appConfig.name },
+      });
+      console.log(`pipeline created: ${pipeline.name} (${pipeline.id})`);
+      return pipeline;
+    } catch (e: any) {
+      if (e.response) {
+        throw new APIError(e);
+      }
+
+      if (e.request) {
+        throw new BaseError("no server response");
+      }
+
+      throw e;
+    }
+  }
+
+  async #findOrCreatePipeline(): Promise<PipelineResponse> {
+    try {
+      const pipeline = await this.client.pipelines.get(this.appConfig.pipeline);
       console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
+      return pipeline;
     } catch (e: any) {
       if (e.response && e.response.status === 404) {
-        pipeline = await this.client.pipelines.create({
-          name: this.appConfig.pipeline,
-          metadata: {
-            turbine: true,
-            app: this.appConfig.name,
-          },
-        });
-        console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
+        return await this.#createPipeline();
       }
 
       if (e.response) {
@@ -67,8 +81,6 @@ export class PlatformRuntime implements Runtime {
 
       throw e;
     }
-
-    return pipeline;
   }
 
   async resources(resourceName: string): Promise<PlatformResource> {
@@ -103,7 +115,7 @@ export class PlatformRuntime implements Runtime {
       args: ["index.js", fn.name],
       image: this.imageName,
       pipeline: {
-        name: this.appConfig.name,
+        name: this.appConfig.pipeline,
       },
       env_vars: envVars,
     };
@@ -162,7 +174,7 @@ class PlatformResource implements Resource {
         "mx:connectorType": "source",
       },
       resource_id: this.resource.id,
-      pipeline_name: this.appConfig.name,
+      pipeline_name: this.appConfig.pipeline,
       pipeline_id: null,
     };
 
@@ -222,7 +234,7 @@ class PlatformResource implements Resource {
         "mx:connectorType": "destination",
       },
       resource_id: this.resource.id,
-      pipeline_name: this.appConfig.name,
+      pipeline_name: this.appConfig.pipeline,
       pipeline_id: null,
     };
 
