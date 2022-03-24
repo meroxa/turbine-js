@@ -17,4 +17,28 @@ QUnit.module("Unit | LocalRuntime", () => {
     assert.deepEqual(subject.appConfig, appConfig);
     assert.strictEqual(subject.pathToApp, pathToDataApp);
   });
+
+  QUnit.test("#resources", (assert) => {
+    const pathToFixtures = "path/to/fixtures";
+    const appConfig: AppConfig = {
+      name: "sleep-token",
+      language: "js",
+      environment: "common",
+      pipeline: "default",
+      resources: {
+        pg: pathToFixtures,
+      },
+    };
+
+    const pathToDataApp = "/path/to/data/app";
+    const localRuntime = new LocalRuntime(appConfig, pathToDataApp);
+    const subject = localRuntime.resources("pg");
+
+    assert.strictEqual(subject.constructor.name, "LocalResource");
+    assert.strictEqual(subject.name, "pg");
+    assert.strictEqual(
+      subject.fixturesPath,
+      `${pathToDataApp}/${pathToFixtures}`
+    );
+  });
 });
