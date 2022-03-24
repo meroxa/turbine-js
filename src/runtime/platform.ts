@@ -44,6 +44,7 @@ export class PlatformRuntime implements Runtime {
     let pipeline;
     try {
       pipeline = await this.client.pipelines.get(this.appConfig.pipeline);
+      console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
     } catch (e: any) {
       if (e.response && e.response.status === 404) {
         pipeline = await this.client.pipelines.create({
@@ -53,7 +54,7 @@ export class PlatformRuntime implements Runtime {
             app: this.appConfig.name,
           },
         });
-        console.log(`pipeline created: ${pipeline.name} (${pipeline.id})`);
+        console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
       }
 
       if (e.response) {
