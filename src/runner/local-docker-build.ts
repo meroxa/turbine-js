@@ -8,7 +8,7 @@ import { BaseError, assertIsError } from "../errors";
 
 export default async function (
   pathToDataApp: string
-): Promise<Result<true, BaseError>> {
+): Promise<Result<string, BaseError>> {
   if (
     !process.env.DOCKER_HUB_USERNAME ||
     !process.env.DOCKER_HUB_ACCESS_TOKEN
@@ -74,7 +74,7 @@ export default async function (
   });
 
   await cleanupTmpDir(tmpDir);
-  return Ok(true);
+  return Ok(tagName);
 }
 
 async function cleanupTmpDir(tmpDir: string) {

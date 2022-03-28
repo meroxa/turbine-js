@@ -6,20 +6,22 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const { run, listFunctions } = require("../lib/runner");
+const { listFunctions, runAppLocal, runAppPlatform } = require("../lib/runner");
 const { generate } = require("../lib/utils");
 
 async function executeCommand() {
-  let commandRun;
   if (args[0] === "test") {
-    commandRun = await run("local", null, process.cwd());
+    // meroxa apps run
+    commandRun = await runAppLocal(args[1] || process.cwd());
   } else if (args[0] === "deploy") {
-    commandRun = await run("platform", "docker-local", args[1]);
+    // meroxa apps deploy
+    commandRun = await runAppPlatform(args[1] || process.cwd());
   } else if (args[0] === "generate") {
-    return generate(args[1], args[2]);
+    // meroxa apps init
+    commandRun = await generate(args[1], args[2]);
   } else if (args[0] === "functions") {
     commandRun = await listFunctions(args[1] || process.cwd());
-    if (commandRun.val) {
+    if (!commandRun.err) {
       console.log(commandRun.val);
     }
   } else {
@@ -27,6 +29,7 @@ async function executeCommand() {
   }
 
   if (commandRun.err) {
+    process.exitCode = 1;
     console.error(commandRun.val.unwrapMessage());
   }
 }
