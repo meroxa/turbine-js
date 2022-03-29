@@ -2760,7 +2760,7 @@ merge2@^1.3.0:
 
 "meroxa-js@https://github.com/meroxa/meroxa-js.git":
   version "1.0.0"
-  resolved "https://github.com/meroxa/meroxa-js.git#fa40d303e658080383d1688fabaeabed687488d6"
+  resolved "https://github.com/meroxa/meroxa-js.git#8ed31276f3a4f8ebce5b72f8df7e97f0689e58c8"
   dependencies:
     axios "^0.24.0"
 
