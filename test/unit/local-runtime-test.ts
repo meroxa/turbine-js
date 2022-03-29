@@ -1,5 +1,5 @@
-import { LocalRuntime } from "../../lib/runtime/local";
-import { AppConfig } from "../../lib/runtime/types";
+import { LocalRuntime } from "../../src/runtime/local";
+import { AppConfig } from "../../src/runtime/types";
 
 QUnit.module("Unit | LocalRuntime", () => {
   QUnit.test("#constructor", (assert) => {
