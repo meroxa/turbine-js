@@ -1,0 +1,8 @@
+{
+    "name": "nodejsapp",
+    "language": "javascript",
+    "environment": "common",
+    "resources": {
+      "source_name": "fixtures/demo.json"
+    }
+  }
