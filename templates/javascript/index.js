@@ -27,7 +27,7 @@ exports.App = class App {
     let source = await turbine.resources("source_name");
 
     // Specify which upstream records to pull
-    // with the `reocrds` function
+    // with the `records` function
     // Replace `collection_name` with a table, collection,
     // or bucket name in your data store
     let records = await source.records("collection_name");
@@ -43,7 +43,10 @@ exports.App = class App {
     // data store was configured with on Meroxa
     let destination = await turbine.resources("destination_name");
 
-    // Create destination connector with function output as input
+    // Specify where to write records downstream
+	  // using the `Write` function
+	  // Replace `collection_name` with a table, collection,
+	  // or bucket name in your data store
     await destination.write(records, "collection_name");
   }
 };
