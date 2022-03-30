@@ -12,7 +12,7 @@ const { generate } = require("../lib/utils");
 async function executeCommand() {
   let commandRun;
   if (args[0] === "test") {
-    commandRun = await run("local", null, process.cwd());
+    commandRun = await run("local", null, args[1]);
   } else if (args[0] === "deploy") {
     commandRun = await run("platform", "docker-local", args[1]);
   } else if (args[0] === "generate") {
