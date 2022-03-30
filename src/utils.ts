@@ -3,6 +3,7 @@ import { Err, Ok, Result } from "ts-results";
 
 import { copy, writeJson } from "fs-extra";
 var path = require("path");
+var child_process = require('child_process');
 
 export async function generate(
   name: string,
@@ -26,6 +27,12 @@ export async function generate(
 
   if (appJson.err) {
     return Err(new BaseError("error generating app", appJson.val));
+  }
+
+  try {
+    child_process.execSync(`npm --prefix ${appPath} install ${appPath}`);
+  } catch(err) {
+    console.error(err);
   }
 
   return Ok(true);
