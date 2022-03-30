@@ -24,8 +24,12 @@ export async function generate(name: string, pathname: string) {
 
 async function generateAppJson(appName: string) {
   let appJson = {
-    name: appName,
-    language: "javascript",
+    "name": appName,
+    "language": "javascript",
+    "environment": "common",
+    "resources": {
+      "source_name":"fixtures/demo.json"
+    }
   };
 
   try {

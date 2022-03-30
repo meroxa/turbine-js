@@ -1,0 +1,17 @@
+{
+  "name": "nodejsapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "string-hash": "^1.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
