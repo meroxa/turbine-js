@@ -71,7 +71,7 @@ export class PlatformRuntime implements Runtime {
     return pipeline;
   }
 
-  async resources(resourceName: string): Promise<Resource> {
+  async resources(resourceName: string): Promise<PlatformResource> {
     await this.#findOrCreatePipeline();
 
     let resource;

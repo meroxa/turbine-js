@@ -10,7 +10,7 @@ export class LocalRuntime implements Runtime {
     this.pathToApp = pathToApp;
   }
 
-  resources(resourceName: string): Resource {
+  resources(resourceName: string): LocalResource {
     const resources = this.appConfig.resources;
     const fixturesPath = resources[resourceName];
     const resourceFixturesPath = `${this.pathToApp}/${fixturesPath}`;
