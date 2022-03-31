@@ -1,7 +1,8 @@
-// This unit test example uses the Jest, a JavaScript testing framework (https://jestjs.io/)
-// However, feel free to use any testing framework of your choice
-// To learn more about how to use Jest go to https://jestjs.io/docs/getting-started
-// To run this unit test, use `yarn test` or `npm run test` after `yarn install`
+// This example unit test was built using Jest, a JavaScript testing framework
+// However, you may use any testing framework of your choice
+// To learn more about how to use this testing framework
+// Refer to the Jest documentation https://jestjs.io/docs/getting-started
+// To run this example unit test, use `yarn test` or `npm run test`
 
 // Your eCommerce store has a catalog of products available for sale
 // Here is an example product from your catalog
@@ -20,6 +21,7 @@ const product = {
 
 // Customers have access to a filter to find the product they want
 // They can filter by `product_type` and `reviews`
+// The product must be in stock
 
 const filter = {
     product_type: 'sleeping-bag',
