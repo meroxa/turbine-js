@@ -23,7 +23,7 @@ export async function generate(
     return Err(new BaseError("error generating app", err));
   }
 
-  const appJson = await generateAppJson(appPath);
+  const appJson = await generateAppJson(appName, appPath);
 
   if (appJson.err) {
     return Err(new BaseError("error generating app", appJson.val));
@@ -39,7 +39,8 @@ export async function generate(
 }
 
 async function generateAppJson(
-  appName: string
+  appName: string,
+  appPath: string
 ): Promise<Result<true, BaseError>> {
   let appJson = {
     "name": appName,
@@ -51,7 +52,7 @@ async function generateAppJson(
   };
 
   try {
-    await writeJson(`${appName}/app.json`, appJson);
+    await writeJson(`${appPath}/app.json`, appJson);
     return Ok(true);
   } catch (err) {
     assertIsError(err);
