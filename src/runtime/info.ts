@@ -1,10 +1,21 @@
-import { Record, Records, RegisteredFunctions } from "./types";
+import { AppConfig, Record, Records, RegisteredFunctions } from "./types";
 
 export class InfoRuntime {
   registeredFunctions: RegisteredFunctions = {};
+  pathToDataApp: string;
+  appConfig: AppConfig;
 
-  get functionsList() {
+  constructor(pathToDataApp: string, appConfig: AppConfig) {
+    this.pathToDataApp = pathToDataApp;
+    this.appConfig = appConfig;
+  }
+
+  get functionsList(): string[] {
     return Object.keys(this.registeredFunctions);
+  }
+
+  get pipelineName(): string {
+    return `turbine-pipeline-${this.appConfig.name}`;
   }
 
   resources(resourceName: string): InfoResource {
