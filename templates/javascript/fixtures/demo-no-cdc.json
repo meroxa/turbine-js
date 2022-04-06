@@ -1,16 +1,4 @@
 {
-  "purchases": {
-    "9582724": {
-      "id": 9582724,
-      "category": "camping",
-      "product_type": "sleeping-bag",
-      "product_name": "Forte 35 Sleeping Bag - Womens",
-      "stock": true,
-      "product_id": 361632,
-      "shipping_address": "9718 East Virginia Avenue Silver Spring, MD 20901",
-      "customer_email": "usera@example.com"
-    }
-  },
   "collection_name": [
     {
       "key": "1",
