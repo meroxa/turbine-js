@@ -2760,7 +2760,7 @@ merge2@^1.3.0:
 
 "meroxa-js@https://github.com/meroxa/meroxa-js.git":
   version "1.0.0"
-  resolved "https://github.com/meroxa/meroxa-js.git#8ed31276f3a4f8ebce5b72f8df7e97f0689e58c8"
+  resolved "https://github.com/meroxa/meroxa-js.git#6dcb0b23383ef70484955c10a05103c319396918"
   dependencies:
     axios "^0.24.0"
 
@@ -2803,12 +2803,7 @@ minimatch@^3.0.2, minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.2.5:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
-  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
-
-minimist@^1.2.6:
+minimist@^1.2.5, minimist@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
   integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
