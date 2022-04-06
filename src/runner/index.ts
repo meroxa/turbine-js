@@ -111,7 +111,8 @@ export async function generate(name: string): Promise<Result<true, BaseError>> {
 export async function listFunctions(
   pathToDataApp: string
 ): Promise<Result<string[], BaseError>> {
-  const infoRuntime = new InfoRuntime();
+  const appJSON = require(path.resolve(`${pathToDataApp}/app.json`));
+  const infoRuntime = new InfoRuntime(pathToDataApp, appJSON);
   const { App } = require(path.resolve(pathToDataApp));
   const app = new App();
   try {
@@ -120,5 +121,53 @@ export async function listFunctions(
   } catch (e) {
     assertIsError(e);
     return Err(new BaseError("Error listing functions", e));
+  }
+}
+
+export async function rollback(
+  pathToDataApp: string
+): Promise<Result<true, BaseError>> {
+  const meroxaJS = new MeroxaJS({
+    auth: process.env.MEROXA_ACCESS_TOKEN || "",
+    url: process.env.MEROXA_API_URL,
+  });
+  const appJSON = require(path.resolve(`${pathToDataApp}/app.json`));
+  const infoRuntime = new InfoRuntime(pathToDataApp, appJSON);
+  try {
+    const pipeline = await meroxaJS.pipelines.get(infoRuntime.pipelineName);
+    const connectors = await meroxaJS.connectors.listByPipeline(pipeline.name);
+
+    const sourceConnectors = connectors.filter((conn) => {
+      return conn.type === "source";
+    });
+    const destinationConnectors = connectors.filter((conn) => {
+      return conn.type === "destination";
+    });
+
+    const functions = await meroxaJS.functions.list();
+    const pipelinesFunctions = functions.filter((func) => {
+      return func.pipeline.name === pipeline.name;
+    });
+
+    await destinationConnectors.reduce(async (acc: Promise<any>, conn) => {
+      await acc;
+      return meroxaJS.connectors.delete(conn.name);
+    }, Promise.resolve());
+
+    await sourceConnectors.reduce(async (acc: Promise<any>, conn) => {
+      await acc;
+      return meroxaJS.connectors.delete(conn.name);
+    }, Promise.resolve());
+
+    const deletingFunctions = pipelinesFunctions.map((func) => {
+      return meroxaJS.functions.delete(func.name);
+    });
+
+    await Promise.all(deletingFunctions);
+    await meroxaJS.pipelines.delete(pipeline.name);
+
+    return Ok(true);
+  } catch (e) {
+    return Err(new BaseError("rollback failed"));
   }
 }

@@ -6,7 +6,12 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const { listFunctions, runAppLocal, runAppPlatform } = require("../lib/runner");
+const {
+  listFunctions,
+  runAppLocal,
+  runAppPlatform,
+  rollback,
+} = require("../lib/runner");
 const { generate } = require("../lib/utils");
 
 async function executeCommand() {
@@ -24,6 +29,8 @@ async function executeCommand() {
     if (!commandRun.err) {
       console.log(commandRun.val);
     }
+  } else if (args[0] === "rollback") {
+    commandRun = await rollback(args[1] || process.cwd());
   } else {
     throw new Error("Invalid turbine command");
   }

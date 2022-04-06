@@ -212,21 +212,6 @@ class PlatformResource implements Resource {
       input: records.stream,
     };
 
-    switch (this.resource.type) {
-      case "redshift":
-      case "postgres":
-      case "mysql":
-        break;
-      case "s3":
-        connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
-        connectorConfig["value.converter"] =
-          "org.apache.kafka.connect.json.JsonConverter";
-        connectorConfig["value.converter.schemas.enable"] = "true";
-        connectorConfig["format.output.type"] = "jsonl";
-        connectorConfig["format.output.envelope"] = "true";
-        break;
-    }
-
     const connectorInput: CreateConnectorParams = {
       name: "a-destination",
       config: connectorConfig,
