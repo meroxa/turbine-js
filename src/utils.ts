@@ -47,7 +47,7 @@ async function generateAppJson(
     "language": "javascript",
     "environment": "common",
     "resources": {
-      "source_name":"fixtures/demo.json"
+      "source_name":"fixtures/demo-cdc.json"
     }
   };
 

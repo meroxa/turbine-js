@@ -5,10 +5,14 @@
       "value": {
         "payload": {
           "after": {
-            "action": "logged in",
-            "email": "user2@example.com",
-            "id": 4,
-            "user_id": 101
+            "id": 9582724,
+            "category": "camping",
+            "product_type": "sleeping-bag",
+            "product_name": "Forte 35 Sleeping Bag - Womens",
+            "stock": true,
+            "product_id": 361632,
+            "shipping_address": "9718 East Virginia Avenue Silver Spring, MD 20901",
+            "customer_email": "usera@example.com"
           },
           "before": null,
           "op": "r",
@@ -34,11 +38,15 @@
               "field": "before",
               "fields": [
                 { "field": "id", "optional": false, "type": "int32" },
-                { "field": "user_id", "optional": true, "type": "int32" },
-                { "field": "email", "optional": true, "type": "string" },
-                { "field": "action", "optional": true, "type": "string" }
+                { "field": "category", "optional": false, "type": "string" },
+                { "field": "product_type", "optional": false, "type": "string" },
+                { "field": "product_name", "optional": false, "type": "string" },
+                { "field": "stock", "optional": false, "type": "boolean" },
+                { "field": "product_id", "optional": false, "type": "int32" },
+                { "field": "shipping_address", "optional": false, "type": "string" },
+                { "field": "customer_email", "optional": false, "type": "varchar" }
               ],
-              "name": "resource_7109_171736.public.collection_name.Value",
+              "name": "resource.public.collection_name.Value",
               "optional": true,
               "type": "struct"
             },
@@ -46,11 +54,15 @@
               "field": "after",
               "fields": [
                 { "field": "id", "optional": false, "type": "int32" },
-                { "field": "user_id", "optional": true, "type": "int32" },
-                { "field": "email", "optional": true, "type": "string" },
-                { "field": "action", "optional": true, "type": "string" }
+                { "field": "category", "optional": false, "type": "string" },
+                { "field": "product_type", "optional": false, "type": "string" },
+                { "field": "product_name", "optional": false, "type": "string" },
+                { "field": "stock", "optional": false, "type": "boolean" },
+                { "field": "product_id", "optional": false, "type": "int32" },
+                { "field": "shipping_address", "optional": false, "type": "string" },
+                { "field": "customer_email", "optional": false, "type": "varchar" }
               ],
-              "name": "resource_7109_171736.public.collection_name.Value",
+              "name": "resource.public.collection_name.Value",
               "optional": true,
               "type": "struct"
             },
@@ -98,7 +110,7 @@
               "type": "struct"
             }
           ],
-          "name": "resource_7109_171736.public.collection_name.Envelope",
+          "name": "resource.public.collection_name.Envelope",
           "optional": false,
           "type": "struct"
         }
@@ -109,10 +121,14 @@
       "value": {
         "payload": {
           "after": {
-            "action": "registered",
-            "email": "user@example.com",
-            "id": 1,
-            "user_id": 100
+            "id": 9582725,
+            "category": "camping",
+            "product_type": "sleeping-bag",
+            "product_name": "Cosmic 20 Sleeping Bag - Mens",
+            "stock": true,
+            "product_id": 235367,
+            "shipping_address": "881 South Newbridge Lane Upland, CA 91784",
+            "customer_email": "userb@example.com"
           },
           "before": null,
           "op": "r",
@@ -138,11 +154,15 @@
               "field": "before",
               "fields": [
                 { "field": "id", "optional": false, "type": "int32" },
-                { "field": "user_id", "optional": true, "type": "int32" },
-                { "field": "email", "optional": true, "type": "string" },
-                { "field": "action", "optional": true, "type": "string" }
+                { "field": "category", "optional": false, "type": "string" },
+                { "field": "product_type", "optional": false, "type": "string" },
+                { "field": "product_name", "optional": false, "type": "string" },
+                { "field": "stock", "optional": false, "type": "boolean" },
+                { "field": "product_id", "optional": false, "type": "int32" },
+                { "field": "shipping_address", "optional": false, "type": "string" },
+                { "field": "customer_email", "optional": false, "type": "varchar" }
               ],
-              "name": "resource_7109_171736.public.collection_name.Value",
+              "name": "resource.public.collection_name.Value",
               "optional": true,
               "type": "struct"
             },
@@ -150,11 +170,15 @@
               "field": "after",
               "fields": [
                 { "field": "id", "optional": false, "type": "int32" },
-                { "field": "user_id", "optional": true, "type": "int32" },
-                { "field": "email", "optional": true, "type": "string" },
-                { "field": "action", "optional": true, "type": "string" }
+                { "field": "category", "optional": false, "type": "string" },
+                { "field": "product_type", "optional": false, "type": "string" },
+                { "field": "product_name", "optional": false, "type": "string" },
+                { "field": "stock", "optional": false, "type": "boolean" },
+                { "field": "product_id", "optional": false, "type": "int32" },
+                { "field": "shipping_address", "optional": false, "type": "string" },
+                { "field": "customer_email", "optional": false, "type": "varchar" }
               ],
-              "name": "resource_7109_171736.public.collection_name.Value",
+              "name": "source_name.public.collection_name.Value",
               "optional": true,
               "type": "struct"
             },
@@ -202,7 +226,7 @@
               "type": "struct"
             }
           ],
-          "name": "source_name.public.collection_name.Envelope",
+          "name": "resource.public.collection_name.Envelope",
           "optional": false,
           "type": "struct"
         }
