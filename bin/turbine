@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const { Primary, Extended } = require("../lib/runner");
+const { Primary, Extended, generateApp } = require("../lib/runner");
 
 const { Client } = require("meroxa-js");
 
@@ -26,8 +26,7 @@ async function executeCommand() {
     commandRun = await extendedRunner.runAppPlatform();
   } else if (args[0] === "generate") {
     // meroxa apps init
-    const primaryRunner = new Primary(args[2] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.generate(args[1]);
+    commandRun = await generateApp(args[1], args[2]);
   } else if (args[0] === "functions") {
     const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listFunctions();

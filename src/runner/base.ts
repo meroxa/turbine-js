@@ -1,6 +1,4 @@
-import { copy, writeJson } from "fs-extra";
 import path from "path";
-import child_process from "child_process";
 
 import { LocalRuntime, Client as MeroxaJS } from "../runtime";
 
@@ -95,60 +93,18 @@ export default class Base {
       await this.meroxaJS.pipelines.delete(pipeline.name);
 
       return Ok(true);
-    } catch (e) {
-      return Err(new BaseError("rollback failed"));
-    }
-  }
+    } catch (e: any) {
+      const errorIs404 = e.response && e.response.status === 404;
+      const errorIsFromPipelineRequest =
+        e.request &&
+        e.request.method === "GET" &&
+        e.request.path.includes("/pipelines/");
 
-  async generate(name: string): Promise<Result<true, BaseError>> {
-    let appName = name || "my-app";
-    let templatesDir = path.resolve(__dirname, "../../templates");
-    let appPath = path.resolve(this.pathToDataApp, appName);
-
-    try {
-      await copy(`${templatesDir}/javascript`, appPath, {
-        errorOnExist: true,
-        overwrite: false,
-      });
-    } catch (err) {
-      assertIsError(err);
-      return Err(new BaseError("error generating app", err));
-    }
-
-    const appJson = await this.generateAppJson(appName, appPath);
-
-    if (appJson.err) {
-      return Err(new BaseError("error generating app", appJson.val));
-    }
-
-    try {
-      child_process.execSync(`npm --prefix ${appPath} install ${appPath}`);
-    } catch (err) {
-      console.error(err);
-    }
-
-    return Ok(true);
-  }
-
-  async generateAppJson(
-    appName: string,
-    appPath: string
-  ): Promise<Result<true, BaseError>> {
-    let appJson = {
-      name: appName,
-      language: "javascript",
-      environment: "common",
-      resources: {
-        source_name: "fixtures/demo-cdc.json",
-      },
-    };
-
-    try {
-      await writeJson(`${appPath}/app.json`, appJson);
-      return Ok(true);
-    } catch (err) {
-      assertIsError(err);
-      return Err(new BaseError("error generating app.json", err));
+      if (errorIs404 && errorIsFromPipelineRequest) {
+        return Ok(true);
+      }
+      assertIsError(e);
+      return Err(new BaseError("rollback failed", e));
     }
   }
 }
