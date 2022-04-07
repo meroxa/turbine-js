@@ -14,7 +14,7 @@ export default async function (
   client: Client
 ): Promise<Result<BuildResponse, BaseError>> {
   const tmpDir = path.join(os.tmpdir(), "turbine");
-  const deployDir = path.join(__dirname, "../function-deploy");
+  const deployDir = path.join(__dirname, "../../function-deploy");
 
   try {
     await fs.copy(deployDir, tmpDir);
