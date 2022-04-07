@@ -39,3 +39,15 @@ jobs:
 
       - name: Running tests
         run: yarn run test
+
+      - name: Generate test coverage report
+        id: test_coverage
+        run: |
+          RESULT=$(yarn run test:coverage-report:ci | tail -n 2)
+          echo "::set-output name=coverage_results::$RESULT"
+
+      - name: Post test coverage report
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.test_coverage.outputs.coverage_results }}

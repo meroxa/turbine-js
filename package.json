@@ -14,6 +14,7 @@
     "@types/qunit": "^2.11.3",
     "@types/tar-fs": "^2.0.1",
     "dotenv": "^14.3.0",
+    "nyc": "^15.1.0",
     "qunit": "^2.18.0",
     "ts-migrate": "^0.1.28",
     "ts-node": "^10.7.0",
@@ -37,6 +38,10 @@
     "build:prod": "npm run clean-build && tsc --sourceMap false && npm run finish-build",
     "clean-build": "node scripts/clean-build.js",
     "finish-build": "node scripts/finish-build.js",
-    "test": "qunit --require ./test/setup.js test/**/*.ts"
+    "test": "qunit --require ./test/setup.js test/**/*.ts",
+    "test:coverage": "nyc qunit --require ./test/setup.js test/**/*.ts",
+    "test:coverage-report:json": "nyc report --reporter json-summary --report-dir nyc-coverage-report --exclude-after-remap false",
+    "test:coverage-report": "nyc report --reporter text --report-dir nyc-coverage-report --exclude-after-remap false",
+    "test:coverage-report:ci": "scripts/test-coverage.sh"
   }
 }
