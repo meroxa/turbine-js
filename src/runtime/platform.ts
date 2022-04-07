@@ -46,7 +46,7 @@ export class PlatformRuntime implements Runtime {
         name: this.appConfig.pipeline,
         metadata: { turbine: true, app: this.appConfig.name },
       });
-      console.log(`pipeline created: ${pipeline.name} (${pipeline.id})`);
+      console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
       return pipeline;
     } catch (e: any) {
       if (e.response) {
