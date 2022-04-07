@@ -6,31 +6,55 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const {
-  listFunctions,
-  runAppLocal,
-  runAppPlatform,
-  rollback,
-} = require("../lib/runner");
-const { generate } = require("../lib/utils");
+const { Primary, Extended } = require("../lib/runner");
+
+const { Client } = require("meroxa-js");
+
+const meroxaJS = new Client({
+  auth: process.env.MEROXA_ACCESS_TOKEN || "",
+  url: process.env.MEROXA_API_URL,
+});
+
+const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
+const extendedRunner = new Extended(args[1] || process.cwd(), meroxaJS);
 
 async function executeCommand() {
   if (args[0] === "test") {
     // meroxa apps run
-    commandRun = await runAppLocal(args[1] || process.cwd());
+    commandRun = await primaryRunner.runAppLocal();
   } else if (args[0] === "deploy") {
     // meroxa apps deploy
-    commandRun = await runAppPlatform(args[1] || process.cwd());
+    commandRun = await extendedRunner.runAppPlatform();
   } else if (args[0] === "generate") {
     // meroxa apps init
-    commandRun = await generate(args[1], args[2]);
+    commandRun = await primaryRunner.generate();
   } else if (args[0] === "functions") {
-    commandRun = await listFunctions(args[1] || process.cwd());
+    commandRun = await primaryRunner.listFunctions();
+    if (!commandRun.err) {
+      console.log(commandRun.val);
+    }
+  } else if (args[0] === "hasfunctions") {
+    commandRun = await primaryRunner.hasFunctions();
     if (!commandRun.err) {
       console.log(commandRun.val);
     }
   } else if (args[0] === "rollback") {
-    commandRun = await rollback(args[1] || process.cwd());
+    commandRun = await primaryRunner.rollback();
+  } else if (args[0] === "clideploy") {
+    let functionImageName = args[1];
+    if (args[1] && args[2]) {
+      functionImageName = args[2];
+    }
+    if (functionImageName === undefined) {
+      throw new Error("Must explicitly pass arguments to this command");
+    }
+
+    commandRun = await primaryRunner.runAppPlatform(functionImageName);
+  } else if (args[0] === "clibuild") {
+    commandRun = await primaryRunner.buildFunction();
+    if (!commandRun.err) {
+      console.log(commandRun.val);
+    }
   } else {
     throw new Error("Invalid turbine command");
   }
