@@ -3,18 +3,18 @@ import targz from "targz";
 import os from "os";
 import fs from "fs-extra";
 import { Result, Ok, Err } from "ts-results";
-import { BaseError, APIError } from "../errors";
+import { BaseError, APIError } from "../../errors";
 import axios from "axios";
 import { Client } from "meroxa-js";
-import { poller } from "./poller";
-import { BuildResponse } from "meroxa-js/lib/types/build";
+import { poller } from "../poller";
+import { BuildResponse } from "meroxa-js";
 
 export default async function (
   pathToDataApp: string,
   client: Client
 ): Promise<Result<BuildResponse, BaseError>> {
   const tmpDir = path.join(os.tmpdir(), "turbine");
-  const deployDir = path.join(__dirname, "../function-deploy");
+  const deployDir = path.join(__dirname, "../../function-deploy");
 
   try {
     await fs.copy(deployDir, tmpDir);

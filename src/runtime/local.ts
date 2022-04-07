@@ -5,9 +5,9 @@ export class LocalRuntime implements Runtime {
   appConfig: AppConfig;
   pathToApp: string;
 
-  constructor(appConfig: AppConfig, pathToApp: string) {
-    this.appConfig = appConfig;
+  constructor(pathToApp: string, appConfig: AppConfig) {
     this.pathToApp = pathToApp;
+    this.appConfig = appConfig;
   }
 
   resources(resourceName: string): LocalResource {

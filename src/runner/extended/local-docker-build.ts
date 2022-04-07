@@ -4,7 +4,7 @@ import tarfs from "tar-fs";
 import os from "os";
 import fs from "fs-extra";
 import { Result, Ok, Err } from "ts-results";
-import { BaseError, assertIsError } from "../errors";
+import { BaseError, assertIsError } from "../../errors";
 
 export default async function (
   pathToDataApp: string

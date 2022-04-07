@@ -6,31 +6,51 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const {
-  listFunctions,
-  runAppLocal,
-  runAppPlatform,
-  rollback,
-} = require("../lib/runner");
-const { generate } = require("../lib/utils");
+const { Primary, Extended, generateApp } = require("../lib/runner");
+
+const { Client } = require("meroxa-js");
+
+const meroxaJS = new Client({
+  auth: process.env.MEROXA_ACCESS_TOKEN || "",
+  url: process.env.MEROXA_API_URL,
+});
 
 async function executeCommand() {
   if (args[0] === "test") {
     // meroxa apps run
-    commandRun = await runAppLocal(args[1] || process.cwd());
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.runAppLocal();
   } else if (args[0] === "deploy") {
     // meroxa apps deploy
-    commandRun = await runAppPlatform(args[1] || process.cwd());
+    const extendedRunner = new Extended(args[1] || process.cwd(), meroxaJS);
+    commandRun = await extendedRunner.runAppPlatform();
   } else if (args[0] === "generate") {
     // meroxa apps init
-    commandRun = await generate(args[1], args[2]);
+    commandRun = await generateApp(args[1], args[2]);
   } else if (args[0] === "functions") {
-    commandRun = await listFunctions(args[1] || process.cwd());
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.listFunctions();
+    if (!commandRun.err) {
+      console.log(commandRun.val);
+    }
+  } else if (args[0] === "hasfunctions") {
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.hasFunctions();
     if (!commandRun.err) {
       console.log(commandRun.val);
     }
   } else if (args[0] === "rollback") {
-    commandRun = await rollback(args[1] || process.cwd());
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.rollback();
+  } else if (args[0] === "clideploy") {
+    const primaryRunner = new Primary(args[2] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.runAppPlatform(args[1]);
+  } else if (args[0] === "clibuild") {
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.buildFunction();
+    if (!commandRun.err) {
+      console.log(commandRun.val);
+    }
   } else {
     throw new Error("Invalid turbine command");
   }

@@ -1,17 +1,17 @@
-import { assertIsError, BaseError } from "./errors";
-import { Err, Ok, Result } from "ts-results";
-
 import { copy, writeJson } from "fs-extra";
-var path = require("path");
-var child_process = require('child_process');
+import path from "path";
+import child_process from "child_process";
 
-export async function generate(
+import { assertIsError, BaseError } from "../errors";
+import { Result, Ok, Err } from "ts-results";
+
+export default async function generateApp(
   name: string,
-  pathname: string
+  pathToDataApp: string
 ): Promise<Result<true, BaseError>> {
   let appName = name || "my-app";
-  let templatesDir = path.resolve(__dirname, "../templates");
-  let appPath = path.resolve(pathname, appName);
+  let templatesDir = path.resolve(__dirname, "../../templates");
+  let appPath = path.resolve(pathToDataApp, appName);
 
   try {
     await copy(`${templatesDir}/javascript`, appPath, {
@@ -31,7 +31,7 @@ export async function generate(
 
   try {
     child_process.execSync(`npm --prefix ${appPath} install ${appPath}`);
-  } catch(err) {
+  } catch (err) {
     console.error(err);
   }
 
@@ -43,12 +43,12 @@ async function generateAppJson(
   appPath: string
 ): Promise<Result<true, BaseError>> {
   let appJson = {
-    "name": appName,
-    "language": "javascript",
-    "environment": "common",
-    "resources": {
-      "source_name":"fixtures/demo-cdc.json"
-    }
+    name: appName,
+    language: "javascript",
+    environment: "common",
+    resources: {
+      source_name: "fixtures/demo-cdc.json",
+    },
   };
 
   try {
