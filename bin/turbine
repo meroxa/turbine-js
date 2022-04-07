@@ -15,42 +15,39 @@ const meroxaJS = new Client({
   url: process.env.MEROXA_API_URL,
 });
 
-const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
-const extendedRunner = new Extended(args[1] || process.cwd(), meroxaJS);
-
 async function executeCommand() {
   if (args[0] === "test") {
     // meroxa apps run
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.runAppLocal();
   } else if (args[0] === "deploy") {
     // meroxa apps deploy
+    const extendedRunner = new Extended(args[1] || process.cwd(), meroxaJS);
     commandRun = await extendedRunner.runAppPlatform();
   } else if (args[0] === "generate") {
     // meroxa apps init
-    commandRun = await primaryRunner.generate();
+    const primaryRunner = new Primary(args[2] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.generate(args[1]);
   } else if (args[0] === "functions") {
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listFunctions();
     if (!commandRun.err) {
       console.log(commandRun.val);
     }
   } else if (args[0] === "hasfunctions") {
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.hasFunctions();
     if (!commandRun.err) {
       console.log(commandRun.val);
     }
   } else if (args[0] === "rollback") {
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.rollback();
   } else if (args[0] === "clideploy") {
-    let functionImageName = args[1];
-    if (args[1] && args[2]) {
-      functionImageName = args[2];
-    }
-    if (functionImageName === undefined) {
-      throw new Error("Must explicitly pass arguments to this command");
-    }
-
-    commandRun = await primaryRunner.runAppPlatform(functionImageName);
+    const primaryRunner = new Primary(args[2] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.runAppPlatform(args[1]);
   } else if (args[0] === "clibuild") {
+    const primaryRunner = new Primary(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.buildFunction();
     if (!commandRun.err) {
       console.log(commandRun.val);
