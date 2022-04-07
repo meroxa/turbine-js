@@ -14,6 +14,7 @@
     "@types/qunit": "^2.11.3",
     "@types/tar-fs": "^2.0.1",
     "dotenv": "^14.3.0",
+    "nyc": "^15.1.0",
     "qunit": "^2.18.0",
     "ts-migrate": "^0.1.28",
     "ts-node": "^10.7.0",
