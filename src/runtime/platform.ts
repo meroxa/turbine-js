@@ -167,8 +167,6 @@ class PlatformResource implements Resource {
     };
 
     const connectorInput: CreateConnectorParams = {
-      // Yep you guessed it, another hardcode hack
-      name: "a-source",
       config: connectorConfig,
       metadata: {
         "mx:connectorType": "source",
@@ -213,7 +211,6 @@ class PlatformResource implements Resource {
     };
 
     const connectorInput: CreateConnectorParams = {
-      name: "a-destination",
       config: connectorConfig,
       metadata: {
         "mx:connectorType": "destination",
