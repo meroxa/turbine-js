@@ -14,9 +14,19 @@ export default class Primary extends Base {
     const tmpDir = path.join(os.tmpdir(), "turbine");
     const deployDir = path.join(__dirname, "../function-deploy");
 
+    const filterFunc = (src: string, dest: string) => {
+      return !(
+        src.includes(`/node_modules`) ||
+        src.includes(`/.git`) ||
+        src.includes(`/fixtures`)
+      );
+    };
+
     try {
       await fs.copy(deployDir, tmpDir);
-      await fs.copy(this.pathToDataApp, path.join(tmpDir, "data-app"));
+      await fs.copy(this.pathToDataApp, path.join(tmpDir, "data-app"), {
+        filter: filterFunc,
+      });
       return Ok(tmpDir);
     } catch (e) {
       await this.#cleanupTmpDir(tmpDir);
