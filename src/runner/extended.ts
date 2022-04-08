@@ -14,6 +14,11 @@ export default class Extended extends Base {
       if (build.err) {
         return Err(new BaseError("Error running platform build", build.val));
       }
+
+      if (build.val.status.state === "error") {
+        return Err(new BaseError("Error running platform build"));
+      }
+
       return Ok(build.val.image);
     } else {
       const build = await localDockerBuild(this.pathToDataApp);
