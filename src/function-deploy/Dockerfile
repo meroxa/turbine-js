@@ -2,8 +2,8 @@
 FROM node:16-alpine as DATA_APP_BUILDER
 WORKDIR /app/data-app
 COPY ./data-app/package.json package.json
-COPY ./data-app/yarn.lock yarn.lock
-RUN yarn install --frozen-lockfile
+COPY ./data-app/package-lock.json package-lock.json
+RUN npm ci --only=production
 COPY ./data-app .
 
 # Build function app
