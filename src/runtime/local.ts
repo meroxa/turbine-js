@@ -66,14 +66,6 @@ async function readFixtures(
     };
   });
 
-  console.log(
-    `=====================from ${resourceName} resource=====================`
-  );
-
-  records.forEach((record) => {
-    console.log(record.value.payload);
-  });
-
   return {
     records,
     stream: "",
