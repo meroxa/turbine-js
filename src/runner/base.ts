@@ -5,6 +5,7 @@ import { LocalRuntime, Client as MeroxaJS } from "../runtime";
 import { assertIsError, BaseError } from "../errors";
 import { Result, Ok, Err } from "ts-results";
 import { InfoRuntime } from "../runtime/info";
+import { PreflightLocalRuntime } from "../runtime/preflight-local";
 
 export default class Base {
   pathToDataApp: string;
@@ -30,6 +31,15 @@ export default class Base {
   }
 
   async runAppLocal() {
+    const preflightLocalRuntime = new PreflightLocalRuntime(
+      this.pathToDataApp,
+      this.appJSON
+    );
+    await this.dataApp.run(preflightLocalRuntime);
+    if (preflightLocalRuntime.localRunErrors.length > 0) {
+      const preflightErrors = preflightLocalRuntime.localRunErrors.join("\n");
+      return Err(new BaseError(preflightErrors));
+    }
     await this.dataApp.run(this.localRuntime);
     return Ok(true);
   }

@@ -8,9 +8,18 @@ import { assertIsError, BaseError } from "../errors";
 import { Result, Ok, Err } from "ts-results";
 
 import Base from "./base";
+import { PreflightPlatformRuntime } from "../runtime/preflight-platform";
 
 export default class Primary extends Base {
   async buildFunction(): Promise<Result<string, BaseError>> {
+    const preflightEnvironment = new PreflightPlatformRuntime(this.meroxaJS);
+    this.dataApp.run(preflightEnvironment);
+
+    if (preflightEnvironment.platformRunErrors.length > 0) {
+      const preflightErrors = preflightEnvironment.platformRunErrors.join("\n");
+      return Err(new BaseError(preflightErrors));
+    }
+
     const tmpDir = path.join(os.tmpdir(), "turbine");
     const deployDir = path.join(__dirname, "../function-deploy");
 
