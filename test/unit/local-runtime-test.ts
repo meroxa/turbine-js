@@ -1,4 +1,4 @@
-import { LocalRuntime } from "../../src/runtime/local";
+import { LocalRuntime } from "../../src/index";
 import { AppConfig } from "../../src/runtime/types";
 
 QUnit.module("Unit | LocalRuntime", () => {
@@ -40,5 +40,32 @@ QUnit.module("Unit | LocalRuntime", () => {
       subject.fixturesPath,
       `${pathToDataApp}/${pathToFixtures}`
     );
+  });
+
+  QUnit.test("#process", (assert) => {
+    const pathToFixtures = "path/to/fixtures";
+    const appConfig: AppConfig = {
+      name: "sleep-token",
+      language: "js",
+      environment: "common",
+      pipeline: "default",
+      resources: {
+        pg: pathToFixtures,
+      },
+    };
+
+    const pathToDataApp = "/path/to/data/app";
+    const mockData = {
+      records: ['donut', 'pineapple', 'cashew'],
+    };
+    const processFn = function(data) {
+      return data.map(item => `${item}s`);
+    };
+
+    const localRuntime = new LocalRuntime(appConfig, pathToDataApp);
+    const processedRecords = localRuntime.process(mockData, processFn);
+
+    assert.deepEqual(processedRecords.records, ['donuts', 'pineapples', 'cashews']);
+    assert.strictEqual(processedRecords.stream, '');
   });
 });
