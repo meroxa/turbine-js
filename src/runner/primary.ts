@@ -41,8 +41,6 @@ export default class Primary extends Base {
       this.appJSON
     );
 
-    console.log("Running data app...");
-
     try {
       await this.dataApp.run(environment);
       return Ok(true);

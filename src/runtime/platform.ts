@@ -119,7 +119,6 @@ export class PlatformRuntime implements Runtime {
       },
       env_vars: envVars,
     };
-    console.log(`deploying function: ${fn.name}`);
 
     try {
       const createdFunction: FunctionResponse =
@@ -157,10 +156,6 @@ class PlatformResource implements Resource {
   }
 
   async records(collection: string): Promise<Records> {
-    console.log(
-      `creating source connector from resource ${this.resource.name}...`
-    );
-
     const connectorConfig: ConnectorConfig = {
       input: `${collection}`,
     };
@@ -201,10 +196,6 @@ class PlatformResource implements Resource {
   }
 
   async write(records: Records, collection: string): Promise<void> {
-    console.log(
-      `creating destination connector from stream ${records.stream}...`
-    );
-
     const connectorConfig: ConnectorConfig = {
       input: records.stream,
     };
