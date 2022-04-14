@@ -197,7 +197,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
     const assertedMockClient = {
       connectors: {
         create: (connInput) => {
-          assert.strictEqual(connInput.config.input, 'public.quinoa');
+          assert.strictEqual(connInput.config.input, 'quinoa');
           assert.strictEqual(connInput.resource_id, 24);
           assert.strictEqual(connInput.metadata['mx:connectorType'], 'source');
           assert.strictEqual(connInput.pipeline_name, 'awake');
@@ -240,7 +240,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
     const assertedMockClient = {
       connectors: {
         create: (connInput) => {
-          assert.strictEqual(connInput.config.input, 'public.quinoa');
+          assert.strictEqual(connInput.config.input, 'quinoa');
           assert.strictEqual(connInput.resource_id, 24);
           assert.strictEqual(connInput.metadata['mx:connectorType'], 'destination');
           assert.strictEqual(connInput.pipeline_name, 'awake');
@@ -261,6 +261,6 @@ QUnit.module("Unit | PlatformRuntime", () => {
     const runtimeInstance = new PlatformRuntime(assertedMockClient, imageName, appConfig);
 
     let platformResource = await runtimeInstance.resources('my-db');
-    await platformResource.write({ stream: 'public.quinoa' }, 'rice');
+    await platformResource.write({ stream: 'quinoa' }, 'rice');
   });
 });
