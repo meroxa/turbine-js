@@ -44,12 +44,11 @@ testapp
     └── demo-no-cdc.json
 ```
 
-This will be a full fledged Turbine app that can run. You can even run the tests using the command `meroxa apps run` in the root of the app directory. It just enough to show you what you need to get started.
-
+This will be a full-fledged Turbine app that can run. You can even run the tests using the command `meroxa apps run` in the root of the app directory. It provides just enough to show you what you need to get started.
 
 ### `index.js`
 
-This is the file were you begin your turbine journey. Any time a turbine app run, this is the entrypoint for the entire application. When the project is first created the file will look like this:
+This configuration file is where you begin your Turbine journey. Any time a Turbine app runs, this is the entry point for the entire application. When the project is created, the file will look like this:
 
 ```js
 const stringHash = require("string-hash");
@@ -83,7 +82,7 @@ exports.App = class App {
 };
 ```
 
-Let's talk about the important parts in this code. Turbine apps have five functions that comprise of the entire DSL. Outside of these functions, you can write whatever code you want to accomplish your tasks:
+Let's talk about the important parts of this code. Turbine apps have five functions that comprise the entire DSL. Outside of these functions, you can write whatever code you want to accomplish your tasks:
 
 ```js
 async run(turbine)
@@ -95,25 +94,25 @@ async run(turbine)
 let source = await turbine.resources("source_name");
 ```
 
-The `resources` function identifies the upstream or downstream system that you want your code to work with. The `source_name` is the string identifier of the particular system. The string should map to an associated identifier in your `app.json` to configure whats being connected to. For more details, see the `app.json` section.
+The `resources` function identifies the upstream or downstream system that you want your code to work with. The `source_name` is the string identifier of the particular system. The string should map to an associated identifier in your `app.json` to configure what's being connected to. For more details, see the `app.json` section.
 
 ```js
 let records = await source.records("collection_name");
 ```
 
-Once you've got `resources` set up, you can now stream records from it but you need to identify what records you want. The `records` function identifies the records or events that you want to stream into your data app.
+Once you've got `resources` set up, you can now stream records from it, but you need to identify what records you want. The `records` function identifies the records or events that you want to stream into your data app.
 
 ```js
 let anonymized = await turbine.process(records, exports.Anonymize);
 ```
 
-The `process` function is turbine's way of saying, for the records that are coming in, I want you to process these records against a function. Once your app is deployed on Meroxa, Meroxa will do the work to take each record or event that does get streamed to your app and then run your code against it. This allows Meroxa to scale out your processing relative to the velocity of the records streaming in.
+The `process` function is Turbine's way of saying, for the records that are coming in, I want you to process these records against a function. Once your app is deployed on Meroxa, Meroxa will do the work to take each record or event that does get streamed to your app and then run your code against it. This allows Meroxa to scale out your processing relative to the velocity of the records streaming in.
 
 ```js
 await destination.write(anonymized, "collection_archive");
 ```
 
-The `write` function is optional. It's job is to take any records given to it and stream to the downstream system. In many cases, you might not need to stream data to a another system but this gives you an easy way to do so.
+The `write` function is optional. It takes any records given to it and streams them to the downstream system. In many cases, you might not need to stream data to another system, but this gives you an easy way to do so.
 
 
 ### `app.json`
@@ -126,7 +125,7 @@ This file contains all of the options for configuring a Turbine app. Upon initia
   "language": "js",
   "environment": "common",
   "resources": {
-    "name": "fixtures/path"
+    "source_name": "fixtures/path"
   }
 }
 ```
@@ -134,7 +133,35 @@ This file contains all of the options for configuring a Turbine app. Upon initia
 * `name` - The name of your application. This should not change after app initialization.
 * `language` - Tells Meroxa what language the app is upon deployment.
 * `environment` - "common" is the only available environment. Meroxa does have the ability to create isolated environments but this feature is currently in beta.
-* `resources` - These are the named integrations that you'll use in your application. The `name` needs to match the name of the resource that you'll set up in Meroxa using the `meroxa resources create` command or via the Dashboard. You can point to the path in the fixtures that'll be used to mock the resource when you run `meroxa apps run`.
+* `resources` - These are the named integrations that you'll use in your application. The `source_name` needs to match the name of the resource that you'll set up in Meroxa using the `meroxa resources create` command or via the Dashboard. You can point to the path in the fixtures that'll be used to mock the resource when you run `meroxa apps run`.
+
+### Fixtures
+
+Fixtures are JSON-formatted samples of data records you can use while locally developing your Turbine app. Whether CDC or non-CDC-formatted data records, fixtures adhere to the following structure:
+
+```json
+{
+  "collection_name": [
+    {
+      "key": "1",
+      "value": {
+		  "schema": {
+			  //...
+		  },
+		  "payload": {
+			  //...
+		  }
+		}
+	}
+  ]
+```
+* `collection_name` — Identifies the name of the records or events you are streaming to your data app.
+* `key` — Denotes one or more sample records within a fixture file. `key` is always a string.
+* `value` — Holds the `schema` and `payload` of the sample data record.
+* `schema` — Comes as part of your sample data record. `schema` describes the record or event structure.
+* `payload` — Comes as part of your sample data record. `payload` describes what about the record or event changed.
+
+Your newly created data app should have a `demo-cdc.json` and `demo-non-cdc.json` in the `/fixtures` directory as examples to follow.
 
 ### Testing
 
