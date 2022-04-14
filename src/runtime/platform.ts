@@ -162,8 +162,7 @@ class PlatformResource implements Resource {
     );
 
     const connectorConfig: ConnectorConfig = {
-      // Hardcode hack this will only work for pg resources with default schema
-      input: `public.${collection}`,
+      input: `${collection}`,
     };
 
     const connectorInput: CreateConnectorParams = {
