@@ -48,7 +48,7 @@ export default class Base {
     const functions = await this.listFunctions();
 
     if (functions.err) {
-      return Err(new BaseError("Error listing functions"));
+      return Err(functions.val);
     }
 
     return Ok(functions.val.length > 0);
