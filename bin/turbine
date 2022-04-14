@@ -53,9 +53,6 @@ async function executeCommand() {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.runAppPlatform(args[1]);
-  } else if (args[0] === "rollback") {
-    const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.rollback();
   } else if (args[0] === "deploy") {
     // DEPRECATED: "heavy lift" build & deploy logic using ExtendedRunner
     const extendedRunner = new ExtendedRunner(
