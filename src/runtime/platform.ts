@@ -200,6 +200,17 @@ class PlatformResource implements Resource {
       input: records.stream,
     };
 
+    switch (this.resource.type) {
+      case "redshift":
+      case "postgres":
+      case "mysql":
+        connectorConfig["table.name.format"] = collection.toLowerCase();
+        break;
+      case "s3":
+        connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
+        break;
+    }
+
     const connectorInput: CreateConnectorParams = {
       config: connectorConfig,
       metadata: {
