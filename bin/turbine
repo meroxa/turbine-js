@@ -33,21 +33,21 @@ async function executeCommand() {
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listFunctions();
     if (!commandRun.err) {
-      console.log(commandRun.val);
+      console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
   } else if (args[0] === "clibuild") {
     // meroxa apps deploy step 1 (set up function app directory structure and hand path to CLI)
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.buildFunction();
     if (!commandRun.err) {
-      console.log(commandRun.val);
+      console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
   } else if (args[0] === "hasfunctions") {
     // meroxa apps deploy step 2 (check for functions in user's data app)
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.hasFunctions();
     if (!commandRun.err) {
-      console.log(commandRun.val);
+      console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
