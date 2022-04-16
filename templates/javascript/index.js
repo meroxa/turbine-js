@@ -6,15 +6,24 @@ function iAmHelping(str) {
   return `~~~${str}~~~`;
 }
 
+// Create function to guard check for unexpected record schemas
+function isAttributePresent(attr) {
+  return typeof(attr) !== 'undefined' && attr !== null;
+}
+
 // Create an `Anonymize` function to hash string the `customer_email`
 exports.Anonymize = function Anonymize(records) {
   records.forEach((record) => {
-    // If CDC formatted records / `demo-cdc.json` fixture in use `record.value.payload.after.customer_email`
-    // If non-CDC formatted records / `demo-no-cdc.json` fixture in use `record.value.payload.customer_email`
+    let payload = record.value.payload;
+
+    // If CDC formatted records / `demo-cdc.json` fixture in use `payload.after.customer_email`
+    // If non-CDC formatted records / `demo-no-cdc.json` fixture in use `payload.customer_email`
     // Remember to reflect changes in the `app.json` configuration
-    record.value.payload.after.customer_email = iAmHelping(
-      stringHash(record.value.payload.after.customer_email).toString(),
-    );
+    if (isAttributePresent(payload.after) && isAttributePresent(payload.after.customer_email)) {
+      payload.after.customer_email = iAmHelping(
+        stringHash(payload.after.customer_email).toString(),
+      );
+    }
   });
 
   return records;
