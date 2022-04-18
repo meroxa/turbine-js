@@ -57,23 +57,34 @@ function iAmHelping(str) {
   return `~~~${str}~~~`;
 }
 
-exports.Anonymize = function Anonymize(records) {
-  records.forEach((record) => {
-    record.value.payload.after.customer_email = iAmHelping(
-      stringHash(record.value.payload.after.customer_email).toString()
-    );
-  });
-
-  return records;
-};
+function isAttributePresent(attr) {
+  return typeof attr !== "undefined" && attr !== null;
+}
 
 exports.App = class App {
+  anonymize(records) {
+    records.forEach((record) => {
+      let payload = record.value.payload;
+
+      if (
+        isAttributePresent(payload.after) &&
+        isAttributePresent(payload.after.customer_email)
+      ) {
+        payload.after.customer_email = iAmHelping(
+          stringHash(payload.after.customer_email).toString()
+        );
+      }
+    });
+
+    return records;
+  }
+
   async run(turbine) {
     let source = await turbine.resources("source_name");
 
     let records = await source.records("collection_name");
 
-    let anonymized = await turbine.process(records, exports.Anonymize);
+    let anonymized = await turbine.process(records, this.anonymize);
 
     let destination = await turbine.resources("destination_name");
 

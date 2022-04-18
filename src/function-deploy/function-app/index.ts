@@ -1,4 +1,3 @@
-// TODO figure out best way to write in / pass function name
 const args = process.argv.slice(2);
 const FUNCTION_NAME = args[0];
 const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDR;
@@ -6,7 +5,8 @@ const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDR;
 const PROTO_PATH = __dirname + "/proto/service.proto";
 import { Record } from "./record";
 
-const dataApp = require("../data-app");
+const DataApp = require("../data-app").App;
+const dataApp = new DataApp();
 
 function processFunction(call: any, callback: any) {
   const inputRecords = call.request.records.map((record: any) => {
