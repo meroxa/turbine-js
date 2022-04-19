@@ -12,7 +12,7 @@ const {
   generateApp,
 } = require("../lib/runner");
 
-const { Client } = require("meroxa-js");
+const { Client } = require("@meroxa/meroxa-js");
 
 const meroxaJS = new Client({
   auth: process.env.MEROXA_ACCESS_TOKEN || "",
