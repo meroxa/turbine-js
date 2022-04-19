@@ -1,7 +1,7 @@
 {
   "name": "@meroxa/turbine-js",
   "description": "Turbine is a data application framework for building server-side applications that are event-driven, respond to data in real-time, and scale using cloud-native best practices.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "lib/index.js",
   "author": "James Martinez <james@meroxa.io>",
   "license": "SEE LICENSE IN LICENSE.MD",
