@@ -30,9 +30,7 @@
     "tar-fs": "^2.1.1",
     "targz": "^1.0.1"
   },
-  "bin": {
-    "turbine": "bin/turbine"
-  },
+  "bin": "bin/turbine",
   "scripts": {
     "build:dev": "tsc && npm run finish-build",
     "build:prod": "npm run clean-build && tsc --sourceMap false && npm run finish-build",
