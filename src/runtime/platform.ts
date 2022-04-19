@@ -9,7 +9,7 @@ import {
   CreateFunctionParams,
   FunctionResponse,
   PipelineResponse,
-} from "meroxa-js";
+} from "@meroxa/meroxa-js";
 
 import { BaseError, APIError } from "../errors";
 

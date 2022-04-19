@@ -5,9 +5,9 @@ import fs from "fs-extra";
 import { Result, Ok, Err } from "ts-results";
 import { BaseError, APIError } from "../../errors";
 import axios from "axios";
-import { Client } from "meroxa-js";
+import { Client } from "@meroxa/meroxa-js";
 import { poller } from "../poller";
-import { BuildResponse } from "meroxa-js";
+import { BuildResponse } from "@meroxa/meroxa-js";
 
 export default async function (
   pathToDataApp: string,
