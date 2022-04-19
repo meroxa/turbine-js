@@ -208,6 +208,8 @@ class PlatformResource implements Resource {
         break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
+      case "snowflakedb":
+        connectorConfig["snowflake.topic2table.map"] = `${records.stream}:${collection.toLowerCase()}`;
         break;
     }
 

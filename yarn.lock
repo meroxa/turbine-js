@@ -1141,10 +1141,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@meroxa/meroxa-js@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@meroxa/meroxa-js/-/meroxa-js-1.0.0.tgz#31d08118da7a0a4cd203c26a3fb8743e52099239"
-  integrity sha512-p4nj8saDIu87nkPum4Vcd8d3VHXKRXakfMf/2CNjipBzjf3/k97NFoffI5tTa0R2hHT0aq73m01sToOv9w7IqA==
+"@meroxa/meroxa-js@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@meroxa/meroxa-js/-/meroxa-js-1.0.1.tgz#41d3290f6db6f7943c1bb7afaf7732cd1b6f77ac"
+  integrity sha512-f6HGyUU0RjmOrGBVrCnB3eW6+lTpzyyIF7H8ghzbMcg6zi72PKY9KVr+JBB3zBgj/Q2OnP+ZMStdo1J8WjvpEA==
   dependencies:
     axios "^0.24.0"
 

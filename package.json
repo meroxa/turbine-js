@@ -23,7 +23,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@meroxa/meroxa-js": "^1.0.0",
+    "@meroxa/meroxa-js": "^1.0.1",
     "@octokit/rest": "^18.12.0",
     "@types/targz": "^1.0.1",
     "dockerode": "^3.3.1",
