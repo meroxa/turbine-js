@@ -1,4 +1,4 @@
-import { copy, writeJson } from "fs-extra";
+import { copy, rename, writeJson } from "fs-extra";
 import path from "path";
 import child_process from "child_process";
 
@@ -18,6 +18,7 @@ export default async function generateApp(
       errorOnExist: true,
       overwrite: false,
     });
+    await rename(`${appPath}/ignoregit`, `${appPath}/.gitignore`);
   } catch (err) {
     assertIsError(err);
     return Err(new BaseError("error generating app", err));
