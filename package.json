@@ -6,7 +6,8 @@
   "author": "James Martinez <james@meroxa.io>",
   "license": "SEE LICENSE IN LICENSE.MD",
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "templates/**/*"
   ],
   "devDependencies": {
     "@types/dockerode": "^3.3.3",
