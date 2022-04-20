@@ -206,10 +206,14 @@ class PlatformResource implements Resource {
       case "mysql":
         connectorConfig["table.name.format"] = collection.toLowerCase();
         break;
+      case "mongodb":
+		    connectorConfig["collection"] = collection.toLowerCase();
+        break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
+        break;
       case "snowflakedb":
-        connectorConfig["snowflake.topic2table.map"] = `${records.stream}:${collection.toLowerCase()}`;
+        connectorConfig["snowflake.topic2table.map"] = `${records.stream}:${collection}`;
         break;
     }
 
