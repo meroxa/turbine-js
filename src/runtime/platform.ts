@@ -213,6 +213,12 @@ class PlatformResource implements Resource {
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
         break;
       case "snowflakedb":
+        let regexp = /^[a-zA-Z]{1}[a-zA-Z0-9_]*$/;
+        let isCollectionNameValid = regexp.test(collection);
+        if (!isCollectionNameValid) {
+          throw new BaseError(`snowflake destination connector cannot be configured with collection name ${collection}. Only alphanumeric characters and underscores are valid.`);
+        }
+
         connectorConfig["snowflake.topic2table.map"] = `${records.stream}:${collection}`;
         break;
     }
