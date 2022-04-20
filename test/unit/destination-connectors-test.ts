@@ -1,5 +1,6 @@
 import { PlatformRuntime } from "../../src/index";
 import { AppConfig } from "../../src/runtime/types";
+import { BaseError } from "../../src/errors";
 
 const appConfig: AppConfig = {
   name: "sleep-token",
@@ -233,7 +234,7 @@ QUnit.module("Unit | Creating destinations", () => {
           assert.notOk(connInput.config['table.name.format']);
           assert.notOk(connInput.config['collection']);
           assert.notOk(connInput.config['aws_s3_prefix']);
-          assert.strictEqual(connInput.config['snowflake.topic2table.map'], 'buttercup:CORN-FLaKES');
+          assert.strictEqual(connInput.config['snowflake.topic2table.map'], 'buttercup:CORN_FLaKES');
         }
       },
       resources: {
@@ -251,6 +252,44 @@ QUnit.module("Unit | Creating destinations", () => {
     const runtimeInstance = new PlatformRuntime(assertedMockClient, imageName, appConfig);
 
     let platformResource = await runtimeInstance.resources(testResource.name);
-    await platformResource.write({ stream: 'buttercup' }, 'CORN-FLaKES');
+    await platformResource.write({ stream: 'buttercup' }, 'CORN_FLaKES');
+  });
+
+  QUnit.test("records: it throws an error if a destination is misconfigured (snowflakedb)", async (assert) => {
+    assert.expect(1);
+
+    const testResource = {
+      id: 7,
+      name: 'my-db7',
+      type: 'snowflakedb',
+    };
+
+    const assertedMockClient = {
+      connectors: {
+        create: () => {
+          // noop
+        }
+      },
+      resources: {
+        get: (name) => {
+          return testResource;
+        }
+      },
+      pipelines: {
+        get: (name) => {
+          return testPipeline;
+        }
+      },
+    };
+
+    const runtimeInstance = new PlatformRuntime(assertedMockClient, imageName, appConfig);
+
+    let platformResource = await runtimeInstance.resources(testResource.name);
+
+    try {
+      await platformResource.write({ stream: 'buttercup' }, 'CORN-FLaKES?!$');
+    } catch(e) {
+      assert.deepEqual(e, new BaseError('snowflake destination connector cannot be configured with collection name CORN-FLaKES?!$. Only alphanumeric characters and underscores are valid.'));
+    }
   });
 });
