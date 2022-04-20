@@ -15,14 +15,16 @@ function processFunction(call: any, callback: any) {
 
   const dataAppFunction = dataApp[FUNCTION_NAME];
 
-  const outputRecords = dataAppFunction(inputRecords);
+  Promise.resolve(dataAppFunction(inputRecords)).then((outputRecords) => {
+    if (!Array.isArray(outputRecords)) {
+      throw new Error("Invalid records");
+    }
 
-  const records = outputRecords.map((record: any) => {
-    return record.serialize();
-  });
+    const records = outputRecords.map((record: any) => {
+      return record.serialize();
+    });
 
-  callback(null, {
-    records,
+    callback(null, { records });
   });
 }
 
