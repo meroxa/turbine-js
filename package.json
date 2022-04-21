@@ -35,10 +35,9 @@
   },
   "bin": "bin/turbine",
   "scripts": {
-    "build:dev": "tsc && npm run finish-build",
-    "build:prod": "npm run clean-build && tsc --sourceMap false && npm run finish-build",
+    "build:dev": "tsc",
+    "build:prod": "npm run clean-build && tsc --sourceMap false",
     "clean-build": "node scripts/clean-build.js",
-    "finish-build": "node scripts/finish-build.js",
     "test": "qunit --require ./test/setup.js test/**/*.ts",
     "test:coverage": "nyc qunit --require ./test/setup.js test/**/*.ts",
     "test:coverage-report:json": "nyc report --reporter json-summary --report-dir nyc-coverage-report --exclude-after-remap false",

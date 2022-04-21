@@ -8,8 +8,9 @@ const args = process.argv.slice(2);
 
 const {
   Primary: PrimaryRunner,
-  Extended: ExtendedRunner,
   generateApp,
+  generateDockerfile,
+  cleanupDockerfile,
 } = require("../lib/runner");
 
 const { Client } = require("@meroxa/meroxa-js");
@@ -35,13 +36,6 @@ async function executeCommand() {
     if (!commandRun.err) {
       console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
-  } else if (args[0] === "clibuild") {
-    // meroxa apps deploy step 1 (set up function app directory structure and hand path to CLI)
-    const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.buildFunction();
-    if (!commandRun.err) {
-      console.log(`\nturbine-response: ${commandRun.val}\n`);
-    }
   } else if (args[0] === "hasfunctions") {
     // meroxa apps deploy step 2 (check for functions in user's data app)
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
@@ -49,17 +43,19 @@ async function executeCommand() {
     if (!commandRun.err) {
       console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
-  } else if (args[0] === "clideploy") {
-    // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
+  } else if (args[0] === "generatedockerfile") {
+    commandRun = await generateDockerfile(args[1]);
+    if (!commandRun.err) {
+      console.log(`\nturbine-response: ${commandRun.val}\n`);
+    }
+  } else if (args[0] === "cleanupdockerfile") {
+    commandRun = await cleanupDockerfile(args[1]);
+    if (!commandRun.err) {
+      console.log(`\nturbine-response: ${commandRun.val}\n`);
+    }
+  } else if (args[0] === "deploy") {
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.runAppPlatform(args[1]);
-  } else if (args[0] === "deploy") {
-    // DEPRECATED: "heavy lift" build & deploy logic using ExtendedRunner
-    const extendedRunner = new ExtendedRunner(
-      args[1] || process.cwd(),
-      meroxaJS
-    );
-    commandRun = await extendedRunner.runAppPlatform();
   } else {
     throw new Error("Invalid turbine command");
   }
