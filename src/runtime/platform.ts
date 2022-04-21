@@ -111,8 +111,8 @@ export class PlatformRuntime implements Runtime {
   ): Promise<Records> {
     const functionInput: CreateFunctionParams = {
       input_stream: records.stream,
-      command: ["node"],
-      args: ["index.js", fn.name],
+      command: ["npx"],
+      args: ["turbine-js-func", fn.name],
       image: this.imageName,
       pipeline: {
         name: this.appConfig.pipeline,
@@ -207,7 +207,7 @@ class PlatformResource implements Resource {
         connectorConfig["table.name.format"] = collection.toLowerCase();
         break;
       case "mongodb":
-		    connectorConfig["collection"] = collection.toLowerCase();
+        connectorConfig["collection"] = collection.toLowerCase();
         break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
@@ -216,10 +216,14 @@ class PlatformResource implements Resource {
         let regexp = /^[a-zA-Z]{1}[a-zA-Z0-9_]*$/;
         let isCollectionNameValid = regexp.test(collection);
         if (!isCollectionNameValid) {
-          throw new BaseError(`snowflake destination connector cannot be configured with collection name ${collection}. Only alphanumeric characters and underscores are valid.`);
+          throw new BaseError(
+            `snowflake destination connector cannot be configured with collection name ${collection}. Only alphanumeric characters and underscores are valid.`
+          );
         }
 
-        connectorConfig["snowflake.topic2table.map"] = `${records.stream}:${collection}`;
+        connectorConfig[
+          "snowflake.topic2table.map"
+        ] = `${records.stream}:${collection}`;
         break;
     }
 
