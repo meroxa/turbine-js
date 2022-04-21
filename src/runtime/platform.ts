@@ -111,8 +111,7 @@ export class PlatformRuntime implements Runtime {
   ): Promise<Records> {
     const functionInput: CreateFunctionParams = {
       input_stream: records.stream,
-      command: ["npx"],
-      args: ["turbine-js-func", fn.name],
+      args: [fn.name],
       image: this.imageName,
       pipeline: {
         name: this.appConfig.pipeline,
