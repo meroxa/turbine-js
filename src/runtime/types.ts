@@ -8,8 +8,15 @@ export interface Runtime {
 }
 
 export interface Resource {
-  records(collection: string): Promise<Records>;
-  write(records: Records, collection: string): void;
+  records(
+    collection: string,
+    connectorConfig: { [index: string]: string }
+  ): Promise<Records>;
+  write(
+    records: Records,
+    collection: string,
+    connectorConfig: { [index: string]: string }
+  ): void;
 }
 
 export interface Record {

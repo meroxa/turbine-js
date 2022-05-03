@@ -155,13 +155,18 @@ class PlatformResource implements Resource {
     this.appConfig = appConfig;
   }
 
-  async records(collection: string): Promise<Records> {
-    const connectorConfig: ConnectorConfig = {
-      input: `${collection}`,
+  async records(
+    collection: string,
+    connectorConfig: { [index: string]: string } = {}
+  ): Promise<Records> {
+    const baseCfg: ConnectorConfig = {
+      input: collection,
     };
 
+    connectorConfig = Object.assign(baseCfg, connectorConfig);
+
     const connectorInput: CreateConnectorParams = {
-      config: connectorConfig,
+      config: connectorConfig as ConnectorConfig,
       metadata: {
         "mx:connectorType": "source",
       },
@@ -195,10 +200,17 @@ class PlatformResource implements Resource {
     }
   }
 
-  async write(records: Records, collection: string): Promise<void> {
-    const connectorConfig: ConnectorConfig = {
+  async write(
+    records: Records,
+    collection: string,
+    connectorConfig: { [index: string]: string } = {}
+  ): Promise<void> {
+    const baseCfg: ConnectorConfig = {
       input: records.stream,
     };
+
+    // Do not allow overwriting of `input` for destination connectors
+    connectorConfig = Object.assign(connectorConfig, baseCfg);
 
     switch (this.resource.type) {
       case "redshift":
@@ -207,7 +219,7 @@ class PlatformResource implements Resource {
         connectorConfig["table.name.format"] = collection.toLowerCase();
         break;
       case "mongodb":
-		    connectorConfig["collection"] = collection.toLowerCase();
+        connectorConfig["collection"] = collection.toLowerCase();
         break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
@@ -216,15 +228,19 @@ class PlatformResource implements Resource {
         let regexp = /^[a-zA-Z]{1}[a-zA-Z0-9_]*$/;
         let isCollectionNameValid = regexp.test(collection);
         if (!isCollectionNameValid) {
-          throw new BaseError(`snowflake destination connector cannot be configured with collection name ${collection}. Only alphanumeric characters and underscores are valid.`);
+          throw new BaseError(
+            `snowflake destination connector cannot be configured with collection name ${collection}. Only alphanumeric characters and underscores are valid.`
+          );
         }
 
-        connectorConfig["snowflake.topic2table.map"] = `${records.stream}:${collection}`;
+        connectorConfig[
+          "snowflake.topic2table.map"
+        ] = `${records.stream}:${collection}`;
         break;
     }
 
     const connectorInput: CreateConnectorParams = {
-      config: connectorConfig,
+      config: connectorConfig as ConnectorConfig,
       metadata: {
         "mx:connectorType": "destination",
       },
