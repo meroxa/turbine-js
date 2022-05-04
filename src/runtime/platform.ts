@@ -216,6 +216,7 @@ class PlatformResource implements Resource {
       case "redshift":
       case "postgres":
       case "mysql":
+      case "sqlserver":
         connectorConfig["table.name.format"] = collection.toLowerCase();
         break;
       case "mongodb":
