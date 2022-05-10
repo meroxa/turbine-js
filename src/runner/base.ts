@@ -53,4 +53,14 @@ export default class Base {
 
     return Ok(functions.val.length > 0);
   }
+
+  async listResources(): Promise<Result<string[], BaseError>> {
+    try {
+      await this.dataApp.run(this.infoRuntime);
+      return Ok(this.infoRuntime.resourcesList);
+    } catch (e) {
+      assertIsError(e);
+      return Err(new BaseError("Error listing resources", e));
+    }
+  }
 }

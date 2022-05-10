@@ -63,4 +63,31 @@ QUnit.module("Unit | InfoRuntime", () => {
     assert.strictEqual(subject.registeredFunctions.anonymize.name, 'anonymize');
     assert.strictEqual(subject.registeredFunctions.capitalize.name, 'capitalize');
   });
+
+  QUnit.test("#resources: it registers resources", (assert) => {
+    const pathToFixtures = "path/to/fixtures";
+    const appConfig: AppConfig = {
+      name: "sleep-token",
+      language: "js",
+      environment: "common",
+      pipeline: "default",
+      resources: {
+        pg: pathToFixtures,
+      },
+    };
+    const pathToDataApp = "/path/to/data/app";
+    const mockResource1 = 'engine';
+    const mockResource2 = 'hydraulik';
+    const subject = new InfoRuntime(pathToDataApp, appConfig);
+
+    // precondition: resources are initially empty
+    assert.deepEqual(subject.registeredResources, []);
+
+    // after registering resources....
+    subject.resources(mockResource1);
+    subject.resources(mockResource2);
+
+    // ...resources are successfully registered
+    assert.deepEqual(subject.registeredResources, ['engine', 'hydraulik']);
+  });
 });
