@@ -2,6 +2,7 @@ import { AppConfig, Record, Records, RegisteredFunctions } from "./types";
 
 export class InfoRuntime {
   registeredFunctions: RegisteredFunctions = {};
+  registeredResources: string[] = [];
   pathToDataApp: string;
   appConfig: AppConfig;
 
@@ -18,7 +19,12 @@ export class InfoRuntime {
     return `turbine-pipeline-${this.appConfig.name}`;
   }
 
+  get resourcesList(): string[] {
+    return this.registeredResources;
+  }
+
   resources(resourceName: string): InfoResource {
+    this.registeredResources.push(resourceName);
     return new InfoResource();
   }
 

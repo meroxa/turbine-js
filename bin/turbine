@@ -49,6 +49,13 @@ async function executeCommand() {
     if (!commandRun.err) {
       console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
+  } else if (args[0] === "listresources") {
+    // meroxa apps pre-deployment check: return registered resources as per end user's index.js
+    const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
+    commandRun = await primaryRunner.listResources();
+    if (!commandRun.err) {
+      console.log(`\nturbine-response: ${commandRun.val}\n`);
+    }
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
