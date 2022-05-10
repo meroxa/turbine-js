@@ -181,7 +181,3 @@ Testing should follow standard NodeJS development practices. Included in the rep
 ## Documentation && Reference
 
 The most comprehensive documentation for Turbine and how to work with Turbine apps is on the Meroxa site: [https://docs.meroxa.com/](https://docs.meroxa.com)
-
-## Contributing
-
-Check out the [/docs/](./docs/) folder for more information on how to contribute.
