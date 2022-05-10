@@ -45,10 +45,13 @@ exports.App = class App {
     // Specify which `source` records to pull with the `records` function
     // Replace `collection_name` with whatever data organisation method
     // is relevant to the datastore (e.g., table, bucket, collection, etc.)
+    // If additional connector configs are needed, provided another argument i.e.
+    // {"incrementing.field.name": "id"}
     let records = await source.records("collection_name");
 
     // Specify the code to execute against `records` with the `process` function
-    // Replace `Anonymize` with the function
+    // Replace `Anonymize` with the function. If environment variables are needed
+    // by the function, provide another argument i.e. {"MY_SECRET": "deadbeef"}.
     let anonymized = await turbine.process(records, this.anonymize);
 
     // Identify the upstream datastore with the `resources` function
@@ -58,6 +61,8 @@ exports.App = class App {
     // Specify where to write records to your `destination` using the `write` function
     // Replace `collection_archive` with whatever data organisation method
     // is relevant to the datastore (e.g., table, bucket, collection, etc.)
+    // If additional connector configs are needed, provided another argument i.e.
+    // {"behavior.on.null.values": "ignore"}
     await destination.write(anonymized, "collection_archive");
   }
 };
