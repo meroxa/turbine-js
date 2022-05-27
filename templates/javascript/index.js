@@ -1,34 +1,20 @@
 // Import any of your relevant dependencies
 const stringHash = require("string-hash");
 
-// Sample helper that you can use in your app
-function iAmHelping(str) {
-  return `~~~${str}~~~`;
-}
-
-// Create function to guard check for unexpected record schemas
-function isAttributePresent(attr) {
-  return typeof attr !== "undefined" && attr !== null;
-}
-
 exports.App = class App {
   // Create a custom named function on the App to be applied to your records
   anonymize(records) {
     records.forEach((record) => {
-      let payload = record.value.payload;
-
-      // If CDC formatted records / `demo-cdc.json` fixture in use `payload.after.customer_email`
-      // If non-CDC formatted records / `demo-no-cdc.json` fixture in use `payload.customer_email`
-      // Remember to reflect changes in the `app.json` configuration
-      if (
-        isAttributePresent(payload.after) &&
-        isAttributePresent(payload.after.customer_email)
-      ) {
-        payload.after.customer_email = iAmHelping(
-          stringHash(payload.after.customer_email).toString()
-        );
-      }
+      // Use record `get` and `set` to read and write to your data
+      record.set(
+        "customer_email",
+        stringHash(record.get("customer_email")).toString()
+      );
     });
+
+    // Use records `unwrap` transform on CDC formatted records
+    // Has no effect on other formats
+    records.unwrapCDC();
 
     return records;
   }
