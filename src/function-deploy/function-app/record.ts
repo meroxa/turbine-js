@@ -27,11 +27,11 @@ export class Record {
   }
 
   get isJSONSchema() {
-    return this.value.payload && this.value.schema;
+    return !!(this.value.payload && this.value.schema);
   }
 
   get isCDCFormat() {
-    return this.isJSONSchema && this.value.payload.source;
+    return !!(this.isJSONSchema && !!this.value.payload.source);
   }
 
   get(key: string) {
