@@ -7,7 +7,11 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.4.5",
     "@grpc/proto-loader": "^0.6.7",
+    "@types/get-value": "^3.0.2",
+    "@types/set-value": "^4.0.1",
+    "get-value": "^3.0.1",
     "google-protobuf": "^3.19.1",
-    "grpc-js-health-check": "^1.0.2"
+    "grpc-js-health-check": "^1.0.2",
+    "set-value": "^4.1.0"
   }
 }

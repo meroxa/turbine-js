@@ -57,24 +57,16 @@ function iAmHelping(str) {
   return `~~~${str}~~~`;
 }
 
-function isAttributePresent(attr) {
-  return typeof attr !== "undefined" && attr !== null;
-}
-
 exports.App = class App {
   anonymize(records) {
     records.forEach((record) => {
-      let payload = record.value.payload;
-
-      if (
-        isAttributePresent(payload.after) &&
-        isAttributePresent(payload.after.customer_email)
-      ) {
-        payload.after.customer_email = iAmHelping(
-          stringHash(payload.after.customer_email).toString()
-        );
-      }
+      record.set(
+        "customer_email",
+        iAmHelping(stringHash(record.get("customer_email")))
+      );
     });
+
+    records.unwrapCDC();
 
     return records;
   }
@@ -125,6 +117,57 @@ await destination.write(anonymized, "collection_archive");
 
 The `write` function is optional. It takes any records given to it and streams them to the downstream system. In many cases, you might not need to stream data to another system, but this gives you an easy way to do so.
 
+
+#### Function API
+The function passed to `process` is defined by the user with the following signature
+```js
+anonymize(records) {
+  records.forEach((record) => {
+    record.set(
+      "customer_email",
+      iAmHelping(stringHash(record.get("customer_email")))
+    );
+  });
+
+  records.unwrapCDC();
+
+  return records;
+}
+```
+
+The `records` parameter is an array of records that can be iterated on. Each `record` in the `records` array comes with some handy functions for reading from/writing to the record's data as it passes through the function.
+
+These functions are the preferred way for accessing data. They will work regardless if the data is CDC formatted or not (as long as the actual payload data is a valid JSON object)
+
+
+```js
+record.get('key') // Will retrieve the value at `key`
+// or
+record.get('nested.key.down.some.levels') // Will differentiate between keys with dots and levels of nesting
+```
+
+
+
+```js
+record.set('key', 'some_value') // Will set `some_value` at `key`
+// or
+record.set('nested.key\\.with\\.dot', 'some_value') // Use \\ to set nested keys with dots
+```
+
+
+The `records` parameter itself comes with an optional but important function
+
+```js
+records.unwrapCDC();
+```
+
+A user can optionally use this transform in their data app function to unwrap CDC formatted records into the right format that destinations expect. Currently, most destinations will not accept CDC formatted data. **_(s3 being an exception)_**
+
+A user **_will_** want to call this when records are going to any destination (usually at the end of the data app function).
+
+A user **_will not_** want to call this when the records are going to an s3 destination AND they need the CDC format preserved
+
+Note that this function only operates on CDC formatted data, and no ops otherwise.
 
 ### `app.json`
 

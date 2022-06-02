@@ -3,14 +3,15 @@ const FUNCTION_NAME = args[0];
 const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDR;
 
 const PROTO_PATH = __dirname + "/proto/service.proto";
-import { Record } from "./record";
+import { RecordsArray } from "./record";
 
 const DataApp = require("../data-app").App;
 const dataApp = new DataApp();
 
 function processFunction(call: any, callback: any) {
-  const inputRecords = call.request.records.map((record: any) => {
-    return new Record(record);
+  const inputRecords = new RecordsArray();
+  call.request.records.map((record: any) => {
+    inputRecords.pushRecord(record);
   });
 
   const dataAppFunction = dataApp[FUNCTION_NAME];
