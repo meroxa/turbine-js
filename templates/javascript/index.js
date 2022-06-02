@@ -1,6 +1,11 @@
 // Import any of your relevant dependencies
 const stringHash = require("string-hash");
 
+// Sample helper
+function iAmHelping(str) {
+  return `~~~${str}~~~`;
+}
+
 exports.App = class App {
   // Create a custom named function on the App to be applied to your records
   anonymize(records) {
@@ -8,7 +13,7 @@ exports.App = class App {
       // Use record `get` and `set` to read and write to your data
       record.set(
         "customer_email",
-        stringHash(record.get("customer_email")).toString()
+        iAmHelping(stringHash(record.get("customer_email")))
       );
     });
 
