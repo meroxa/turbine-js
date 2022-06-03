@@ -1,4 +1,11 @@
-import { Resource, Record, Records, Runtime, AppConfig } from "./types";
+import {
+  Resource,
+  Record,
+  Records,
+  RecordsArray,
+  Runtime,
+  AppConfig,
+} from "./types";
 
 import {
   Client,
@@ -193,7 +200,7 @@ class PlatformResource implements Resource {
     if (typeof connectorResponse.streams.output === "object") {
       return {
         stream: connectorResponse.streams.output[0],
-        records: [],
+        records: new RecordsArray(),
       };
     } else {
       throw new BaseError("no output stream in response");

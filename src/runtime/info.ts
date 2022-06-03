@@ -1,4 +1,4 @@
-import { AppConfig, Record, Records, RegisteredFunctions } from "./types";
+import { AppConfig, Records, RecordsArray, RegisteredFunctions } from "./types";
 
 export class InfoRuntime {
   registeredFunctions: RegisteredFunctions = {};
@@ -28,7 +28,7 @@ export class InfoRuntime {
     return new InfoResource();
   }
 
-  process(records: Records, fn: (rr: Record[]) => Record[]): void {
+  process(records: Records, fn: (rr: RecordsArray) => RecordsArray): void {
     this.registeredFunctions[fn.name] = fn;
   }
 }

@@ -10,7 +10,12 @@ export class Record {
   constructor(record: any) {
     this._rawValue = record.value;
     this.key = record.key;
-    this.value = JSON.parse(record.value);
+    try {
+      this.value = JSON.parse(record.value);
+    } catch (e: any) {
+      this.value = record.value;
+    }
+
     this.timestamp = record.timestamp;
   }
 
