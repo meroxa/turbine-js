@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-app:
-    name: Running Tests
+    name: Test Coverage Report
     runs-on: ubuntu-latest
 
     steps:
