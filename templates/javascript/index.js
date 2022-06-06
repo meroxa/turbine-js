@@ -19,7 +19,7 @@ exports.App = class App {
 
     // Use records `unwrap` transform on CDC formatted records
     // Has no effect on other formats
-    records.unwrapCDC();
+    records.unwrap();
 
     return records;
   }

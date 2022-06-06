@@ -55,7 +55,7 @@ export class Record {
     }
   }
 
-  unwrapCDC() {
+  unwrap() {
     if (this.isCDCFormat) {
       const payload = this.value.payload;
       const schemaFields = this.value.schema.fields;
@@ -78,9 +78,9 @@ export class RecordsArray extends Array {
     this.push(new Record(rawRecord));
   }
 
-  unwrapCDC() {
+  unwrap() {
     this.forEach((record: Record) => {
-      record.unwrapCDC();
+      record.unwrap();
     });
   }
 }
