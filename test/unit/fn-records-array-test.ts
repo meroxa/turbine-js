@@ -16,7 +16,7 @@ QUnit.module("Unit | fn-records-array", () => {
     assert.strictEqual(records[0].constructor.name, "Record");
   });
 
-  QUnit.test("#unwrapCDC", (assert) => {
+  QUnit.test("#unwrap", (assert) => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
@@ -25,8 +25,8 @@ QUnit.module("Unit | fn-records-array", () => {
     const records = new RecordsArray();
     records.pushRecord(rawRecord);
 
-    const recordUnwrapStub = sinon.stub(records[0], "unwrapCDC");
-    records.unwrapCDC();
+    const recordUnwrapStub = sinon.stub(records[0], "unwrap");
+    records.unwrap();
 
     assert.ok(recordUnwrapStub.calledOnce);
   });

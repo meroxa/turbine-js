@@ -143,7 +143,7 @@ QUnit.module("Unit | fn-record", () => {
     );
   });
 
-  QUnit.test("#unwrapCDC with CDC data", (assert) => {
+  QUnit.test("#unwrap with CDC data", (assert) => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
@@ -151,7 +151,7 @@ QUnit.module("Unit | fn-record", () => {
     };
 
     const record = new Record(rawRecord);
-    record.unwrapCDC();
+    record.unwrap();
 
     assert.notOk(record.value.schema.after);
     assert.strictEqual(
@@ -164,7 +164,7 @@ QUnit.module("Unit | fn-record", () => {
     );
   });
 
-  QUnit.test("#unwrapCDC with non CDC data", (assert) => {
+  QUnit.test("#unwrap with non CDC data", (assert) => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
       value: JSON.stringify(nonCDCFixture.collection_name[0].value),
@@ -172,7 +172,7 @@ QUnit.module("Unit | fn-record", () => {
     };
 
     const record = new Record(rawRecord);
-    record.unwrapCDC();
+    record.unwrap();
 
     assert.notOk(record.value.schema.after);
     assert.strictEqual(record.value.schema.name, "collection_name");

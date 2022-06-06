@@ -66,7 +66,7 @@ exports.App = class App {
       );
     });
 
-    records.unwrapCDC();
+    records.unwrap();
 
     return records;
   }
@@ -129,7 +129,7 @@ anonymize(records) {
     );
   });
 
-  records.unwrapCDC();
+  records.unwrap();
 
   return records;
 }
@@ -158,7 +158,7 @@ record.set('nested.key\\.with\\.dot', 'some_value') // Use \\ to set nested keys
 The `records` parameter itself comes with an optional but important function
 
 ```js
-records.unwrapCDC();
+records.unwrap();
 ```
 
 A user can optionally use this transform in their data app function to unwrap CDC formatted records into the right format that destinations expect. Currently, most destinations will not accept CDC formatted data. **_(s3 being an exception)_**
