@@ -1,12 +1,6 @@
 
 FROM node:16-alpine as 
 
-#Set user permissions to nonroot 
-RUN groupadd --gid 1000 nonroot \ 
-    && useradd --uid 1000 --gid 1000 -ms /bin/false nonroot\
-    && chown -R nonroot:nonroot /home/nonroot
-USER nonroot
-
 # Build data app
 WORKDIR /app/data-app
 COPY ./data-app/package.json package.json
@@ -28,5 +22,8 @@ WORKDIR /app/data-app
 COPY --from=DATA_APP_BUILDER ./app/data-app .
 WORKDIR /app/function-app
 COPY --from=FUNCTION_APP_BUILDER ./app/function-app .
+
+#Set user permissions to nonroot 
+USER nobody
 
 CMD [ "node", "index.js" ]
