@@ -1,5 +1,7 @@
+
+FROM node:16-alpine as 
+
 # Build data app
-FROM node:16-alpine as DATA_APP_BUILDER
 WORKDIR /app/data-app
 COPY ./data-app/package.json package.json
 COPY ./data-app/package-lock.json package-lock.json
@@ -20,5 +22,8 @@ WORKDIR /app/data-app
 COPY --from=DATA_APP_BUILDER ./app/data-app .
 WORKDIR /app/function-app
 COPY --from=FUNCTION_APP_BUILDER ./app/function-app .
+
+#Set user permissions to nonroot 
+USER nobody
 
 CMD [ "node", "index.js" ]
