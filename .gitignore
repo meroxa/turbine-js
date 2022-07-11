@@ -105,3 +105,6 @@ dist
 .DS_Store
 
 lib
+
+nyc-coverage-report/
+.nyc_output/

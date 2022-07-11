@@ -1,3 +1,5 @@
+import { Record, RecordsArray } from "../function-deploy/function-app/record";
+
 export interface Runtime {
   resources(name: string): Resource | Promise<Resource>;
   process(
@@ -8,23 +10,26 @@ export interface Runtime {
 }
 
 export interface Resource {
-  records(collection: string): Promise<Records>;
-  write(records: Records, collection: string): void;
+  records(
+    collection: string,
+    connectorConfig: { [index: string]: string }
+  ): Promise<Records>;
+  write(
+    records: Records,
+    collection: string,
+    connectorConfig: { [index: string]: string }
+  ): void;
 }
 
-export interface Record {
-  key: string;
-  value: any;
-  timestamp: number;
-}
+export { Record, RecordsArray };
 
 export interface Records {
-  records: Record[];
+  records: RecordsArray;
   stream: string;
 }
 
 export interface RegisteredFunctions {
-  [index: string]: (rr: Record[]) => Record[];
+  [index: string]: (rr: RecordsArray) => RecordsArray;
 }
 
 export interface AppConfig {

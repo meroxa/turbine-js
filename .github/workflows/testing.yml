@@ -1,8 +1,6 @@
 name: Tests
 
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
   push:
     branches:
       - master
@@ -18,21 +16,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.MEROXA_MACHINE_USER_PAT }}
 
       - name: Use Node
         uses: actions/setup-node@v1
         with:
-          node-version: '14'
-
-      - name: Configure Git
-        run: git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-
-      - name: Configure SSH
-        uses: webfactory/ssh-agent@v0.4.1
-        with:
-          ssh-private-key: ${{ secrets.MEROXA_MACHINE_USER_SSH_KEY }}
+          node-version: '16'
 
       - name: Install dependencies
         run: yarn install

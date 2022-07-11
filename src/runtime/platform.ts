@@ -1,4 +1,11 @@
-import { Resource, Record, Records, Runtime, AppConfig } from "./types";
+import {
+  Resource,
+  Record,
+  Records,
+  RecordsArray,
+  Runtime,
+  AppConfig,
+} from "./types";
 
 import {
   Client,
@@ -9,7 +16,7 @@ import {
   CreateFunctionParams,
   FunctionResponse,
   PipelineResponse,
-} from "meroxa-js";
+} from "@meroxa/meroxa-js";
 
 import { BaseError, APIError } from "../errors";
 
@@ -46,7 +53,7 @@ export class PlatformRuntime implements Runtime {
         name: this.appConfig.pipeline,
         metadata: { turbine: true, app: this.appConfig.name },
       });
-      console.log(`pipeline created: ${pipeline.name} (${pipeline.id})`);
+      console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
       return pipeline;
     } catch (e: any) {
       if (e.response) {
@@ -119,7 +126,6 @@ export class PlatformRuntime implements Runtime {
       },
       env_vars: envVars,
     };
-    console.log(`deploying function: ${fn.name}`);
 
     try {
       const createdFunction: FunctionResponse =
@@ -156,20 +162,18 @@ class PlatformResource implements Resource {
     this.appConfig = appConfig;
   }
 
-  async records(collection: string): Promise<Records> {
-    console.log(
-      `creating source connector from resource ${this.resource.name}...`
-    );
-
-    const connectorConfig: ConnectorConfig = {
-      // Hardcode hack this will only work for pg resources with default schema
-      input: `public.${collection}`,
+  async records(
+    collection: string,
+    connectorConfig: { [index: string]: string } = {}
+  ): Promise<Records> {
+    const baseCfg: ConnectorConfig = {
+      input: collection,
     };
 
+    connectorConfig = Object.assign(baseCfg, connectorConfig);
+
     const connectorInput: CreateConnectorParams = {
-      // Yep you guessed it, another hardcode hack
-      name: "a-source",
-      config: connectorConfig,
+      config: connectorConfig as ConnectorConfig,
       metadata: {
         "mx:connectorType": "source",
       },
@@ -196,40 +200,55 @@ class PlatformResource implements Resource {
     if (typeof connectorResponse.streams.output === "object") {
       return {
         stream: connectorResponse.streams.output[0],
-        records: [],
+        records: new RecordsArray(),
       };
     } else {
       throw new BaseError("no output stream in response");
     }
   }
 
-  async write(records: Records, collection: string): Promise<void> {
-    console.log(
-      `creating destination connector from stream ${records.stream}...`
-    );
-
-    const connectorConfig: ConnectorConfig = {
+  async write(
+    records: Records,
+    collection: string,
+    connectorConfig: { [index: string]: string } = {}
+  ): Promise<void> {
+    const baseCfg: ConnectorConfig = {
       input: records.stream,
     };
+
+    // Do not allow overwriting of `input` for destination connectors
+    connectorConfig = Object.assign(connectorConfig, baseCfg);
 
     switch (this.resource.type) {
       case "redshift":
       case "postgres":
       case "mysql":
+      case "sqlserver":
+        connectorConfig["table.name.format"] = collection.toLowerCase();
+        break;
+      case "mongodb":
+        connectorConfig["collection"] = collection.toLowerCase();
         break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
-        connectorConfig["value.converter"] =
-          "org.apache.kafka.connect.json.JsonConverter";
-        connectorConfig["value.converter.schemas.enable"] = "true";
-        connectorConfig["format.output.type"] = "jsonl";
-        connectorConfig["format.output.envelope"] = "true";
+        break;
+      case "snowflakedb":
+        let regexp = /^[a-zA-Z]{1}[a-zA-Z0-9_]*$/;
+        let isCollectionNameValid = regexp.test(collection);
+        if (!isCollectionNameValid) {
+          throw new BaseError(
+            `snowflake destination connector cannot be configured with collection name ${collection}. Only alphanumeric characters and underscores are valid.`
+          );
+        }
+
+        connectorConfig[
+          "snowflake.topic2table.map"
+        ] = `${records.stream}:${collection}`;
         break;
     }
 
     const connectorInput: CreateConnectorParams = {
-      name: "a-destination",
-      config: connectorConfig,
+      config: connectorConfig as ConnectorConfig,
       metadata: {
         "mx:connectorType": "destination",
       },

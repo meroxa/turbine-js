@@ -1,28 +1,31 @@
-// TODO figure out best way to write in / pass function name
 const args = process.argv.slice(2);
 const FUNCTION_NAME = args[0];
 const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDR;
 
 const PROTO_PATH = __dirname + "/proto/service.proto";
-import { Record } from "./record";
+import { RecordsArray } from "./record";
 
-const dataApp = require("../data-app");
+const DataApp = require("../data-app").App;
+const dataApp = new DataApp();
 
 function processFunction(call: any, callback: any) {
-  const inputRecords = call.request.records.map((record: any) => {
-    return new Record(record);
+  const inputRecords = new RecordsArray();
+  call.request.records.map((record: any) => {
+    inputRecords.pushRecord(record);
   });
 
   const dataAppFunction = dataApp[FUNCTION_NAME];
 
-  const outputRecords = dataAppFunction(inputRecords);
+  Promise.resolve(dataAppFunction(inputRecords)).then((outputRecords) => {
+    if (!Array.isArray(outputRecords)) {
+      throw new Error("Invalid records");
+    }
 
-  const records = outputRecords.map((record: any) => {
-    return record.serialize();
-  });
+    const records = outputRecords.map((record: any) => {
+      return record.serialize();
+    });
 
-  callback(null, {
-    records,
+    callback(null, { records });
   });
 }
 

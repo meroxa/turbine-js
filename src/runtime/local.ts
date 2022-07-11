@@ -1,13 +1,20 @@
-import { Resource, Record, Records, Runtime, AppConfig } from "./types";
+import {
+  Resource,
+  Record,
+  Records,
+  RecordsArray,
+  Runtime,
+  AppConfig,
+} from "./types";
 import { readFile } from "fs/promises";
 
 export class LocalRuntime implements Runtime {
   appConfig: AppConfig;
   pathToApp: string;
 
-  constructor(appConfig: AppConfig, pathToApp: string) {
-    this.appConfig = appConfig;
+  constructor(pathToApp: string, appConfig: AppConfig) {
     this.pathToApp = pathToApp;
+    this.appConfig = appConfig;
   }
 
   resources(resourceName: string): LocalResource {
@@ -18,7 +25,7 @@ export class LocalRuntime implements Runtime {
     return new LocalResource(resourceName, resourceFixturesPath);
   }
 
-  process(records: Records, fn: (rr: Record[]) => Record[]): Records {
+  process(records: Records, fn: (rr: RecordsArray) => RecordsArray): Records {
     let processedRecords = fn(records.records);
     return {
       records: processedRecords,
@@ -58,20 +65,14 @@ async function readFixtures(
   const rawFixtures = await readFile(path);
   let fixtures = JSON.parse(rawFixtures.toString());
   let collectionFixtures = fixtures[collection];
-  let records: Record[] = collectionFixtures.map((fixture: any) => {
-    return {
+  let records = new RecordsArray();
+
+  collectionFixtures.forEach((fixture: any) => {
+    records.pushRecord({
       key: fixture.key,
       value: fixture.value,
       timestamp: Date.now(),
-    };
-  });
-
-  console.log(
-    `=====================from ${resourceName} resource=====================`
-  );
-
-  records.forEach((record) => {
-    console.log(record.value.payload);
+    });
   });
 
   return {

@@ -3,22 +3,33 @@ import targz from "targz";
 import os from "os";
 import fs from "fs-extra";
 import { Result, Ok, Err } from "ts-results";
-import { BaseError, APIError } from "../errors";
+import { BaseError, APIError } from "../../errors";
 import axios from "axios";
-import { Client } from "meroxa-js";
-import { poller } from "./poller";
-import { BuildResponse } from "meroxa-js/lib/types/build";
+import { Client } from "@meroxa/meroxa-js";
+import { poller } from "../poller";
+import { BuildResponse } from "@meroxa/meroxa-js";
 
 export default async function (
   pathToDataApp: string,
   client: Client
 ): Promise<Result<BuildResponse, BaseError>> {
   const tmpDir = path.join(os.tmpdir(), "turbine");
-  const deployDir = path.join(__dirname, "../function-deploy");
+  const tmpAppDir = path.join(tmpDir, "app");
+  const deployDir = path.join(__dirname, "../../function-deploy");
+
+  const filterFunc = (src: string, dest: string) => {
+    return !(
+      src.includes(`/node_modules`) ||
+      src.includes(`/.git`) ||
+      src.includes(`/fixtures`)
+    );
+  };
 
   try {
-    await fs.copy(deployDir, tmpDir);
-    await fs.copy(pathToDataApp, path.join(tmpDir, "data-app"));
+    await fs.copy(deployDir, tmpAppDir);
+    await fs.copy(pathToDataApp, path.join(tmpAppDir, "data-app"), {
+      filter: filterFunc,
+    });
   } catch (e) {
     await cleanupTmpDir(tmpDir);
     return Err(new BaseError("Build directory error"));
@@ -28,7 +39,7 @@ export default async function (
     targz.compress(
       {
         src: tmpDir,
-        dest: "./app.tar.gz",
+        dest: "./turbine.tar.gz",
       },
       function (err) {
         if (err) {
@@ -40,8 +51,7 @@ export default async function (
     );
   });
 
-  const uploadFile = fs.readFileSync("./app.tar.gz");
-  let finishedBuild: BuildResponse;
+  const uploadFile = fs.readFileSync("./turbine.tar.gz");
 
   try {
     console.log("Creating source...");
@@ -64,17 +74,23 @@ export default async function (
       source_blob: { url: newSource.get_url },
     });
 
-    finishedBuild = await poller({
+    const finishedBuild = await poller({
       fn: async () => {
         return await client.builds.get(newBuild.uuid);
       },
       validate: (build: BuildResponse) => {
-        return build.status.state != "pending";
+        return (
+          build.status.state != "pending" && build.status.state != "building"
+        );
       },
       maxAttempts: 20,
       interval: 10000,
     });
+
+    await cleanupTmpDir(tmpDir);
+    return Ok(finishedBuild);
   } catch (e: any) {
+    await cleanupTmpDir(tmpDir);
     if (e.response) {
       return Err(new APIError(e));
     }
@@ -85,9 +101,6 @@ export default async function (
 
     return Err(new BaseError("internal error"));
   }
-
-  await cleanupTmpDir(tmpDir);
-  return Ok(finishedBuild);
 }
 
 async function cleanupTmpDir(tmpDir: string) {
