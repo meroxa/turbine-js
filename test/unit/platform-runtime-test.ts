@@ -136,7 +136,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
   });
 
   QUnit.test(
-    "resources: it creates a pipeline if missing and a resource",
+    "resources: it creates a pipeline if missing, an application, and a resource",
     async (assert) => {
       assert.expect(3);
 
@@ -153,16 +153,16 @@ QUnit.module("Unit | PlatformRuntime", () => {
         pipelines: {
           get: (name) => {
             assert.strictEqual(name, "awake");
-            throw { response: { status: 404 } };
+            return Promise.reject({ response: { status: 404 } });
           },
           create: (pipelineInput) => {
             assert.strictEqual(pipelineInput.name, "awake");
             assert.strictEqual(pipelineInput.metadata.app, "sleep-token");
-            return { name, uuid: 43 };
+            return { name: pipelineInput.name, uuid: 43 };
           },
         },
         resources: {
-          get: () => {
+          get: (name) => {
             return { name, id: 24 };
           },
         },
@@ -290,6 +290,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
             "destination"
           );
           assert.strictEqual(connInput.pipeline_name, "awake");
+
+          return connInput;
         },
       },
       resources: {
