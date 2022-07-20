@@ -59,7 +59,7 @@ async function executeCommand() {
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.runAppPlatform(args[1]);
+    commandRun = await primaryRunner.runAppPlatform(args[1], args[3]);
   } else if (args[0] === "deploy") {
     // DEPRECATED: "heavy lift" build & deploy logic using ExtendedRunner
     const extendedRunner = new ExtendedRunner(
