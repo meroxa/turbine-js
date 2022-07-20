@@ -1,5 +1,5 @@
 
-FROM node:16-alpine as 
+FROM node:16-alpine as DATA_APP_BUILDER
 
 # Build data app
 WORKDIR /app/data-app
