@@ -24,7 +24,6 @@ export class BaseError extends Error {
 }
 
 export class APIError extends BaseError {
-  constructor(wrappedError: AxiosError);
   constructor(messageOrError: string | AxiosError, wrappedError?: AxiosError) {
     if (typeof messageOrError === "string") {
       super(messageOrError, wrappedError);

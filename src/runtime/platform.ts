@@ -29,6 +29,7 @@ export class PlatformRuntime implements Runtime {
     this.client = meroxaJS;
     this.imageName = imageName;
     this.appConfig = appConfig;
+
     this.#validateAppConfig();
     this.#setAppConfigPipeline();
   }
@@ -48,13 +49,15 @@ export class PlatformRuntime implements Runtime {
   }
 
   async #createPipeline(): Promise<PipelineResponse> {
+    const pipelineName = this.appConfig.pipeline;
+
+    console.log(`No pipeline found, creating a new pipeline: ${pipelineName}`);
+
     try {
-      const pipeline = await this.client.pipelines.create({
-        name: this.appConfig.pipeline,
+      return await this.client.pipelines.create({
+        name: pipelineName,
         metadata: { turbine: true, app: this.appConfig.name },
       });
-      console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
-      return pipeline;
     } catch (e: any) {
       if (e.response) {
         throw new APIError(e);
@@ -70,9 +73,7 @@ export class PlatformRuntime implements Runtime {
 
   async #findOrCreatePipeline(): Promise<PipelineResponse> {
     try {
-      const pipeline = await this.client.pipelines.get(this.appConfig.pipeline);
-      console.log(`pipeline: "${pipeline.name}" ("${pipeline.uuid}")`);
-      return pipeline;
+      return await this.client.pipelines.get(this.appConfig.pipeline);
     } catch (e: any) {
       if (e.response && e.response.status === 404) {
         return await this.#createPipeline();
@@ -184,10 +185,17 @@ class PlatformResource implements Resource {
 
     let connectorResponse: ConnectorResponse;
     try {
+      console.log(
+        `Creating source connector from source '${this.resource.name}'`
+      );
       connectorResponse = await this.client.connectors.create(connectorInput);
+      console.log(`Successfully created ${connectorResponse.name} connector`);
     } catch (e: any) {
       if (e.response) {
-        throw new APIError(e);
+        throw new APIError(
+          `error creating source for source: ${this.resource.name}`,
+          e
+        );
       }
 
       if (e.request) {
@@ -258,10 +266,19 @@ class PlatformResource implements Resource {
     };
 
     try {
-      await this.client.connectors.create(connectorInput);
+      console.log(
+        `Creating destination connector from stream '${records.stream}'`
+      );
+      let connectorResponse = await this.client.connectors.create(
+        connectorInput
+      );
+      console.log(`Successfully created ${connectorResponse.name} connector`);
     } catch (e: any) {
       if (e.response) {
-        throw new APIError(e);
+        throw new APIError(
+          `Error creating destination from stream '${records.stream}'`,
+          e
+        );
       }
 
       if (e.request) {
