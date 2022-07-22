@@ -26,7 +26,7 @@ jobs:
       - run: yarn install
       - run: yarn run build:prod
       - name: npm config
-        - run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
       - run: npm run release -- ${{ inputs.versionInc }} --ci
         env:
           GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
