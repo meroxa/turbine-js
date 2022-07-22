@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionInc:
+        description: 'Version increment'
+        required: true
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: git config
+        run: |
+          git config user.name "meroxa-machine"
+          git config user.email "machine@meroxa.io"
+      - run: yarn install
+      - run: yarn run build:prod
+      - name: npm config
+        - run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+      - run: npm run release -- ${{ inputs.versionInc }} --ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
