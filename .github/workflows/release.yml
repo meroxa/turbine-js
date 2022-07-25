@@ -1,33 +1,60 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      versionInc:
-        description: 'Version increment'
-        required: true
-        type: choice
-        options:
-        - patch
-        - minor
-        - major
+  push:
+    branches:
+      - master
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check.outputs.version}}
+      changed: ${{ steps.check.outputs.changed}}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.MEROXA_MACHINE }}
+          fetch-depth: 0
+
+      - name: Check version change
+        uses: EndBug/version-check@v2
+        id: check
+
   release:
     runs-on: ubuntu-latest
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    env:
+      TAG: ${{ format('v{0}', needs.check.outputs.version) }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
+          token: ${{ secrets.MEROXA_MACHINE }}
           fetch-depth: 0
-      - name: git config
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
         run: |
-          git config user.name "meroxa-machine"
-          git config user.email "machine@meroxa.io"
-      - run: yarn install
-      - run: yarn run build:prod
-      - name: npm config
-        run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-      - run: npm run release -- ${{ inputs.versionInc }} --ci
+          yarn run build:prod
+
+      - name: Push tag
+        run: |
+          git tag $TAG -m "release: $TAG"
+          git push origin $TAG
+
+      - name: NPM publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public
+
+      - name: Github release
+        run: yarn install @octokit/action
+        run: node .github/actions/github-release.js
         env:
           GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
