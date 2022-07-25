@@ -19,6 +19,8 @@ const meroxaJS = new Client({
   url: process.env.MEROXA_API_URL,
 });
 
+const version = require("../package.json").version;
+
 // Private interface for communication between Meroxa CLI and turbine-js
 // Enables nodejs data app support using the Meroxa CLI
 async function executeCommand() {
@@ -67,6 +69,8 @@ async function executeCommand() {
       meroxaJS
     );
     commandRun = await extendedRunner.runAppPlatform();
+  } else if (args[0] === "version") {
+    console.log(`\nturbine-response: ${version}\n`);
   } else {
     throw new Error("Invalid turbine command");
   }
