@@ -36,7 +36,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Build
         run: |
@@ -54,7 +54,7 @@ jobs:
           access: public
 
       - name: Github release
-        run: yarn install @octokit/action
+        run: yarn add @octokit/action
         run: node .github/actions/github-release.js
         env:
           GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
