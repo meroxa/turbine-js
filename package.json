@@ -44,7 +44,7 @@
     "ts-results": "^3.3.0",
     "tslib": "^2.3.1"
   },
-  "bin": "bin/turbine",
+  "bin": "bin/turbine-js",
   "scripts": {
     "build:dev": "tsc && npm run finish-build",
     "build:prod": "npm run clean-build && tsc --sourceMap false && npm run finish-build",
