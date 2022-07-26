@@ -56,7 +56,8 @@ jobs:
           access: public
 
       - name: Github release
-        run: yarn add @octokit/action
-        run: node .github/actions/github-release.js
+        run: |
+         yarn add @octokit/action
+         node .github/actions/github-release.js
         env:
           GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
