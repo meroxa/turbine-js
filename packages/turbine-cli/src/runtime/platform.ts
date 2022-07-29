@@ -138,14 +138,15 @@ export class PlatformRuntime implements Runtime {
     const functionInput: CreateFunctionParams = {
       name: funcNameGitSHA,
       input_stream: records.stream,
-      command: ["node"],
-      args: ["index.js", fn.name],
       image: this.imageName,
+      args: [fn.name],
       pipeline: {
         name: this.appConfig.pipeline,
       },
       env_vars: envVars,
     };
+
+    console.log({ functionInput });
 
     try {
       const createdFunction: FunctionResponse =

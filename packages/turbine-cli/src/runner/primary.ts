@@ -1,6 +1,5 @@
 import fs from "fs-extra";
 import path from "path";
-import os from "os";
 
 import { PlatformRuntime } from "../runtime";
 import { AppConfig } from "../runtime/types";
@@ -12,27 +11,21 @@ import { Result, Ok, Err } from "ts-results";
 import Base from "./base";
 
 export default class Primary extends Base {
-  async buildFunction(): Promise<Result<string, BaseError>> {
-    const tmpDir = path.join(os.tmpdir(), "turbine");
-    const deployDir = path.join(__dirname, "../function-deploy");
-
-    const filterFunc = (src: string, dest: string) => {
-      return !(
-        src.includes(`/node_modules`) ||
-        src.includes(`/.git`) ||
-        src.includes(`/fixtures`)
-      );
-    };
-
+  async buildFunction(): Promise<Result<true, BaseError>> {
     try {
-      await fs.copy(deployDir, tmpDir);
-      await fs.copy(this.pathToDataApp, path.join(tmpDir, "data-app"), {
-        filter: filterFunc,
-      });
-      return Ok(tmpDir);
+      const pathToDockerfile = path.resolve(
+        __dirname,
+        "../../templates/Dockerfile"
+      );
+
+      await fs.copy(
+        pathToDockerfile,
+        path.join(this.pathToDataApp, "Dockerfile")
+      );
+      return Ok(true);
     } catch (e) {
-      await this.#cleanupTmpDir(tmpDir);
-      return Err(new BaseError("Build directory error"));
+      console.log(e);
+      return Err(new BaseError("Error copying Dockerfile"));
     }
   }
 
@@ -58,10 +51,6 @@ export default class Primary extends Base {
       assertIsError(e);
       return Err(new BaseError("Error running app", e));
     }
-  }
-
-  async #cleanupTmpDir(tmpDir: string) {
-    await fs.remove(tmpDir);
   }
 
   async #createApplication(
@@ -97,5 +86,9 @@ export default class Primary extends Base {
 
       throw e;
     }
+  }
+
+  async #cleanupTmpDir(tmpDir: string) {
+    await fs.remove(tmpDir);
   }
 }
