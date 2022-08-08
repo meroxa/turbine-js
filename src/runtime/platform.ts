@@ -118,6 +118,7 @@ export class PlatformRuntime implements Runtime {
     envVars: { [index: string]: string }
   ): Promise<Records> {
     const functionInput: CreateFunctionParams = {
+      name: fn.name,
       input_stream: records.stream,
       command: ["node"],
       args: ["index.js", fn.name],
