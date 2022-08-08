@@ -60,4 +60,5 @@ jobs:
          yarn add @octokit/action
          node .github/actions/github-release.js
         env:
+          INPUT_TOKEN: ''
           GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
