@@ -44,7 +44,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
         resources: {},
       };
       const imageName = "function:awake";
-      const appName = "test-app"
+      const appName = ""
 
       assert.throws(
         function () {
@@ -65,7 +65,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "test-app"
+    const appName = "sleep-token"
 
 
     const runtimeInstance = new PlatformRuntime(
@@ -159,7 +159,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
         resources: {},
       };
       const imageName = "function:awake";
-      const appName = "test-app"
+      const appName = "sleep-token"
 
 
       const assertedMockClient = {
