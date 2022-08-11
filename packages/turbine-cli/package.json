@@ -1,6 +1,6 @@
 {
   "name": "@meroxa/turbine-cli",
-  "description": "The Turbine Javascript CLI",
+  "description": "The internal Javascript CLI for Turbine",
   "version": "1.0.0",
   "main": "lib/index.js",
   "author": "James Martinez <james@meroxa.io>",
@@ -21,7 +21,6 @@
     "nyc": "^15.1.0",
     "qunit": "^2.18.0",
     "sinon": "^14.0.0",
-    "ts-migrate": "^0.1.28",
     "ts-node": "^10.7.0",
     "typescript": "^4.5.4"
   },

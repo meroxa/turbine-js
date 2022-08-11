@@ -14,6 +14,10 @@
       "dependsOn": ["^clean-build"]
     },
 
+    "test": {
+      "dependsOn": ["build:prod"]
+    },
+
     "publish": {
       "dependsOn": ["build:prod"]
     }

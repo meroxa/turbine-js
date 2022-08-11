@@ -146,8 +146,6 @@ export class PlatformRuntime implements Runtime {
       env_vars: envVars,
     };
 
-    console.log({ functionInput });
-
     try {
       const createdFunction: FunctionResponse =
         await this.client.functions.create(functionInput);

@@ -1,6 +1,6 @@
 import sinon from "sinon";
-import { RecordsArray } from "../../src/function-deploy/function-app/record";
-const CDCFixture = require("../../templates/javascript/fixtures/demo-cdc.json");
+import { RecordsArray } from "../../src/common/record";
+const CDCFixture = require("../../../turbine-cli/templates/javascript/fixtures/demo-cdc.json");
 
 QUnit.module("Unit | fn-records-array", () => {
   QUnit.test("#pushRecord", (assert) => {
