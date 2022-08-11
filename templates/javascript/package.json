@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@meroxa/turbine-js": "^0.4.0",
     "string-hash": "^1.1.3",
-    "turbine-js": "^0.4.0"
   },
   "devDependencies": {
     "qunit": "^2.18.0"
