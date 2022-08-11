@@ -6,8 +6,7 @@
   "author": "James Martinez <james@meroxa.io>",
   "license": "SEE LICENSE IN LICENSE.MD",
   "files": [
-    "lib/**/*",
-    "templates/**/*"
+    "lib/**/*"
   ],
   "bin": "bin/turbine-framework",
   "devDependencies": {
