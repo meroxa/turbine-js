@@ -52,16 +52,18 @@ async function executeCommand() {
       console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
   } else if (args[0] === "listresources") {
+    
     // meroxa apps pre-deployment check: return registered resources as per end user's index.js
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listResources();
     if (!commandRun.err) {
-      console.log(`\nturbine-response: ${commandRun.val}\n`);
+      console.log(commandRun.val);
     }
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
+    //arg 0 command, arg 1 image, arg 2 path, args 3 appname, args 4, git sha
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.runAppPlatform(args[1], args[3]);
+    commandRun = await primaryRunner.runAppPlatform(args[1], args[3], args[4]);
   } else if (args[0] === "deploy") {
     // DEPRECATED: "heavy lift" build & deploy logic using ExtendedRunner
     const extendedRunner = new ExtendedRunner(

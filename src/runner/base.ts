@@ -9,12 +9,14 @@ import { InfoRuntime } from "../runtime/info";
 export default class Base {
   pathToDataApp: string;
   meroxaJS: MeroxaJS;
+  appName: string;
   infoRuntime: InfoRuntime;
   localRuntime: LocalRuntime;
 
-  constructor(pathToDataApp: string, meroxaJS: MeroxaJS) {
+  constructor(pathToDataApp: string, meroxaJS: MeroxaJS, name: string="") {
     this.pathToDataApp = pathToDataApp;
     this.meroxaJS = meroxaJS;
+    this.appName = name
     this.infoRuntime = new InfoRuntime(this.pathToDataApp, this.appJSON);
     this.localRuntime = new LocalRuntime(this.pathToDataApp, this.appJSON);
   }
@@ -26,7 +28,9 @@ export default class Base {
   }
 
   get appJSON() {
-    return require(path.resolve(`${this.pathToDataApp}/app.json`));
+    var config = require(path.resolve(`${this.pathToDataApp}/app.json`))
+    config.name = this.appName
+    return config;
   }
 
   async runAppLocal() {
@@ -54,7 +58,7 @@ export default class Base {
     return Ok(functions.val.length > 0);
   }
 
-  async listResources(): Promise<Result<string[], BaseError>> {
+  async listResources(): Promise<Result<string, BaseError>> {
     try {
       await this.dataApp.run(this.infoRuntime);
       return Ok(this.infoRuntime.resourcesList);
