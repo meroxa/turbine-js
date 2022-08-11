@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.24.2",
     "turbo": "^1.2.16"
   },
   "scripts": {
