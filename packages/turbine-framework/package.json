@@ -29,9 +29,8 @@
     "clean-build": "node scripts/clean-build.js",
     "finish-build": "node scripts/finish-build.js",
     "test": "qunit --require ./test/setup.js test/**/*.ts",
-    "test:coverage": "nyc qunit --require ./test/setup.js test/**/*.ts",
-    "test:coverage-report:json": "nyc report --reporter json-summary --report-dir nyc-coverage-report --exclude-after-remap false",
-    "test:coverage-report": "nyc report --reporter text --report-dir nyc-coverage-report --exclude-after-remap false",
-    "test:coverage-report:ci": "scripts/test-coverage.sh"
+    "test:coverage": "nyc --no-clean --temp-dir ../../.nyc_output npm run test && npm run test:coverage-report:json",
+    "test:coverage-report:json": "nyc report --reporter json-summary --temp-dir ../../.nyc_output --report-dir ../../nyc-coverage-report --exclude-after-remap false",
+    "test:coverage-report": "nyc report --reporter text --temp-dir ../../.nyc_output --report-dir ../../nyc-coverage-report --exclude-after-remap false"
   }
 }

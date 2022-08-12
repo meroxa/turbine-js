@@ -1,6 +1,7 @@
 {
   "name": "@meroxa/turbine-js",
   "version": "1.0.0",
+  "license": "SEE LICENSE IN LICENSE.MD",
   "workspaces": [
     "packages/*"
   ],
@@ -9,6 +10,7 @@
     "turbo": "^1.2.16"
   },
   "scripts": {
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage && ./scripts/test-coverage.sh"
   }
 }
