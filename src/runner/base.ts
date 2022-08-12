@@ -16,7 +16,7 @@ export default class Base {
   constructor(pathToDataApp: string, meroxaJS: MeroxaJS, name: string="") {
     this.pathToDataApp = pathToDataApp;
     this.meroxaJS = meroxaJS;
-    this.appName = name
+    this.appName = name;
     this.infoRuntime = new InfoRuntime(this.pathToDataApp, this.appJSON);
     this.localRuntime = new LocalRuntime(this.pathToDataApp, this.appJSON);
   }
@@ -29,7 +29,7 @@ export default class Base {
 
   get appJSON() {
     var config = require(path.resolve(`${this.pathToDataApp}/app.json`))
-    config.name = this.appName
+    config.name = this.appName;
     return config;
   }
 
