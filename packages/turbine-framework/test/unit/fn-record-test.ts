@@ -1,4 +1,4 @@
-import { Record } from '../../src/common/record';
+import { Record } from "../../src/common";
 const CDCFixture = require("../../../turbine-cli/templates/javascript/fixtures/demo-cdc.json");
 const nonCDCFixture = require("../../../turbine-cli/templates/javascript/fixtures/demo-no-cdc.json");
 
