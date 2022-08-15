@@ -56,16 +56,20 @@ QUnit.module("Unit | LocalRuntime", () => {
 
     const pathToDataApp = "/path/to/data/app";
     const mockData = {
-      records: ['donut', 'pineapple', 'cashew'],
+      records: ["donut", "pineapple", "cashew"],
     };
-    const processFn = function(data) {
-      return data.map(item => `${item}s`);
+    const processFn = function (data) {
+      return data.map((item) => `${item}s`);
     };
 
     const localRuntime = new LocalRuntime(appConfig, pathToDataApp);
     const processedRecords = localRuntime.process(mockData, processFn);
 
-    assert.deepEqual(processedRecords.records, ['donuts', 'pineapples', 'cashews']);
-    assert.strictEqual(processedRecords.stream, '');
+    assert.deepEqual(processedRecords.records, [
+      "donuts",
+      "pineapples",
+      "cashews",
+    ]);
+    assert.strictEqual(processedRecords.stream, "");
   });
 });
