@@ -66,7 +66,6 @@ QUnit.module("Unit | InfoRuntime", () => {
       "capitalize"
     );
   });
-
   QUnit.test("#resources: it registers resources", (assert) => {
     const pathToFixtures = "path/to/fixtures";
     const appConfig: AppConfig = {
@@ -87,10 +86,16 @@ QUnit.module("Unit | InfoRuntime", () => {
     assert.deepEqual(subject.registeredResources, []);
 
     // after registering resources....
-    subject.resources(mockResource1);
-    subject.resources(mockResource2);
+    const m1 = subject.resources(mockResource1);
+    m1.records("orders");
+
+    const m2 = subject.resources(mockResource2);
+    m2.write([], "archive");
 
     // ...resources are successfully registered
-    assert.deepEqual(subject.registeredResources, ["engine", "hydraulik"]);
+    assert.deepEqual(
+      JSON.stringify(subject.registeredResources),
+      `[{"name":"engine","source":true,"destination":false,"collection":"orders"},{"name":"hydraulik","source":false,"destination":true,"collection":"archive"}]`
+    );
   });
 });

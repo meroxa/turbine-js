@@ -11,6 +11,7 @@ const appConfig: AppConfig = {
 };
 
 const imageName = "function:awake";
+const appName = "test-app";
 
 const testPipeline = { name: "awake", uuid: "12345" };
 
@@ -62,6 +63,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 
@@ -117,6 +119,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 
@@ -172,6 +175,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 
@@ -224,6 +228,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 
@@ -276,6 +281,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 
@@ -331,6 +337,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 
@@ -371,6 +378,7 @@ QUnit.module("Unit | Creating destinations", () => {
       const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
+        appName,
         appConfig
       );
 

@@ -62,6 +62,7 @@ export default class Extended extends Base {
     const environment = new PlatformRuntime(
       this.meroxaJS,
       functionImageName,
+      this.appName,
       this.appJSON
     );
 
