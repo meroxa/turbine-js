@@ -25,12 +25,14 @@ QUnit.module("Unit | PlatformRuntime", () => {
     };
     const imageName = "function:awake";
     const appName = "test-app";
+    const headCommit = "sha123456789";
 
     const subject = new PlatformRuntime(
       mockClient,
       imageName,
       appName,
-      appConfig
+      appConfig,
+      headCommit
     );
 
     assert.deepEqual(subject.client, mockClient);
@@ -50,6 +52,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       };
       const imageName = "function:awake";
       const appName = "";
+      const headCommit = "sha123456789";
 
       assert.throws(
         function () {
@@ -57,7 +60,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
             mockClient,
             imageName,
             appName,
-            appConfig
+            appConfig,
+            headCommit
           );
         },
         /application `name` is required/,
@@ -76,12 +80,14 @@ QUnit.module("Unit | PlatformRuntime", () => {
     };
     const imageName = "function:awake";
     const appName = "sleep-token";
+    const headCommit = "sha123456789";
 
     const runtimeInstance = new PlatformRuntime(
       mockClient,
       imageName,
       appName,
-      appConfig
+      appConfig,
+      headCommit
     );
     assert.strictEqual(
       runtimeInstance.appConfig.pipeline,
@@ -101,12 +107,14 @@ QUnit.module("Unit | PlatformRuntime", () => {
       };
       const imageName = "function:awake";
       const appName = "test-app";
+      const headCommit = "sha123456789";
 
       const runtimeInstance = new PlatformRuntime(
         mockClient,
         imageName,
         appName,
-        appConfig
+        appConfig,
+        headCommit
       );
       assert.strictEqual(runtimeInstance.appConfig.pipeline, "awake");
     }
@@ -124,6 +132,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
     };
     const imageName = "function:awake";
     const appName = "test-app";
+    const headCommit = "sha123456789";
 
     const assertedMockClient = {
       pipelines: {
@@ -144,7 +153,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
       assertedMockClient,
       imageName,
       appName,
-      appConfig
+      appConfig,
+      headCommit
     );
 
     let platformResource = await runtimeInstance.resources("my-db");
@@ -167,6 +177,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       };
       const imageName = "function:awake";
       const appName = "sleep-token";
+      const headCommit = "sha123456789";
 
       const assertedMockClient = {
         pipelines: {
@@ -191,7 +202,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
         assertedMockClient,
         imageName,
         appName,
-        appConfig
+        appConfig,
+        headCommit
       );
       try {
         await runtimeInstance.resources("my-db");
@@ -202,7 +214,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
   );
 
   QUnit.test("process: it creates a function", async (assert) => {
-    assert.expect(4);
+    assert.expect(5);
 
     const appConfig: AppConfig = {
       name: "sleep-token",
@@ -213,6 +225,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
     };
     const imageName = "function:awake";
     const appName = "test-app";
+    const headCommit = "sha123456789";
 
     const assertedMockClient = {
       functions: {
@@ -220,6 +233,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
           assert.strictEqual(functionInput.input_stream, "couscous");
           assert.strictEqual(functionInput.image, "function:awake");
           assert.strictEqual(functionInput.pipeline.name, "awake");
+          assert.strictEqual(functionInput.name, "myFn-sha12345");
           return { output_stream: "bulgur" };
         },
       },
@@ -229,7 +243,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
       assertedMockClient,
       imageName,
       appName,
-      appConfig
+      appConfig,
+      headCommit
     );
 
     let records = await runtimeInstance.process(
@@ -251,6 +266,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
     };
     const imageName = "function:awake";
     const appName = "test-app";
+    const headCommit = "sha123456789";
 
     const assertedMockClient = {
       connectors: {
@@ -279,7 +295,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
       assertedMockClient,
       imageName,
       appName,
-      appConfig
+      appConfig,
+      headCommit
     );
 
     let platformResource = await runtimeInstance.resources("my-db");
@@ -303,6 +320,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
     };
     const imageName = "function:awake";
     const appName = "test-app";
+    const headCommit = "sha123456789";
 
     const assertedMockClient = {
       connectors: {
@@ -335,7 +353,8 @@ QUnit.module("Unit | PlatformRuntime", () => {
       assertedMockClient,
       imageName,
       appName,
-      appConfig
+      appConfig,
+      headCommit
     );
 
     let platformResource = await runtimeInstance.resources("my-db");

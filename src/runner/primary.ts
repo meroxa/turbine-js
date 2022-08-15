@@ -45,7 +45,8 @@ export default class Primary extends Base {
       this.meroxaJS,
       functionImageName,
       appName,
-      this.appJSON
+      this.appJSON,
+      headCommit
     );
 
     try {

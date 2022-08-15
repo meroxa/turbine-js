@@ -70,7 +70,7 @@ async function executeCommand() {
       args[1] || process.cwd(),
       meroxaJS
     );
-    commandRun = await extendedRunner.runAppPlatform();
+    commandRun = await extendedRunner.runAppPlatform(args[2]);
   } else if (args[0] === "version") {
     console.log(`\nturbine-response: ${version}\n`);
   } else {
