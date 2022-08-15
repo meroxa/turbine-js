@@ -24,9 +24,14 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "test-app"
+    const appName = "test-app";
 
-    const subject = new PlatformRuntime(mockClient, imageName, appName, appConfig);
+    const subject = new PlatformRuntime(
+      mockClient,
+      imageName,
+      appName,
+      appConfig
+    );
 
     assert.deepEqual(subject.client, mockClient);
     assert.strictEqual(subject.imageName, imageName);
@@ -44,11 +49,16 @@ QUnit.module("Unit | PlatformRuntime", () => {
         resources: {},
       };
       const imageName = "function:awake";
-      const appName = ""
+      const appName = "";
 
       assert.throws(
         function () {
-          const subject = new PlatformRuntime(mockClient, imageName, appName, appConfig);
+          const subject = new PlatformRuntime(
+            mockClient,
+            imageName,
+            appName,
+            appConfig
+          );
         },
         /application `name` is required/,
         "it throws a validation error"
@@ -65,8 +75,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "sleep-token"
-
+    const appName = "sleep-token";
 
     const runtimeInstance = new PlatformRuntime(
       mockClient,
@@ -91,8 +100,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
         resources: {},
       };
       const imageName = "function:awake";
-      const appName = "test-app"
-
+      const appName = "test-app";
 
       const runtimeInstance = new PlatformRuntime(
         mockClient,
@@ -115,8 +123,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "test-app"
-
+    const appName = "test-app";
 
     const assertedMockClient = {
       pipelines: {
@@ -159,8 +166,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
         resources: {},
       };
       const imageName = "function:awake";
-      const appName = "sleep-token"
-
+      const appName = "sleep-token";
 
       const assertedMockClient = {
         pipelines: {
@@ -181,7 +187,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
         },
       };
 
-       const runtimeInstance = new PlatformRuntime(
+      const runtimeInstance = new PlatformRuntime(
         assertedMockClient,
         imageName,
         appName,
@@ -206,8 +212,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "test-app"
-
+    const appName = "test-app";
 
     const assertedMockClient = {
       functions: {
@@ -245,7 +250,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "test-app"
+    const appName = "test-app";
 
     const assertedMockClient = {
       connectors: {
@@ -297,8 +302,7 @@ QUnit.module("Unit | PlatformRuntime", () => {
       resources: {},
     };
     const imageName = "function:awake";
-    const appName = "test-app"
-
+    const appName = "test-app";
 
     const assertedMockClient = {
       connectors: {

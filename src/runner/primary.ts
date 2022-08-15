@@ -36,12 +36,16 @@ export default class Primary extends Base {
     }
   }
 
-  async runAppPlatform(functionImageName: string, appName: string, headCommit: string) {
+  async runAppPlatform(
+    functionImageName: string,
+    appName: string,
+    headCommit: string
+  ) {
     const environment = new PlatformRuntime(
       this.meroxaJS,
       functionImageName,
       appName,
-      this.appJSON, 
+      this.appJSON
     );
 
     try {

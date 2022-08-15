@@ -88,11 +88,14 @@ QUnit.module("Unit | InfoRuntime", () => {
     // after registering resources....
     const m1 = subject.resources(mockResource1);
     m1.records("orders");
-    
+
     const m2 = subject.resources(mockResource2);
     m2.write([], "archive");
 
     // ...resources are successfully registered
-    assert.deepEqual(JSON.stringify(subject.registeredResources), `[{"name":"engine","source":true,"destination":false,"collection":"orders"},{"name":"hydraulik","source":false,"destination":true,"collection":"archive"}]`);
+    assert.deepEqual(
+      JSON.stringify(subject.registeredResources),
+      `[{"name":"engine","source":true,"destination":false,"collection":"orders"},{"name":"hydraulik","source":false,"destination":true,"collection":"archive"}]`
+    );
   });
 });

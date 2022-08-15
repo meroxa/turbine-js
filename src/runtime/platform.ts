@@ -26,20 +26,24 @@ export class PlatformRuntime implements Runtime {
   appConfig: AppConfig;
   appName: string;
 
-  constructor(meroxaJS: Client, imageName: string, appName: string, appConfig: AppConfig) {
+  constructor(
+    meroxaJS: Client,
+    imageName: string,
+    appName: string,
+    appConfig: AppConfig
+  ) {
     this.client = meroxaJS;
     this.imageName = imageName;
     this.appConfig = appConfig;
-    this.appName = appName
+    this.appName = appName;
 
     this.#overrideAppName();
     this.#validateAppConfig();
     this.#setAppConfigPipeline();
   }
 
-  
-  #overrideAppName():void{
-    if (this.appName != ""){
+  #overrideAppName(): void {
+    if (this.appName != "") {
       this.appConfig.name = this.appName;
     }
   }
