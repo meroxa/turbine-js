@@ -1,4 +1,4 @@
-import { Record, RecordsArray } from "@meroxa/turbine-framework";
+import { Record, RecordsArray } from "@meroxa/turbine-js-framework";
 
 export interface Runtime {
   resources(name: string): Resource | Promise<Resource>;

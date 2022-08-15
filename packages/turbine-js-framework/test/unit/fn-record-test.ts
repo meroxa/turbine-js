@@ -1,6 +1,6 @@
 import { Record } from "../../src/common";
-const CDCFixture = require("../../../turbine-cli/templates/javascript/fixtures/demo-cdc.json");
-const nonCDCFixture = require("../../../turbine-cli/templates/javascript/fixtures/demo-no-cdc.json");
+const CDCFixture = require("../../../turbine-js-cli/templates/javascript/fixtures/demo-cdc.json");
+const nonCDCFixture = require("../../../turbine-js-cli/templates/javascript/fixtures/demo-no-cdc.json");
 
 QUnit.module("Unit | fn-record", () => {
   QUnit.test("#constructor", (assert) => {

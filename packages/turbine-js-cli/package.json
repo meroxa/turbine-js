@@ -1,5 +1,5 @@
 {
-  "name": "@meroxa/turbine-cli",
+  "name": "@meroxa/turbine-js-cli",
   "description": "The internal Javascript CLI for Turbine",
   "version": "1.0.0",
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@meroxa/meroxa-js": "^1.2.0",
-    "@meroxa/turbine-framework": "^1.0.0",
+    "@meroxa/turbine-js-framework": "^1.0.0",
     "@octokit/rest": "^18.12.0",
     "dockerode": "^3.3.1",
     "fs-extra": "^10.0.0",
@@ -35,7 +35,7 @@
     "ts-results": "^3.3.0",
     "tslib": "^2.3.1"
   },
-  "bin": "bin/turbine-cli",
+  "bin": "bin/turbine-js-cli",
   "scripts": {
     "build:dev": "npm run clean-build && tsc",
     "build:prod": "npm run clean-build && tsc --sourceMap false",

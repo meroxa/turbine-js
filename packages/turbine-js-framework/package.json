@@ -1,5 +1,5 @@
 {
-  "name": "@meroxa/turbine-framework",
+  "name": "@meroxa/turbine-js-framework",
   "description": "Turbine is a data application framework for building server-side applications that are event-driven, respond to data in real-time, and scale using cloud-native best practices.",
   "version": "1.0.0",
   "main": "lib/index.js",
@@ -8,7 +8,7 @@
   "files": [
     "lib/**/*"
   ],
-  "bin": "bin/turbine-framework",
+  "bin": "bin/turbine-js-framework",
   "devDependencies": {
     "@types/get-value": "^3.0.2",
     "@types/node": "^17.0.4",

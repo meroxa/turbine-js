@@ -11,4 +11,4 @@ COPY . .
 USER nobody
 
 # npm doesnt like the altered permissions, so we run the executable w node :lolsob:
-ENTRYPOINT [ "node", "./node_modules/@meroxa/turbine-framework/bin/turbine-framework", "function"]
+ENTRYPOINT [ "node", "./node_modules/@meroxa/turbine-js-framework/bin/turbine-js-framework", "function"]
