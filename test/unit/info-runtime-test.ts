@@ -33,7 +33,7 @@ QUnit.module("Unit | InfoRuntime", () => {
     const pathToDataApp = "/path/to/data/app";
     const subject = new InfoRuntime(pathToDataApp, appConfig);
 
-    assert.strictEqual(subject.pipelineName, 'turbine-pipeline-sleep-token');
+    assert.strictEqual(subject.pipelineName, "turbine-pipeline-sleep-token");
   });
 
   QUnit.test("#process: it registers functions", (assert) => {
@@ -48,8 +48,8 @@ QUnit.module("Unit | InfoRuntime", () => {
       },
     };
     const pathToDataApp = "/path/to/data/app";
-    const mockFunction1 = { name: 'anonymize', fn1: () => {}};
-    const mockFunction2 = { name: 'capitalize', fn2: () => {}};
+    const mockFunction1 = { name: "anonymize", fn1: () => {} };
+    const mockFunction2 = { name: "capitalize", fn2: () => {} };
     const subject = new InfoRuntime(pathToDataApp, appConfig);
 
     // precondition: functions are initially empty
@@ -60,8 +60,11 @@ QUnit.module("Unit | InfoRuntime", () => {
     subject.process([], mockFunction2);
 
     // ...functions are successfully registered
-    assert.strictEqual(subject.registeredFunctions.anonymize.name, 'anonymize');
-    assert.strictEqual(subject.registeredFunctions.capitalize.name, 'capitalize');
+    assert.strictEqual(subject.registeredFunctions.anonymize.name, "anonymize");
+    assert.strictEqual(
+      subject.registeredFunctions.capitalize.name,
+      "capitalize"
+    );
   });
 
   QUnit.test("#resources: it registers resources", (assert) => {
@@ -76,8 +79,8 @@ QUnit.module("Unit | InfoRuntime", () => {
       },
     };
     const pathToDataApp = "/path/to/data/app";
-    const mockResource1 = 'engine';
-    const mockResource2 = 'hydraulik';
+    const mockResource1 = "engine";
+    const mockResource2 = "hydraulik";
     const subject = new InfoRuntime(pathToDataApp, appConfig);
 
     // precondition: resources are initially empty
@@ -88,6 +91,6 @@ QUnit.module("Unit | InfoRuntime", () => {
     subject.resources(mockResource2);
 
     // ...resources are successfully registered
-    assert.deepEqual(subject.registeredResources, ['engine', 'hydraulik']);
+    assert.deepEqual(subject.registeredResources, ["engine", "hydraulik"]);
   });
 });
