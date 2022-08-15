@@ -38,9 +38,9 @@ async function executeCommand() {
       console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
   } else if (args[0] === "clibuild") {
-    // meroxa apps deploy step 1 (set up function app directory structure and hand path to CLI)
+    // meroxa apps deploy step 1 (copy dockerfile from templates to app directory)
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.buildFunction();
+    commandRun = await primaryRunner.createDockerfile();
   } else if (args[0] === "hasfunctions") {
     // meroxa apps deploy step 2 (check for functions in user's data app)
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
@@ -49,7 +49,6 @@ async function executeCommand() {
       console.log(`\nturbine-response: ${commandRun.val}\n`);
     }
   } else if (args[0] === "listresources") {
-    
     // meroxa apps pre-deployment check: return registered resources as per end user's index.js
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listResources();

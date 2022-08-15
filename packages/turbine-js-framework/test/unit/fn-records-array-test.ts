@@ -1,13 +1,12 @@
 import sinon from "sinon";
 import { RecordsArray } from "../../src/common/record";
-const CDCFixture = require("../../../turbine-js-cli/templates/javascript/fixtures/demo-cdc.json");
+import CDCFixture from "@meroxa/turbine-js-cli/templates/javascript/fixtures/demo-cdc.json";
 
 QUnit.module("Unit | fn-records-array", () => {
   QUnit.test("#pushRecord", (assert) => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
     const records = new RecordsArray();
     records.pushRecord(rawRecord);
@@ -20,7 +19,6 @@ QUnit.module("Unit | fn-records-array", () => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
     const records = new RecordsArray();
     records.pushRecord(rawRecord);

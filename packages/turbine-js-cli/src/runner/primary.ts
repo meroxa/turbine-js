@@ -11,7 +11,7 @@ import { Result, Ok, Err } from "ts-results";
 import Base from "./base";
 
 export default class Primary extends Base {
-  async buildFunction(): Promise<Result<true, BaseError>> {
+  async createDockerfile(): Promise<Result<true, BaseError>> {
     try {
       const pathToDockerfile = path.resolve(
         __dirname,
@@ -24,7 +24,6 @@ export default class Primary extends Base {
       );
       return Ok(true);
     } catch (e) {
-      console.log(e);
       return Err(new BaseError("Error copying Dockerfile"));
     }
   }
@@ -86,9 +85,5 @@ export default class Primary extends Base {
 
       throw e;
     }
-  }
-
-  async #cleanupTmpDir(tmpDir: string) {
-    await fs.remove(tmpDir);
   }
 }

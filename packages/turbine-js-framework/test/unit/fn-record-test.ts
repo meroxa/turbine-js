@@ -1,13 +1,12 @@
 import { Record } from "../../src/common";
-const CDCFixture = require("../../../turbine-js-cli/templates/javascript/fixtures/demo-cdc.json");
-const nonCDCFixture = require("../../../turbine-js-cli/templates/javascript/fixtures/demo-no-cdc.json");
+import CDCFixture from "@meroxa/turbine-js-cli/templates/javascript/fixtures/demo-cdc.json";
+import nonCDCFixture from "@meroxa/turbine-js-cli/templates/javascript/fixtures/demo-no-cdc.json";
 
 QUnit.module("Unit | fn-record", () => {
   QUnit.test("#constructor", (assert) => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const subject = new Record(rawRecord);
@@ -20,7 +19,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -28,14 +26,12 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(subject.key, record.key);
     assert.strictEqual(subject.value, JSON.stringify(record.value));
-    assert.strictEqual(subject.timestamp, record.timestamp);
   });
 
   QUnit.test("#isJSONSchema with CDC data", (assert) => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -47,7 +43,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
       value: JSON.stringify(nonCDCFixture.collection_name[0].value),
-      timestamp: nonCDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -59,7 +54,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -71,7 +65,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
       value: JSON.stringify(nonCDCFixture.collection_name[0].value),
-      timestamp: nonCDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -83,7 +76,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -99,7 +91,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
       value: JSON.stringify(nonCDCFixture.collection_name[0].value),
-      timestamp: nonCDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -115,7 +106,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -131,7 +121,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
       value: JSON.stringify(nonCDCFixture.collection_name[0].value),
-      timestamp: nonCDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -147,7 +136,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: CDCFixture.collection_name[0].key,
       value: JSON.stringify(CDCFixture.collection_name[0].value),
-      timestamp: CDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
@@ -168,7 +156,6 @@ QUnit.module("Unit | fn-record", () => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
       value: JSON.stringify(nonCDCFixture.collection_name[0].value),
-      timestamp: nonCDCFixture.collection_name[0].timestamp,
     };
 
     const record = new Record(rawRecord);
