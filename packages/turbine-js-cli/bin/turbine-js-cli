@@ -6,11 +6,7 @@ if (process.env.NODE_ENV === "development") {
 
 const args = process.argv.slice(2);
 
-const {
-  Primary: PrimaryRunner,
-  Extended: ExtendedRunner,
-  generateApp,
-} = require("../lib/runner");
+const { Primary: PrimaryRunner, generateApp } = require("../lib/runner");
 
 const { Client } = require("@meroxa/meroxa-js");
 
@@ -60,13 +56,6 @@ async function executeCommand() {
     //arg 0 command, arg 1 image, arg 2 path, args 3 appname, args 4, git sha
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.runAppPlatform(args[1], args[3], args[4]);
-  } else if (args[0] === "deploy") {
-    // DEPRECATED: "heavy lift" build & deploy logic using ExtendedRunner
-    const extendedRunner = new ExtendedRunner(
-      args[1] || process.cwd(),
-      meroxaJS
-    );
-    commandRun = await extendedRunner.runAppPlatform(args[2]);
   } else if (args[0] === "version") {
     commandRun = version;
     console.log(`\nturbine-response: ${commandRun}\n`);
