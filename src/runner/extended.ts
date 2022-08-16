@@ -34,7 +34,7 @@ export default class Extended extends Base {
   }
   // Run the data app with the platform runtime, but first check for functions
   // in the data app and deploy them
-  async runAppPlatform(): Promise<Result<true, BaseError>> {
+  async runAppPlatform(headCommit: string): Promise<Result<true, BaseError>> {
     // TODO refactor this logic into Meroxa CLI for JS based apps ===============
     const isDocker =
       !!process.env.DOCKER_HUB_USERNAME && !!process.env.DOCKER_HUB_PASSWORD;
@@ -63,7 +63,8 @@ export default class Extended extends Base {
       this.meroxaJS,
       functionImageName,
       this.appName,
-      this.appJSON
+      this.appJSON,
+      headCommit
     );
 
     console.log("Running data app...");
