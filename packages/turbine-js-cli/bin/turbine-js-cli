@@ -68,7 +68,8 @@ async function executeCommand() {
     );
     commandRun = await extendedRunner.runAppPlatform(args[2]);
   } else if (args[0] === "version") {
-    console.log(`\nturbine-response: ${version}\n`);
+    commandRun = version;
+    console.log(`\nturbine-response: ${commandRun}\n`);
   } else {
     throw new Error("Invalid turbine command");
   }
