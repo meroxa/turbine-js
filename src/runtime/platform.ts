@@ -25,17 +25,20 @@ export class PlatformRuntime implements Runtime {
   imageName: string;
   appConfig: AppConfig;
   appName: string;
+  headCommit: string;
 
   constructor(
     meroxaJS: Client,
     imageName: string,
     appName: string,
-    appConfig: AppConfig
+    appConfig: AppConfig,
+    headCommit: string
   ) {
     this.client = meroxaJS;
     this.imageName = imageName;
     this.appConfig = appConfig;
     this.appName = appName;
+    this.headCommit = headCommit;
 
     this.#overrideAppName();
     this.#validateAppConfig();
@@ -131,8 +134,9 @@ export class PlatformRuntime implements Runtime {
     fn: (rr: Record[]) => Record[],
     envVars: { [index: string]: string }
   ): Promise<Records> {
+    const funcNameGitSHA = `${fn.name}-${this.headCommit.substring(0, 8)}`;
     const functionInput: CreateFunctionParams = {
-      name: fn.name,
+      name: funcNameGitSHA,
       input_stream: records.stream,
       command: ["node"],
       args: ["index.js", fn.name],
