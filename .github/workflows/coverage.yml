@@ -20,7 +20,7 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Check prettier
         run: yarn run prettier:check
@@ -28,7 +28,7 @@ jobs:
       - name: Generate test coverage report
         id: test_coverage
         run: |
-          RESULT=$(yarn run test:coverage-report:ci | tail -n 2)
+          RESULT=$(npm run test:coverage | tail -n 1)
           echo "::set-output name=coverage_results::$RESULT"
 
       - name: Post test coverage report

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "baseBranch": "origin/master",
+  "pipeline": {
+    "build:dev": {
+      "dependsOn": ["^build:dev"]
+    },
+
+    "build:prod": {
+      "dependsOn": ["^build:prod"]
+    },
+
+    "clean-build": {
+      "dependsOn": ["^clean-build"]
+    },
+
+    "test": {
+      "dependsOn": ["build:prod"]
+    },
+
+    "test:coverage": {
+      "dependsOn": ["build:prod"]
+    }
+  }
+}

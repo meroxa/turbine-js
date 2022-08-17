@@ -23,10 +23,10 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Check prettier
         run: yarn run prettier:check
 
       - name: Running tests
-        run: yarn run test
+        run: npm run test
