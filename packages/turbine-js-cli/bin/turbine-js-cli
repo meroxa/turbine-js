@@ -53,9 +53,15 @@ async function executeCommand() {
     }
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
-    //arg 0 command, arg 1 image, arg 2 path, args 3 appname, args 4, git sha
+    //arg 0 command, arg 1 image, arg 2 path, args 3 appname, args 4, git sha, args 5, spec
     const primaryRunner = new PrimaryRunner(args[2] || process.cwd(), meroxaJS);
-    commandRun = await primaryRunner.runAppPlatform(args[1], args[3], args[4]);
+    commandRun = await primaryRunner.runAppPlatform(
+      args[1],
+      args[3],
+      args[4],
+      version,
+      args[5]
+    );
   } else if (args[0] === "version") {
     commandRun = version;
     console.log(`\nturbine-response: ${commandRun}\n`);
