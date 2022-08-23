@@ -150,7 +150,7 @@ export default class Primary {
       return Ok(true);
     } catch (e) {
       assertIsError(e);
-      return Err(new BaseError("Error listing resources", e));
+      return Err(new BaseError("Error creating internal representation", e));
     }
   }
 
