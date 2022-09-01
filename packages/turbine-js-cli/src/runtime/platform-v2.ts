@@ -3,7 +3,7 @@ import { Records, RecordsArray } from "./types";
 export class PlatformV2Runtime {
   registeredResources: PlatformV2Resource[] = [];
   registeredFunctions: PlatformV2Function[] = [];
-  registeredSecrets: { [index: string]: string }[] = [];
+  registeredSecrets: { [index: string]: string } = {};
 
   appName: string;
   imageName: string;
@@ -59,11 +59,7 @@ export class PlatformV2Runtime {
 
     const envVarsKeys = Object.keys(envVars);
     if (envVarsKeys.length > 0) {
-      this.registeredSecrets = envVarsKeys.map((key) => {
-        return {
-          [key]: envVars[key],
-        };
-      });
+      this.registeredSecrets = Object.assign({}, envVars);
     }
   }
 

@@ -126,11 +126,8 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
     assert.ok(runtime.registeredFunctions[0] instanceof PlatformV2Function);
     assert.strictEqual(runtime.registeredFunctions[0].name, "aFn-12345678");
     assert.strictEqual(runtime.registeredFunctions[0].image, "imageName");
-    assert.strictEqual(runtime.registeredSecrets.length, 1);
-    assert.strictEqual(
-      runtime.registeredSecrets[0].A_ENV_VAR,
-      "sleeptokenrocks"
-    );
+    assert.strictEqual(Object.keys(runtime.registeredSecrets).length, 1);
+    assert.strictEqual(runtime.registeredSecrets.A_ENV_VAR, "sleeptokenrocks");
   });
 
   QUnit.test("#serializeToIR", (assert) => {
@@ -173,7 +170,7 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
         },
       ],
       functions: [{ name: "aFn-12345678", image: "imageName" }],
-      secrets: [{ A_ENV_VAR: "sleeptokenrocks" }],
+      secrets: { A_ENV_VAR: "sleeptokenrocks" },
       definition: {
         app_name: "appName",
         git_sha: "123456789",
