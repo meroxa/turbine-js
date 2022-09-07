@@ -156,6 +156,7 @@ export class PlatformV2Resource {
     collection: string | undefined;
     config: { [index: string]: unknown } | undefined;
   } {
-    return { ...this };
+    const { resource, type, collection, config } = this;
+    return { resource, type, collection, config };
   }
 }
