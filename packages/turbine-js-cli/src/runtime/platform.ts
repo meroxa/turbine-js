@@ -191,6 +191,11 @@ class PlatformResource implements Resource {
 
     connectorConfig = Object.assign(baseCfg, connectorConfig);
 
+    // this is currently required in order to force Conduit Connector usage
+    if (this.resource.type == "kafka") {
+        connectorConfig["conduit"] = "true";
+    }
+
     const connectorInput: CreateConnectorParams = {
       config: connectorConfig as ConnectorConfig,
       metadata: {
@@ -254,6 +259,10 @@ class PlatformResource implements Resource {
         break;
       case "mongodb":
         connectorConfig["collection"] = collection.toLowerCase();
+        break;
+      case "kafka":
+        connectorConfig["conduit"] = "true";
+        connectorConfig["topic"] = collection.toLowerCase();
         break;
       case "s3":
         connectorConfig["aws_s3_prefix"] = `${collection.toLowerCase()}/`;
