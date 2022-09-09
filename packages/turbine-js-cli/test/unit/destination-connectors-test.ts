@@ -371,10 +371,7 @@ QUnit.module("Unit | Creating destinations", () => {
             assert.notOk(connInput.config["table.name.format"]);
             assert.notOk(connInput.config["collection"]);
             assert.notOk(connInput.config["aws_s3_prefix"]);
-            assert.strictEqual(
-              connInput.config["topic"],
-              "pringles"
-            );
+            assert.strictEqual(connInput.config["topic"], "pringles");
 
             return connInput;
           },
