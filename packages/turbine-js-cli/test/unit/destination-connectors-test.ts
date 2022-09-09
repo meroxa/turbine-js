@@ -347,6 +347,63 @@ QUnit.module("Unit | Creating destinations", () => {
   );
 
   QUnit.test(
+    "records: it creates a destination connector (kafka)",
+    async (assert) => {
+      assert.expect(9);
+
+      const testResource = {
+        id: 7,
+        name: "my-db7",
+        type: "kafka",
+      };
+
+      const assertedMockClient = {
+        connectors: {
+          create: (connInput) => {
+            assert.strictEqual(connInput.config.input, "hephaestus");
+            assert.strictEqual(connInput.resource_id, 7);
+            assert.strictEqual(
+              connInput.metadata["mx:connectorType"],
+              "destination"
+            );
+            assert.strictEqual(connInput.pipeline_name, "awake");
+            assert.ok(connInput.config["conduit"]);
+            assert.notOk(connInput.config["table.name.format"]);
+            assert.notOk(connInput.config["collection"]);
+            assert.notOk(connInput.config["aws_s3_prefix"]);
+            assert.strictEqual(
+              connInput.config["topic"],
+              "pringles"
+            );
+
+            return connInput;
+          },
+        },
+        resources: {
+          get: (name) => {
+            return testResource;
+          },
+        },
+        pipelines: {
+          get: (name) => {
+            return testPipeline;
+          },
+        },
+      };
+
+      const runtimeInstance = new PlatformRuntime(
+        assertedMockClient,
+        imageName,
+        appName,
+        appConfig
+      );
+
+      let platformResource = await runtimeInstance.resources(testResource.name);
+      await platformResource.write({ stream: "hephaestus" }, "priNGles");
+    }
+  );
+
+  QUnit.test(
     "records: it throws an error if a destination is misconfigured (snowflakedb)",
     async (assert) => {
       assert.expect(1);
