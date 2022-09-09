@@ -8,17 +8,16 @@ Turbine is a data application framework for building server-side applications th
 
 The benefits of using Turbine include:
 
-* **Native Developer Tooling:** Turbine doesn't come with any bespoke DSL or patterns. Write software like you normally would!
+- **Native Developer Tooling:** Turbine doesn't come with any bespoke DSL or patterns. Write software like you normally would!
 
-* **Fits into Existing DevOps Workflows:** Build, test, and deploy. Turbine encourages best practices from the start. Don't test your data app in production ever again.
+- **Fits into Existing DevOps Workflows:** Build, test, and deploy. Turbine encourages best practices from the start. Don't test your data app in production ever again.
 
-* **Local Development mirrors Production:** When running locally, you'll immediately see how your app reacts to data. What you get there will be exactly what happens in production but with _scale_ and _speed_.
+- **Local Development mirrors Production:** When running locally, you'll immediately see how your app reacts to data. What you get there will be exactly what happens in production but with _scale_ and _speed_.
 
-* **Available in many different programming langauages:** Turbine started out in Go but is available in other languages too:
-    * [Go](https://github.com/meroxa/turbine-go)
-    * [Javascript](https://github.com/meroxa/turbine-js)
-    * [Python](https://github.com/meroxa/turbine-py)
-
+- **Available in many different programming langauages:** Turbine started out in Go but is available in other languages too:
+  - [Go](https://github.com/meroxa/turbine-go)
+  - [Javascript](https://github.com/meroxa/turbine-js)
+  - [Python](https://github.com/meroxa/turbine-py)
 
 ## Getting Started
 
@@ -125,7 +124,6 @@ await destination.write(anonymized, "collection_archive");
 
 The `write` function is optional. It takes any records given to it and streams them to the downstream system. In many cases, you might not need to stream data to another system, but this gives you an easy way to do so.
 
-
 ### `app.json`
 
 This file contains all of the options for configuring a Turbine app. Upon initialization of an app, the CLI will scaffold the file for you with available options:
@@ -141,10 +139,10 @@ This file contains all of the options for configuring a Turbine app. Upon initia
 }
 ```
 
-* `name` - The name of your application. This should not change after app initialization.
-* `language` - Tells Meroxa what language the app is upon deployment.
-* `environment` - "common" is the only available environment. Meroxa does have the ability to create isolated environments but this feature is currently in beta.
-* `resources` - These are the named integrations that you'll use in your application. The `source_name` needs to match the name of the resource that you'll set up in Meroxa using the `meroxa resources create` command or via the Dashboard. You can point to the path in the fixtures that'll be used to mock the resource when you run `meroxa apps run`.
+- `name` - The name of your application. This should not change after app initialization.
+- `language` - Tells Meroxa what language the app is upon deployment.
+- `environment` - "common" is the only available environment. Meroxa does have the ability to create isolated environments but this feature is currently in beta.
+- `resources` - These are the named integrations that you'll use in your application. The `source_name` needs to match the name of the resource that you'll set up in Meroxa using the `meroxa resources create` command or via the Dashboard. You can point to the path in the fixtures that'll be used to mock the resource when you run `meroxa apps run`.
 
 ### Fixtures
 
@@ -166,11 +164,12 @@ Fixtures are JSON-formatted samples of data records you can use while locally de
 	}
   ]
 ```
-* `collection_name` — Identifies the name of the records or events you are streaming to your data app.
-* `key` — Denotes one or more sample records within a fixture file. `key` is always a string.
-* `value` — Holds the `schema` and `payload` of the sample data record.
-* `schema` — Comes as part of your sample data record. `schema` describes the record or event structure.
-* `payload` — Comes as part of your sample data record. `payload` describes what about the record or event changed.
+
+- `collection_name` — Identifies the name of the records or events you are streaming to your data app.
+- `key` — Denotes one or more sample records within a fixture file. `key` is always a string.
+- `value` — Holds the `schema` and `payload` of the sample data record.
+- `schema` — Comes as part of your sample data record. `schema` describes the record or event structure.
+- `payload` — Comes as part of your sample data record. `payload` describes what about the record or event changed.
 
 Your newly created data app should have a `demo-cdc.json` and `demo-non-cdc.json` in the `/fixtures` directory as examples to follow.
 

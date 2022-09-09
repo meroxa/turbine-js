@@ -191,6 +191,10 @@ class PlatformResource implements Resource {
 
     connectorConfig = Object.assign(baseCfg, connectorConfig);
 
+    if (this.resource.type === "kafka") {
+      connectorConfig["conduit"] = "true";
+    }
+
     const connectorInput: CreateConnectorParams = {
       config: connectorConfig as ConnectorConfig,
       metadata: {
@@ -246,9 +250,13 @@ class PlatformResource implements Resource {
     connectorConfig = Object.assign(connectorConfig, baseCfg);
 
     switch (this.resource.type) {
+      case "kafka":
+        connectorConfig["conduit"] = "true";
+        connectorConfig["topic"] = collection.toLowerCase();
+        break;
+      case "mysql":
       case "redshift":
       case "postgres":
-      case "mysql":
       case "sqlserver":
         connectorConfig["table.name.format"] = collection.toLowerCase();
         break;
