@@ -1,3 +1,4 @@
+import { BaseError } from "../errors";
 import { Records, RecordsArray } from "./types";
 
 export class PlatformV2Runtime {
@@ -39,8 +40,14 @@ export class PlatformV2Runtime {
     };
   }
 
+  get hasSource() {
+    return this.registeredResources.find((resource) => {
+      return resource.type === "source";
+    });
+  }
+
   resources(resourceName: string): PlatformV2Resource {
-    const resource = new PlatformV2Resource(resourceName);
+    const resource = new PlatformV2Resource(resourceName, this);
     this.registeredResources.push(resource);
     return resource;
   }
@@ -93,18 +100,31 @@ export class PlatformV2Function {
 
 export class PlatformV2Resource {
   resource: string;
+  runtime: PlatformV2Runtime;
   type: "source" | "destination" | undefined;
   collection: string | undefined;
   config: { [index: string]: unknown } | undefined;
 
-  constructor(resource: string) {
+  constructor(resource: string, runtime: PlatformV2Runtime) {
     this.resource = resource;
+    this.runtime = runtime;
   }
 
   records(
     collection: string,
     connectorConfig: { [index: string]: unknown } = {}
   ): void {
+    if (!collection) {
+      throw new BaseError(
+        "A collection name is required when calling .records()"
+      );
+    }
+
+    if (this.runtime.hasSource) {
+      throw new BaseError(
+        "Only one call to .records() is allowed per Meroxa Data Application"
+      );
+    }
     this.type = "source";
     this.collection = collection;
     if (Object.keys(connectorConfig).length > 0) {
@@ -117,6 +137,12 @@ export class PlatformV2Resource {
     collection: string,
     connectorConfig: { [index: string]: unknown } = {}
   ): void {
+    if (!collection) {
+      throw new BaseError(
+        "A collection name is required when calling .write()"
+      );
+    }
+
     this.type = "destination";
     this.collection = collection;
     if (Object.keys(connectorConfig).length > 0) {
@@ -130,6 +156,7 @@ export class PlatformV2Resource {
     collection: string | undefined;
     config: { [index: string]: unknown } | undefined;
   } {
-    return { ...this };
+    const { resource, type, collection, config } = this;
+    return { resource, type, collection, config };
   }
 }

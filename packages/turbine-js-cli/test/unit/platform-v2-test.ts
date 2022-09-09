@@ -30,13 +30,27 @@ QUnit.module("Unit | PlatformV2Function", () => {
 
 QUnit.module("Unit | PlatformV2Resource", () => {
   QUnit.test("#constructor", (assert) => {
-    const resource = new PlatformV2Resource("sleep-token-resource");
+    const runtime = new PlatformV2Runtime(
+      "imageName",
+      "appName",
+      "123456789",
+      "1.0.0",
+      "0.1.0"
+    );
+    const resource = new PlatformV2Resource("sleep-token-resource", runtime);
 
     assert.strictEqual(resource.resource, "sleep-token-resource");
   });
 
   QUnit.test("#records", (assert) => {
-    const resource = new PlatformV2Resource("sleep-token-resource");
+    const runtime = new PlatformV2Runtime(
+      "imageName",
+      "appName",
+      "123456789",
+      "1.0.0",
+      "0.1.0"
+    );
+    const resource = new PlatformV2Resource("sleep-token-resource", runtime);
     resource.records("st-collection", { a_config: true });
     assert.strictEqual(resource.type, "source");
     assert.strictEqual(resource.collection, "st-collection");
@@ -44,7 +58,14 @@ QUnit.module("Unit | PlatformV2Resource", () => {
   });
 
   QUnit.test("#write", (assert) => {
-    const resource = new PlatformV2Resource("sleep-token-resource");
+    const runtime = new PlatformV2Runtime(
+      "imageName",
+      "appName",
+      "123456789",
+      "1.0.0",
+      "0.1.0"
+    );
+    const resource = new PlatformV2Resource("sleep-token-resource", runtime);
     resource.write({} as Records, "st-collection", { a_config: true });
     assert.strictEqual(resource.type, "destination");
     assert.strictEqual(resource.collection, "st-collection");
