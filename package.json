@@ -1,6 +1,5 @@
 {
   "name": "@meroxa/turbine-js",
-  "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE.MD",
   "workspaces": [
     "packages/*"
@@ -14,6 +13,7 @@
     "prettier:check": "prettier --check 'packages/**/*.{js,ts,json}'",
     "prettier:makeitpretty": "prettier --write 'packages/**/*.{js,ts,json}'",
     "test": "turbo run test",
-    "test:coverage": "turbo run test:coverage && ./scripts/test-coverage.sh"
+    "test:coverage": "turbo run test:coverage && ./scripts/test-coverage.sh",
+    "version": "npm install -w=packages && changeset version"
   }
 }
