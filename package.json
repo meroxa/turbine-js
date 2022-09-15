@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.24.2",
+    "@changesets/cli": "^2.24.4",
     "prettier": "2.7.1",
     "turbo": "^1.2.16"
   },
