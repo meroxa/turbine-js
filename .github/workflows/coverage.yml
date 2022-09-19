@@ -36,3 +36,4 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: ${{ steps.test_coverage.outputs.coverage_results }}
+          token: ${{ secrets.MEROXA_MACHINE }}
