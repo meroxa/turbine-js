@@ -27,5 +27,7 @@ jobs:
         uses: changesets/action@v1
         with:
           version: npm run version
+          publish: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.MEROXA_MACHINE }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
