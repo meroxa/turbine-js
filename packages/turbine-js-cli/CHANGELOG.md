@@ -1,5 +1,12 @@
 # @meroxa/turbine-js-cli
 
+## 1.2.0
+
+### Minor Changes
+
+- ffb3509: feat: support auto-configure of Confluent Cloud resource
+- 0b6cb13: feat: return IR response when spec is passed
+
 ## 1.1.0
 
 ### Minor Changes
