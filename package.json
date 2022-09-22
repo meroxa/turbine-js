@@ -14,6 +14,7 @@
     "prettier:makeitpretty": "prettier --write 'packages/**/*.{js,ts,json}'",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage && ./scripts/test-coverage.sh",
-    "version": "npm install -w=packages && changeset version"
+    "version": "changeset version && npm install -w=packages",
+    "release": "turbo run build:prod && changeset publish"
   }
 }
