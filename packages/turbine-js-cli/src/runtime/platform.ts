@@ -250,6 +250,7 @@ class PlatformResource implements Resource {
     connectorConfig = Object.assign(connectorConfig, baseCfg);
 
     switch (this.resource.type) {
+      case "confluentcloud":
       case "kafka":
         connectorConfig["conduit"] = "true";
         connectorConfig["topic"] = collection.toLowerCase();
