@@ -1,9 +1,5 @@
 #! /usr/bin/env node
 
-if (process.env.NODE_ENV === "development") {
-  require("dotenv").config();
-}
-
 const args = process.argv.slice(2);
 
 const { Primary: PrimaryRunner, generateApp } = require("../lib/runner");
