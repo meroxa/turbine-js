@@ -10,7 +10,7 @@
     "templates/**/*"
   ],
   "devDependencies": {
-    "@types/dockerode": "^3.3.3",
+    "@types/dockerode": "^3.3.11",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^17.0.4",
     "@types/qunit": "^2.19.3",
