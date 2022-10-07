@@ -144,7 +144,7 @@ export default class Primary {
 
     try {
       await this.dataApp.run(environment);
-      const IR = environment.serializeToIR();
+      const IR = environment.serializeToDeployment();
       console.log(IR);
       // POST IR
       return Ok(true);
