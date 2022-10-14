@@ -1,5 +1,18 @@
 # @meroxa/turbine-js-cli
 
+## 1.2.1
+
+### Patch Changes
+
+- 6891db6: fix: Update template app with latest framework version
+- 02d0825: fix: use correct format for deployment IR
+- 924a0e3: build(deps): bump @types/node from 17.0.45 to 18.8.4
+- 921958b: build(deps): Bump meroxa-js to 1.5.0
+- 4f93709: build(deps): cleanup unused dependencies
+- 1b2f7ca: build(deps): bump sinon from 14.0.0 to 14.0.1
+- Updated dependencies [924a0e3]
+  - @meroxa/turbine-js-framework@1.1.1
+
 ## 1.2.0
 
 ### Minor Changes

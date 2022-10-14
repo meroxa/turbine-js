@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-framework
 
+## 1.1.1
+
+### Patch Changes
+
+- 924a0e3: build(deps): bump @types/node from 17.0.45 to 18.8.4
+
 ## 1.1.0
 
 ### Minor Changes
