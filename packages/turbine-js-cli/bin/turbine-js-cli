@@ -9,6 +9,7 @@ const { Client } = require("@meroxa/meroxa-js");
 const meroxaJS = new Client({
   auth: process.env.MEROXA_ACCESS_TOKEN || "",
   url: process.env.MEROXA_API_URL,
+  accountUUID: process.env.MEROXA_ACCOUNT_UUID,
 });
 
 const version = require("../package.json").version;
@@ -45,7 +46,8 @@ async function executeCommand() {
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listResources();
     if (!commandRun.err) {
-      console.log(commandRun.val);
+      let value = JSON.stringify(commandRun.val);
+      console.log(`\nturbine-response: ${value}\n`);
     }
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)

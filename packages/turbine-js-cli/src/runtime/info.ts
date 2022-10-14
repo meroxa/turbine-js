@@ -26,8 +26,8 @@ export class InfoRuntime {
     return `turbine-pipeline-${this.appConfig.name}`;
   }
 
-  get resourcesList(): string {
-    return JSON.stringify(this.registeredResources);
+  get resourcesList(): InfoResource[] {
+    return this.registeredResources;
   }
 
   resources(resourceName: string): InfoResource {
@@ -41,7 +41,7 @@ export class InfoRuntime {
   }
 }
 
-class InfoResource {
+export class InfoResource {
   name: string;
   source: boolean;
   destination: boolean;
