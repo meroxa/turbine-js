@@ -10,6 +10,9 @@
     "turbo": "^1.5.5"
   },
   "scripts": {
+    "build:dev": "npx turbo build:dev",
+    "packages": "npm install -w packages",
+    "local:meroxa-js": "npm link @meroxa/meroxa-js -w packages/turbine-js-cli",
     "prettier:check": "prettier --check 'packages/**/*.{js,ts,json}'",
     "prettier:makeitpretty": "prettier --write 'packages/**/*.{js,ts,json}'",
     "test": "turbo run test",
