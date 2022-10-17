@@ -19,8 +19,5 @@
     "test:coverage": "turbo run test:coverage && ./scripts/test-coverage.sh",
     "version": "changeset version && npm install -w=packages",
     "release": "turbo run build:prod && changeset publish"
-  },
-  "dependencies": {
-    "packages": "0.0.8"
   }
 }
