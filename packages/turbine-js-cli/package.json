@@ -10,6 +10,7 @@
     "templates/**/*"
   ],
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/dockerode": "^3.3.11",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.8.4",
@@ -24,7 +25,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@meroxa/meroxa-js": "^1.7.0",
+    "@meroxa/meroxa-js": "^1.7.1",
     "@meroxa/turbine-js-framework": "^1.1.1",
     "fs-extra": "^10.0.0",
     "tar-fs": "^2.1.1",
