@@ -1,5 +1,18 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.0
+
+### Minor Changes
+
+- 5e641b6: feat(errors): add request info to API error output
+- 5e641b6: feat(accounts): allow turbine-js to operate with shared user accounts
+
+### Patch Changes
+
+- 5e641b6: fix: ensure listresources uses turbine-response format
+- 31f4f24: fix: v2 IR output
+- 31f4f24: build(deps): upgrade @meroxa packages
+
 ## 1.2.1
 
 ### Patch Changes
