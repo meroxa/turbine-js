@@ -145,9 +145,7 @@ export default class Primary {
     try {
       await this.dataApp.run(environment);
       const IR = environment.serializeToDeployment();
-      console.log(IR);
-      // POST IR
-      return Ok(true);
+      return Ok(IR);
     } catch (e) {
       assertIsError(e);
       return Err(new BaseError("Error creating internal representation", e));

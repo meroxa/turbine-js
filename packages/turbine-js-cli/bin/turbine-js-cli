@@ -62,7 +62,8 @@ async function executeCommand() {
     );
 
     if (args[5] && !commandRun.err) {
-      console.log(`\nturbine-response: ${commandRun.val}\n`);
+      const stringifiedIR = commandRun.val;
+      console.log(`\nturbine-response: ${stringifiedIR}\n`);
     }
   } else if (args[0] === "version") {
     commandRun = version;
