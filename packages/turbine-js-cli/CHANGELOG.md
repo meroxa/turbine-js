@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.1
+
+### Patch Changes
+
+- a338721: fix: make sure IR output is stringified
+
 ## 1.3.0
 
 ### Minor Changes
