@@ -10,27 +10,21 @@ QUnit.module("Unit | PlatformV2Function", () => {
     const funktion = new PlatformV2Function(
       "sleep-token-fn",
       "123456789",
-      "sleep-token-image",
-      { SUPER_SECRET: "NOPEEKING" }
+      "sleep-token-image"
     );
     assert.strictEqual(funktion.name, "sleep-token-fn-12345678");
     assert.strictEqual(funktion.image, "sleep-token-image");
-    assert.strictEqual(funktion.env_vars.SUPER_SECRET, "NOPEEKING");
   });
 
-  QUnit.test("#serializeToDeployment", (assert) => {
+  QUnit.test("#serializeToDeploymentSpec", (assert) => {
     const funktion = new PlatformV2Function(
       "sleep-token-fn",
       "123456789",
-      "sleep-token-image",
-      { SUPER_SECRET: "NOPEEKING" }
+      "sleep-token-image"
     );
-    assert.deepEqual(funktion.serializeToDeployment(), {
+    assert.deepEqual(funktion.serializeToDeploymentSpec(), {
       name: "sleep-token-fn-12345678",
       image: "sleep-token-image",
-      env_vars: {
-        SUPER_SECRET: "NOPEEKING",
-      },
     });
   });
 });
@@ -96,7 +90,7 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
     assert.strictEqual(runtime.spec, "0.1.0");
   });
 
-  QUnit.test("#metadata", (assert) => {
+  QUnit.test("#definition", (assert) => {
     const runtime = new PlatformV2Runtime(
       "imageName",
       "appName",
@@ -105,10 +99,14 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
       "0.1.0"
     );
 
-    assert.deepEqual(runtime.metadata, {
-      turbine: {
-        language: "js",
-        version: "1.0.0",
+    assert.deepEqual(runtime.definition, {
+      git_sha: "123456789",
+      metadata: {
+        turbine: {
+          language: "js",
+          version: "1.0.0",
+        },
+        spec_version: "0.1.0",
       },
     });
   });
@@ -153,7 +151,7 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
     assert.strictEqual(runtime.registeredSecrets.A_ENV_VAR, "sleeptokenrocks");
   });
 
-  QUnit.test("#serializeToDeployment", (assert) => {
+  QUnit.test("#serializeToDeploymentSpec", (assert) => {
     const runtime = new PlatformV2Runtime(
       "imageName",
       "appName",
@@ -175,38 +173,33 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
     const destination = runtime.resources("a-dest");
     destination.write({} as Records, "dest_collection", { DEST_CONFIG: "bye" });
 
-    const IR = runtime.serializeToDeployment();
+    const IR = runtime.serializeToDeploymentSpec();
 
     assert.deepEqual(IR, {
-      git_sha: "123456789",
-      spec_version: "0.1.0",
-      spec: {
-        connectors: [
-          {
-            resource: "a-source",
-            type: "source",
-            collection: "source_collection",
-            config: { SOURCE_CONFIG: "hey" },
-          },
-          {
-            resource: "a-dest",
-            type: "destination",
-            collection: "dest_collection",
-            config: { DEST_CONFIG: "bye" },
-          },
-        ],
-        functions: [
-          {
-            name: "aFn-12345678",
-            image: "imageName",
-            env_vars: { A_ENV_VAR: "sleeptokenrocks" },
-          },
-        ],
+      connectors: [
+        {
+          resource: "a-source",
+          type: "source",
+          collection: "source_collection",
+          config: { SOURCE_CONFIG: "hey" },
+        },
+        {
+          resource: "a-dest",
+          type: "destination",
+          collection: "dest_collection",
+          config: { DEST_CONFIG: "bye" },
+        },
+      ],
+      functions: [{ name: "aFn-12345678", image: "imageName" }],
+      secrets: { A_ENV_VAR: "sleeptokenrocks" },
+      definition: {
+        git_sha: "123456789",
         metadata: {
           turbine: {
             language: "js",
             version: "1.0.0",
           },
+          spec_version: "0.1.0",
         },
       },
     });

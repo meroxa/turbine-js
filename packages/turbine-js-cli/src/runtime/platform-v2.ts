@@ -26,11 +26,15 @@ export class PlatformV2Runtime {
     this.spec = spec;
   }
 
-  get metadata() {
+  get definition() {
     return {
-      turbine: {
-        language: "js",
-        version: this.version,
+      git_sha: this.headCommit,
+      metadata: {
+        turbine: {
+          language: "js",
+          version: this.version,
+        },
+        spec_version: this.spec,
       },
     };
   }
@@ -55,8 +59,7 @@ export class PlatformV2Runtime {
     const funktion = new PlatformV2Function(
       fn.name,
       this.headCommit,
-      this.imageName,
-      envVars
+      this.imageName
     );
     this.registeredFunctions.push(funktion);
 
@@ -66,19 +69,16 @@ export class PlatformV2Runtime {
     }
   }
 
-  serializeToDeployment() {
+  serializeToDeploymentSpec() {
     return {
-      git_sha: this.headCommit,
-      spec_version: this.spec,
-      spec: {
-        connectors: this.registeredResources.map((resource) =>
-          resource.serializeToDeployment()
-        ),
-        functions: this.registeredFunctions.map((funktion) =>
-          funktion.serializeToDeployment()
-        ),
-        metadata: this.metadata,
-      },
+      connectors: this.registeredResources.map((resource) =>
+        resource.serializeToDeploymentSpec()
+      ),
+      functions: this.registeredFunctions.map((funktion) =>
+        funktion.serializeToDeploymentSpec()
+      ),
+      secrets: this.registeredSecrets,
+      definition: this.definition,
     };
   }
 }
@@ -86,23 +86,15 @@ export class PlatformV2Runtime {
 export class PlatformV2Function {
   name: string;
   image: string;
-  env_vars: { [index: string]: string } = {};
 
-  constructor(
-    name: string,
-    headCommit: string,
-    image: string,
-    envVars: { [index: string]: string }
-  ) {
+  constructor(name: string, headCommit: string, image: string) {
     this.name = `${name}-${headCommit.substring(0, 8)}`;
     this.image = image;
-    this.env_vars = envVars;
   }
 
-  serializeToDeployment(): {
+  serializeToDeploymentSpec(): {
     name: string;
     image: string;
-    env_vars: { [index: string]: string };
   } {
     return { ...this };
   }
@@ -160,7 +152,7 @@ export class PlatformV2Resource {
     }
   }
 
-  serializeToDeployment(): {
+  serializeToDeploymentSpec(): {
     resource: string;
     type: "source" | "destination" | undefined;
     collection: string | undefined;
