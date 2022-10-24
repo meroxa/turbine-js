@@ -56,11 +56,7 @@ export class PlatformV2Runtime {
     fn: (rr: RecordsArray) => RecordsArray,
     envVars: { [index: string]: string } = {}
   ): void {
-    const funktion = new PlatformV2Function(
-      fn.name,
-      this.headCommit,
-      this.imageName
-    );
+    const funktion = new PlatformV2Function(fn.name, this.imageName);
     this.registeredFunctions.push(funktion);
 
     const envVarsKeys = Object.keys(envVars);
@@ -87,8 +83,8 @@ export class PlatformV2Function {
   name: string;
   image: string;
 
-  constructor(name: string, headCommit: string, image: string) {
-    this.name = `${name}-${headCommit.substring(0, 8)}`;
+  constructor(name: string, image: string) {
+    this.name = name;
     this.image = image;
   }
 
