@@ -13,7 +13,7 @@
     "@types/axios": "^0.14.0",
     "@types/dockerode": "^3.3.11",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^18.8.4",
+    "@types/node": "^18.11.4",
     "@types/qunit": "^2.19.3",
     "@types/sinon": "^10.0.11",
     "@types/tar-fs": "^2.0.1",
