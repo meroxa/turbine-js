@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.3
+
+### Patch Changes
+
+- e908570: fix: remove git sha from IR function name
+
 ## 1.3.2
 
 ### Patch Changes
