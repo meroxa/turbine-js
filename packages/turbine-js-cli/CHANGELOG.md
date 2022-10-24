@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.2
+
+### Patch Changes
+
+- 153289b: fix: serialize to deployment spec
+
 ## 1.3.1
 
 ### Patch Changes
