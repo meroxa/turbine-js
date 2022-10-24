@@ -144,7 +144,7 @@ export default class Primary {
 
     try {
       await this.dataApp.run(environment);
-      const IR = environment.serializeToDeployment();
+      const IR = environment.serializeToDeploymentSpec();
       return Ok(IR);
     } catch (e) {
       assertIsError(e);
