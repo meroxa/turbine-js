@@ -11,7 +11,7 @@
   ],
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/dockerode": "^3.3.11",
+    "@types/dockerode": "^3.3.12",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.4",
     "@types/qunit": "^2.19.3",
