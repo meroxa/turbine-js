@@ -30,7 +30,7 @@
     "tar-fs": "^2.1.1",
     "targz": "^1.0.1",
     "ts-results": "^3.3.0",
-    "tslib": "^2.3.1"
+    "tslib": "^2.4.1"
   },
   "bin": "bin/turbine-js-cli",
   "scripts": {
