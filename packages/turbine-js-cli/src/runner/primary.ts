@@ -10,7 +10,7 @@ import { Result, Ok, Err } from "ts-results";
 
 import { PlatformV2Runtime } from "../runtime/platform-v2";
 import { Client as MeroxaJS } from "@meroxa/meroxa-js";
-import { InfoRuntime } from "../runtime/info";
+import { InfoRuntime, InfoResource } from "../runtime/info";
 
 export default class Primary {
   pathToDataApp: string;
@@ -64,7 +64,7 @@ export default class Primary {
     return Ok(functions.val.length > 0);
   }
 
-  async listResources(): Promise<Result<string, BaseError>> {
+  async listResources(): Promise<Result<InfoResource[], BaseError>> {
     try {
       await this.dataApp.run(this.infoRuntime);
       return Ok(this.infoRuntime.resourcesList);
@@ -144,10 +144,8 @@ export default class Primary {
 
     try {
       await this.dataApp.run(environment);
-      const IR = environment.serializeToIR();
-      console.log(IR);
-      // POST IR
-      return Ok(true);
+      const IR = environment.serializeToDeploymentSpec();
+      return Ok(IR);
     } catch (e) {
       assertIsError(e);
       return Err(new BaseError("Error creating internal representation", e));

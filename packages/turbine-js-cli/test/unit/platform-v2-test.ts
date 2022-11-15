@@ -9,20 +9,19 @@ QUnit.module("Unit | PlatformV2Function", () => {
   QUnit.test("#constructor", (assert) => {
     const funktion = new PlatformV2Function(
       "sleep-token-fn",
-      "123456789",
       "sleep-token-image"
     );
-    assert.strictEqual(funktion.name, "sleep-token-fn-12345678");
+    assert.strictEqual(funktion.name, "sleep-token-fn");
     assert.strictEqual(funktion.image, "sleep-token-image");
   });
-  QUnit.test("#serializeToIR", (assert) => {
+
+  QUnit.test("#serializeToDeploymentSpec", (assert) => {
     const funktion = new PlatformV2Function(
       "sleep-token-fn",
-      "123456789",
       "sleep-token-image"
     );
-    assert.deepEqual(funktion.serializeToIR(), {
-      name: "sleep-token-fn-12345678",
+    assert.deepEqual(funktion.serializeToDeploymentSpec(), {
+      name: "sleep-token-fn",
       image: "sleep-token-image",
     });
   });
@@ -99,7 +98,6 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
     );
 
     assert.deepEqual(runtime.definition, {
-      app_name: "appName",
       git_sha: "123456789",
       metadata: {
         turbine: {
@@ -145,13 +143,13 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
 
     assert.strictEqual(runtime.registeredFunctions.length, 1);
     assert.ok(runtime.registeredFunctions[0] instanceof PlatformV2Function);
-    assert.strictEqual(runtime.registeredFunctions[0].name, "aFn-12345678");
+    assert.strictEqual(runtime.registeredFunctions[0].name, "aFn");
     assert.strictEqual(runtime.registeredFunctions[0].image, "imageName");
     assert.strictEqual(Object.keys(runtime.registeredSecrets).length, 1);
     assert.strictEqual(runtime.registeredSecrets.A_ENV_VAR, "sleeptokenrocks");
   });
 
-  QUnit.test("#serializeToIR", (assert) => {
+  QUnit.test("#serializeToDeploymentSpec", (assert) => {
     const runtime = new PlatformV2Runtime(
       "imageName",
       "appName",
@@ -173,7 +171,7 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
     const destination = runtime.resources("a-dest");
     destination.write({} as Records, "dest_collection", { DEST_CONFIG: "bye" });
 
-    const IR = runtime.serializeToIR();
+    const IR = runtime.serializeToDeploymentSpec();
 
     assert.deepEqual(IR, {
       connectors: [
@@ -190,10 +188,9 @@ QUnit.module("Unit | PlatformV2Runtime", () => {
           config: { DEST_CONFIG: "bye" },
         },
       ],
-      functions: [{ name: "aFn-12345678", image: "imageName" }],
+      functions: [{ name: "aFn", image: "imageName" }],
       secrets: { A_ENV_VAR: "sleeptokenrocks" },
       definition: {
-        app_name: "appName",
         git_sha: "123456789",
         metadata: {
           turbine: {

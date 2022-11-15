@@ -34,10 +34,16 @@ export class APIError extends BaseError {
   }
 
   unwrapMessage(): string {
-    const unwrapped = super.unwrapMessage();
+    let unwrapped = super.unwrapMessage();
     const wrappedError = this.wrappedError as AxiosError;
+
+    const method = wrappedError.config.method!.toUpperCase();
+    const url = wrappedError.config.baseURL! + wrappedError.config.url!;
+
+    unwrapped = `${method} ${url} : ${unwrapped}`;
+
     if (wrappedError.response?.data.message) {
-      return `${unwrapped} : ${wrappedError.response?.data.message}`;
+      unwrapped = `${unwrapped} : ${wrappedError.response?.data.message}`;
     }
 
     return unwrapped;

@@ -9,6 +9,7 @@ const { Client } = require("@meroxa/meroxa-js");
 const meroxaJS = new Client({
   auth: process.env.MEROXA_ACCESS_TOKEN || "",
   url: process.env.MEROXA_API_URL,
+  accountUUID: process.env.MEROXA_ACCOUNT_UUID,
 });
 
 // Private interface for communication between Meroxa CLI and turbine-js
@@ -43,7 +44,8 @@ async function executeCommand() {
     const primaryRunner = new PrimaryRunner(args[1] || process.cwd(), meroxaJS);
     commandRun = await primaryRunner.listResources();
     if (!commandRun.err) {
-      console.log(commandRun.val);
+      let value = JSON.stringify(commandRun.val);
+      console.log(`\nturbine-response: ${value}\n`);
     }
   } else if (args[0] === "clideploy") {
     // meroxa apps deploy step 3 (run users data app / create meroxa platform entities)
@@ -59,7 +61,8 @@ async function executeCommand() {
     );
 
     if (args[5] && !commandRun.err) {
-      console.log(`\nturbine-response: ${commandRun.val}\n`);
+      const stringifiedIR = JSON.stringify(commandRun.val);
+      console.log(`\nturbine-response: ${stringifiedIR}\n`);
     }
   } else if (args[0] === "version") {
     const version = require(path.join(args[1] || process.cwd(), "package.json").version;

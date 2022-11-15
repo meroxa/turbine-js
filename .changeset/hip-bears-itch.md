@@ -2,4 +2,4 @@
 "@meroxa/turbine-js-cli": patch
 ---
 
-build(deps): cleanup unused dependencies
+build(deps): remove @types/dockerode

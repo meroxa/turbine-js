@@ -28,7 +28,6 @@ export class PlatformV2Runtime {
 
   get definition() {
     return {
-      app_name: this.appName,
       git_sha: this.headCommit,
       metadata: {
         turbine: {
@@ -57,11 +56,7 @@ export class PlatformV2Runtime {
     fn: (rr: RecordsArray) => RecordsArray,
     envVars: { [index: string]: string } = {}
   ): void {
-    const funktion = new PlatformV2Function(
-      fn.name,
-      this.headCommit,
-      this.imageName
-    );
+    const funktion = new PlatformV2Function(fn.name, this.imageName);
     this.registeredFunctions.push(funktion);
 
     const envVarsKeys = Object.keys(envVars);
@@ -70,13 +65,13 @@ export class PlatformV2Runtime {
     }
   }
 
-  serializeToIR() {
+  serializeToDeploymentSpec() {
     return {
       connectors: this.registeredResources.map((resource) =>
-        resource.serializeToIR()
+        resource.serializeToDeploymentSpec()
       ),
       functions: this.registeredFunctions.map((funktion) =>
-        funktion.serializeToIR()
+        funktion.serializeToDeploymentSpec()
       ),
       secrets: this.registeredSecrets,
       definition: this.definition,
@@ -88,12 +83,15 @@ export class PlatformV2Function {
   name: string;
   image: string;
 
-  constructor(name: string, headCommit: string, image: string) {
-    this.name = `${name}-${headCommit.substring(0, 8)}`;
+  constructor(name: string, image: string) {
+    this.name = name;
     this.image = image;
   }
 
-  serializeToIR(): { name: string; image: string } {
+  serializeToDeploymentSpec(): {
+    name: string;
+    image: string;
+  } {
     return { ...this };
   }
 }
@@ -150,7 +148,7 @@ export class PlatformV2Resource {
     }
   }
 
-  serializeToIR(): {
+  serializeToDeploymentSpec(): {
     resource: string;
     type: "source" | "destination" | undefined;
     collection: string | undefined;
