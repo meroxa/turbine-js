@@ -1,5 +1,13 @@
 # @meroxa/turbine-js-framework
 
+## 1.1.2
+
+### Patch Changes
+
+- b5b1294: build(deps): bump @types/node from 18.11.4 to 18.11.8
+- 66bb2a8: build(deps): bump @types/node from 18.11.8 to 18.11.9
+- a243574: fix(framework): correctly set schema on new fields
+
 ## 1.1.1
 
 ### Patch Changes

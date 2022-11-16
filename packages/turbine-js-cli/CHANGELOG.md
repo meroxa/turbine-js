@@ -1,5 +1,18 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.4
+
+### Patch Changes
+
+- b5b1294: build(deps): bump @types/node from 18.11.4 to 18.11.8
+- 04a1dfb: build(deps): remove @types/dockerode
+- 66bb2a8: build(deps): bump @types/node from 18.11.8 to 18.11.9
+- bfebada: fix: Use the turbine-js-framework version, not the turbine-js-cli version
+- Updated dependencies [b5b1294]
+- Updated dependencies [66bb2a8]
+- Updated dependencies [a243574]
+  - @meroxa/turbine-js-framework@1.1.2
+
 ## 1.3.3
 
 ### Patch Changes
