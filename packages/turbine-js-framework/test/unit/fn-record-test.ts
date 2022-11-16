@@ -117,6 +117,32 @@ QUnit.module("Unit | fn-record", () => {
     );
   });
 
+  QUnit.test("#set with CDC data and a new field", (assert) => {
+    const rawRecord = {
+      key: CDCFixture.collection_name[0].key,
+      value: JSON.stringify(CDCFixture.collection_name[0].value),
+    };
+
+    const record = new Record(rawRecord);
+    record.set("customer_email_too", "vessel@sleeptoken.com");
+
+    assert.strictEqual(
+      record.value.payload.after.customer_email_too,
+      "vessel@sleeptoken.com"
+    );
+
+    assert.deepEqual(
+      record.value.schema.fields
+        .find((f) => f.field === "after")
+        .fields.find((f) => f.field === "customer_email_too"),
+      {
+        field: "customer_email_too",
+        optional: true,
+        type: "string",
+      }
+    );
+  });
+
   QUnit.test("#set with non CDC data", (assert) => {
     const rawRecord = {
       key: nonCDCFixture.collection_name[0].key,
@@ -129,6 +155,30 @@ QUnit.module("Unit | fn-record", () => {
     assert.strictEqual(
       record.value.payload.customer_email,
       "vessel@sleeptoken.com"
+    );
+  });
+
+  QUnit.test("#set with non CDC data and a new field", (assert) => {
+    const rawRecord = {
+      key: nonCDCFixture.collection_name[0].key,
+      value: JSON.stringify(nonCDCFixture.collection_name[0].value),
+    };
+
+    const record = new Record(rawRecord);
+    record.set("customer_email_too", "vessel@sleeptoken.com");
+
+    assert.strictEqual(
+      record.value.payload.customer_email_too,
+      "vessel@sleeptoken.com"
+    );
+
+    assert.deepEqual(
+      record.value.schema.fields.find((f) => f.field === "customer_email_too"),
+      {
+        field: "customer_email_too",
+        optional: true,
+        type: "string",
+      }
     );
   });
 
