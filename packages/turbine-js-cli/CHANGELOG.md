@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.5
+
+### Patch Changes
+
+- 39d6dc3: fix(cli): version lookup only when necessary
+
 ## 1.3.4
 
 ### Patch Changes
