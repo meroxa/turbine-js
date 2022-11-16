@@ -48,11 +48,32 @@ export class Record {
   }
 
   set(key: string, value: any) {
-    if (this.isCDCFormat) {
-      return set(this.value.payload.after, key, value);
-    } else {
-      return set(this.value.payload, key, value);
+    const payload = this.isCDCFormat
+      ? this.value.payload.after
+      : this.value.payload;
+
+    let fieldExists = get(payload, key, {
+      default: new Error("notFound"),
+    });
+
+    if (fieldExists instanceof Error && fieldExists.message === "notFound") {
+      const schema = get(this.value, "schema.fields");
+
+      const newSchemaField = {
+        field: key,
+        optional: true,
+        type: this.#typeOfValue(value),
+      };
+
+      if (this.isCDCFormat) {
+        const schemaFields = schema.find((f: any) => f.field === "after");
+        schemaFields.fields.unshift(newSchemaField);
+      } else {
+        schema.unshift(newSchemaField);
+      }
     }
+
+    return set(payload, key, value);
   }
 
   unwrap() {
@@ -70,6 +91,20 @@ export class Record {
 
       this.value.payload = payload.after;
     }
+  }
+
+  #typeOfValue(value: string) {
+    const typeOfValue = typeof value;
+    const typeMap: { [index: string]: string } = {
+      boolean: "boolean",
+      string: "string",
+      // lol javascript
+      // we cannot safely infer OR define int types
+      // we could consider custom user config that we validate
+      number: "int32",
+    };
+
+    return typeMap[typeOfValue] || "unsupported";
   }
 }
 
