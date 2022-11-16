@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+var path = require('path');
+
 const args = process.argv.slice(2);
 
 const { Primary: PrimaryRunner, generateApp } = require("../lib/runner");
@@ -12,7 +14,7 @@ const meroxaJS = new Client({
   accountUUID: process.env.MEROXA_ACCOUNT_UUID,
 });
 
-const version = require("../package.json").version;
+const version = require(path.join(args[1] || process.cwd(), "package.json")).version;
 
 // Private interface for communication between Meroxa CLI and turbine-js
 // Enables nodejs data app support using the Meroxa CLI
