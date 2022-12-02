@@ -44,6 +44,18 @@ export class APIError extends BaseError {
 
     if (wrappedError.response?.data.message) {
       unwrapped = `${unwrapped} : ${wrappedError.response?.data.message}`;
+
+      let details = wrappedError.response?.data.details
+      if (details.length > 0) {
+        let report = `; ${details.length} detail(s) provided\n`
+        let count = 1
+        for (let [key, value] of details) {
+          let joined = value.join(". ")
+          report = report + `${count++}. ${key}: ${joined}\n`
+        }
+
+        unwrapped = `${unwrapped} ${details}`;
+      }
     }
 
     return unwrapped;
