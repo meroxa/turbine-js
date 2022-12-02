@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.6
+
+### Patch Changes
+
+- d664078: fix: prefer javascript to js in the backend app.json
+
 ## 1.3.5
 
 ### Patch Changes
