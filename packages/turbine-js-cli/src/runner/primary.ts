@@ -159,7 +159,7 @@ export default class Primary {
     try {
       const applicationInput = {
         name: appConfig.name,
-        language: "js",
+        language: "javascript",
         git_sha: headCommit,
         pipeline: {
           name: appConfig.pipeline,
