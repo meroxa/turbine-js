@@ -11,7 +11,7 @@ export class BaseError extends Error {
   }
 
   unwrapMessage(): string {
-    if (!this.wrappedError) {
+    if (!this.wrappedError || !this.wrappedError.message) {
       return this.message;
     }
 
@@ -36,7 +36,6 @@ export class APIError extends BaseError {
   unwrapMessage(): string {
     let unwrapped = super.unwrapMessage();
     const wrappedError = this.wrappedError as AxiosError;
-
     const method = wrappedError.config.method!.toUpperCase();
     const url = wrappedError.config.baseURL! + wrappedError.config.url!;
 
@@ -51,10 +50,11 @@ export class APIError extends BaseError {
         let count = 1;
         for (let [key, value] of details) {
           let joined = value.join(". ");
-          report = report + `${count++}. ${key}: ${joined}\n`;
+
+          report = report + `${count++}. ${key}: ${joined}.\n`;
         }
 
-        unwrapped = `${unwrapped} ${details}`;
+        unwrapped = `${unwrapped} ${report}`;
       }
     }
 

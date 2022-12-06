@@ -1,4 +1,5 @@
-import { assertIsError, BaseError } from "../../src/errors";
+import { assertIsError, BaseError, APIError } from "../../src/errors";
+import { AxiosResponse, AxiosError } from "axios";
 
 QUnit.module("Unit | Error", () => {
   QUnit.test("BaseError: create with message", (assert) => {
@@ -38,4 +39,36 @@ QUnit.module("Unit | Error", () => {
       "it rethrows the error"
     );
   });
+
+  QUnit.test(
+    "APIError: it properly displays the details and message",
+    (assert) => {
+      const responseData = {
+        message: "uh oh",
+        details: [
+          ["queen", ["freddie", "mercury"]],
+          ["the clash", ["joe", "strummer"]],
+        ],
+      };
+      const response: AxiosResponse = {
+        data: responseData,
+        status: 500,
+      } as AxiosResponse;
+      const axiosError = {
+        config: {
+          method: "GET",
+          baseURL: "http://api.meroxa.io",
+          url: "/foo",
+        },
+        response: response,
+      } as AxiosError<any>;
+
+      const error = new APIError(axiosError);
+
+      assert.strictEqual(
+        error.unwrapMessage(),
+        "GET http://api.meroxa.io/foo : API error : uh oh ; 2 detail(s) provided\n1. queen: freddie. mercury.\n2. the clash: joe. strummer.\n"
+      );
+    }
+  );
 });
