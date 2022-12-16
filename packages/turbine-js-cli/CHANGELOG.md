@@ -1,5 +1,11 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.7
+
+### Patch Changes
+
+- df6d444: fix(framework): update init test with helper
+
 ## 1.3.6
 
 ### Patch Changes
