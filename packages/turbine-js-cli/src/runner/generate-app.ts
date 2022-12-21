@@ -53,7 +53,7 @@ async function generateAppJson(
   };
 
   try {
-    await writeJson(`${appPath}/app.json`, appJson, { spaces: "\t"});
+    await writeJson(`${appPath}/app.json`, appJson, { spaces: "\t" });
     return Ok(true);
   } catch (err) {
     assertIsError(err);
