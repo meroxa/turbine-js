@@ -26,7 +26,7 @@
   "dependencies": {
     "@meroxa/meroxa-js": "^1.7.1",
     "@meroxa/turbine-js-framework": "^1.1.2",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^11.1.0",
     "tar-fs": "^2.1.1",
     "targz": "^1.0.1",
     "ts-results": "^3.3.0",
