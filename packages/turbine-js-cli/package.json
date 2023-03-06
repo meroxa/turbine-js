@@ -21,7 +21,7 @@
     "qunit": "^2.19.3",
     "sinon": "^14.0.2",
     "ts-node": "^10.7.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "@meroxa/meroxa-js": "^1.7.1",
