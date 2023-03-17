@@ -1,5 +1,12 @@
 # @meroxa/turbine-js-cli
 
+## 1.3.8
+
+### Patch Changes
+
+- 38f0f6c: Add tabs to the generation of app.json
+- 257c1e0: upd(local): add error messages for failed local app run due to missing or wrongly configured app fixtures
+
 ## 1.3.7
 
 ### Patch Changes
