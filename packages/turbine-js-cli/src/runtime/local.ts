@@ -26,7 +26,7 @@ export class LocalRuntime implements Runtime {
 
     if ((!fixturesPath || fixturesPath === "undefined") && !this.hasSource) {
       throw new BaseError(
-        `You are trying to run your Turbine Data app with the resource "${resourceName}" which currently does not have a local fixture defined in your app config.\nPlease define a suitable fixture file for "${resourceName}" in ${this.pathToApp}/app.json before running the meroxa apps run command again.\n`
+        `You are trying to run your Turbine Data app with the resource "${resourceName}" which currently does not have a local fixture association in your app config.\nPlease associate a suitable fixture file for "${resourceName}" in ${this.pathToApp}/app.json before running the meroxa apps run command again.\n`
       );
     }
 
