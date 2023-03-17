@@ -40,8 +40,13 @@ export default class Primary {
   }
 
   async runAppLocal() {
-    await this.dataApp.run(this.localRuntime);
-    return Ok(true);
+    try {
+      await this.dataApp.run(this.localRuntime);
+      return Ok(true);
+    } catch (e) {
+      assertIsError(e);
+      return Err(new BaseError("Error running Turbine Data app locally", e));
+    }
   }
 
   async listFunctions(): Promise<Result<string[], BaseError>> {
