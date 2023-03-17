@@ -79,7 +79,7 @@ async function readFixtures(
   if (!collectionFixtures || collectionFixtures === "undefined") {
     let currentTableName = Object.keys(fixtures)[0];
     throw new BaseError(
-      `You are trying to read from a resource "${resourceName}" with the collection "${collection}" but the local fixture that you have defined for this resource in app.json does not contain a table named "${collection}".\nPlease define another fixture file for "${resourceName}" in your app.json or update the table name in your currently used fixture from "${currentTableName}" to "${collection}".\n`
+      `You are trying to read from a resource "${resourceName}" with the collection "${collection}" but the local fixture that you have associated with this resource in app.json does not contain a table named "${collection}".\nPlease associate another fixture file for "${resourceName}" in your app.json or update the table name in your currently used fixture from "${currentTableName}" to "${collection}".\n`
     );
   }
   let records = new RecordsArray();
