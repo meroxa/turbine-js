@@ -20,7 +20,7 @@
     "@grpc/proto-loader": "^0.7.5",
     "get-value": "^3.0.1",
     "google-protobuf": "^3.21.1",
-    "grpc-js-health-check": "^1.0.2",
+    "grpc-js-health-check": "^1.1.0",
     "set-value": "^4.1.0"
   },
   "scripts": {
