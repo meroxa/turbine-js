@@ -32,7 +32,7 @@ jobs:
           echo "::set-output name=coverage_results::$RESULT"
 
       - name: Post test coverage report
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: ${{ steps.test_coverage.outputs.coverage_results }}
