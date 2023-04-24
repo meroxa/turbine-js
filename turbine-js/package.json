@@ -1,0 +1,39 @@
+{
+  "name": "@meroxa/turbine-js",
+  "description": "Turbine is a data application framework for building server-side applications that are event-driven, respond to data in real-time, and scale using cloud-native best practices.",
+  "version": "2.0.0",
+  "main": "lib/index.js",
+  "author": "James Martinez <james@meroxa.io>",
+  "license": "SEE LICENSE IN LICENSE.MD",
+  "files": [
+    "lib/**/*"
+  ],
+  "bin": {
+    "turbine-js-record": "bin/turbine-js-record",
+    "turbine-js-function": "bin/turbine-js-function"
+  },
+  "devDependencies": {
+    "@types/get-value": "^3.0.2",
+    "@types/node": "^18.15.11",
+    "@types/set-value": "^4.0.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.13",
+    "@grpc/proto-loader": "^0.7.5",
+    "get-value": "^3.0.1",
+    "google-protobuf": "^3.21.1",
+    "grpc-js-health-check": "^1.1.0",
+    "set-value": "^4.1.0"
+  },
+  "scripts": {
+    "build:dev": "tsc && npm run finish-build",
+    "build:prod": "npm run clean-build && tsc --sourceMap false && npm run finish-build",
+    "clean-build": "node scripts/clean-build.js",
+    "finish-build": "node scripts/finish-build.js",
+    "test": "qunit --require ./test/setup.js test/**/*.ts",
+    "test:coverage": "nyc --no-clean --temp-dir ../../.nyc_output npm run test && npm run test:coverage-report:json",
+    "test:coverage-report:json": "nyc report --reporter json-summary --temp-dir ../../.nyc_output --report-dir ../../nyc-coverage-report --exclude-after-remap false",
+    "test:coverage-report": "nyc report --reporter text --temp-dir ../../.nyc_output --report-dir ../../nyc-coverage-report --exclude-after-remap false"
+  }
+}

@@ -1,0 +1,4 @@
+#! /usr/bin/env node
+
+const { record } = require("../lib/index");
+record();
