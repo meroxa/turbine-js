@@ -1,3 +1,4 @@
+import path from "path";
 import { RecordsArray } from "./records";
 
 const grpc = require("@grpc/grpc-js");
@@ -18,7 +19,7 @@ export class FunctionServer {
     this.functionName = functionName;
     this.functionAddress = functionAddress;
 
-    this.protoPath = __dirname + "/proto/service.proto";
+    this.protoPath = path.join(__dirname, "../..", "proto/service.proto");
 
     const DataApp = require(pathToDataApp).App;
     this.dataApp = new DataApp();

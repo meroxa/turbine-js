@@ -1,0 +1,13 @@
+#! /usr/bin/env node
+const { createDockerfile } = require("../lib/index");
+
+const args = process.argv.slice(2);
+
+(async function () {
+  try {
+    await createDockerfile(args[0]);
+  } catch (e) {
+    process.exitCode = 1;
+    console.error("Error copying Dockerfile", e);
+  }
+})();

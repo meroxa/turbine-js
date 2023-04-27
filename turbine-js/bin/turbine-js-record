@@ -1,4 +1,14 @@
 #! /usr/bin/env node
 
 const { record } = require("../lib/index");
-record();
+
+const args = process.argv.slice(2);
+
+(async function () {
+  try {
+    await record(args[0], args[1]);
+  } catch (e) {
+    process.exitCode = 1;
+    console.error("Error running turbine-js record client", e);
+  }
+})();
