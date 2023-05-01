@@ -14,7 +14,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.16.3",
     "@types/qunit": "^2.19.5",
-    "@types/sinon": "^10.0.11",
+    "@types/sinon": "^10.0.14",
     "@types/tar-fs": "^2.0.1",
     "@types/targz": "^1.0.1",
     "nyc": "^15.1.0",
