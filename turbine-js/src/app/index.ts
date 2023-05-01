@@ -1,5 +1,5 @@
-import grpc from "@grpc/grpc-js";
-import protoLoader from "@grpc/proto-loader";
+import * as grpc from "@grpc/grpc-js";
+import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
 import process from "process";
 import util from "util";
@@ -32,7 +32,7 @@ export async function initServer(gitSHA: string) {
   );
   const appPkgJSON = await import(path.join(process.cwd(), "app.json"));
 
-  const init = util.promisify(coreServer.Init);
+  const init = util.promisify(coreServer.Init).bind(coreServer);
 
   await init({
     appName: appPkgJSON.name,
@@ -77,9 +77,9 @@ class TurbineApp {
     records: Collection,
     fn: (rr: Record[]) => Record[]
   ): Promise<Collection> {
-    const addProcessToCollection = util.promisify(
-      this.coreServer.AddProcessToCollection
-    );
+    const addProcessToCollection = util
+      .promisify(this.coreServer.AddProcessToCollection)
+      .bind(this.coreServer);
 
     let collectionOutput;
 
@@ -97,7 +97,9 @@ class TurbineApp {
   }
 
   async registerSecrets(secrets: string | string[]): Promise<void> {
-    const registerSecret = util.promisify(this.coreServer.RegisterSecret);
+    const registerSecret = util
+      .promisify(this.coreServer.RegisterSecret)
+      .bind(this.coreServer);
 
     for (const secret of [secrets].flat()) {
       if (!process.env[secret]) {
@@ -139,7 +141,9 @@ class TurbineResource {
       });
     }
 
-    const readCollection = util.promisify(this.app.coreServer.ReadCollection);
+    const readCollection = util
+      .promisify(this.app.coreServer.ReadCollection)
+      .bind(this.app.coreServer);
 
     let collectionOutput;
     try {
@@ -173,9 +177,9 @@ class TurbineResource {
       });
     }
 
-    const writeCollection = util.promisify(
-      this.app.coreServer.WriteCollectionToResource
-    );
+    const writeCollection = util
+      .promisify(this.app.coreServer.WriteCollectionToResource)
+      .bind(this.app.coreServer);
 
     try {
       await writeCollection({
