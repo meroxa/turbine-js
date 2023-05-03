@@ -3,6 +3,8 @@ import { initServer } from "./app";
 import { FunctionServer } from "./function";
 import fs from "fs-extra";
 
+export { getTurbinePkgVersion } from "./app";
+
 export async function record(gitSHA: string, pathToApp = process.cwd()) {
   const turbine = await initServer(gitSHA);
 

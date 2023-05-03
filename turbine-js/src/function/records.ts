@@ -123,4 +123,5 @@ export class RecordsArray extends Array {
 export interface Records {
   records: RecordsArray;
   stream: string;
+  name: string;
 }

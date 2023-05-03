@@ -7,9 +7,18 @@ import util from "util";
 import { ProtoGrpcType } from "../proto_types/turbine";
 import { TurbineServiceClient } from "../proto_types/turbine_core/TurbineService";
 import { Resource } from "../proto_types/turbine_core/Resource";
-import { Collection } from "../proto_types/turbine_core/Collection";
-import { Record } from "../proto_types/turbine_core/Record";
+import { Collection__Output } from "../proto_types/turbine_core/Collection";
+import { Records, RecordsArray } from "../function/records";
 import { BaseError, assertIsError } from "../errors";
+import { collectionToRecords, recordsToCollection } from "./utils";
+
+export async function getTurbinePkgVersion() {
+  const turbinePkgJSON = await import(
+    path.join(__dirname, "../..", "package.json")
+  );
+
+  return turbinePkgJSON.version;
+}
 
 export async function initServer(gitSHA: string) {
   const protoPath = path.join(__dirname, "../..", "proto/turbine.proto");
@@ -27,9 +36,7 @@ export async function initServer(gitSHA: string) {
     grpc.credentials.createInsecure()
   );
 
-  const turbinePkgJSON = await import(
-    path.join(__dirname, "../..", "package.json")
-  );
+  const turbinePkgVersion = await getTurbinePkgVersion();
   const appPkgJSON = await import(path.join(process.cwd(), "app.json"));
 
   const init = util.promisify(coreServer.Init).bind(coreServer);
@@ -39,7 +46,7 @@ export async function initServer(gitSHA: string) {
     configFilePath: process.cwd(),
     language: "JAVASCRIPT",
     gitSHA,
-    turbineVersion: turbinePkgJSON.version,
+    turbineVersion: turbinePkgVersion,
   });
 
   return new TurbineApp(coreServer);
@@ -74,9 +81,9 @@ class TurbineApp {
   }
 
   async process(
-    records: Collection,
-    fn: (rr: Record[]) => Record[]
-  ): Promise<Collection> {
+    records: Records,
+    fn: (rr: RecordsArray) => RecordsArray
+  ): Promise<Records> {
     const addProcessToCollection = util
       .promisify(this.coreServer.AddProcessToCollection)
       .bind(this.coreServer);
@@ -84,16 +91,22 @@ class TurbineApp {
     let collectionOutput;
 
     try {
-      collectionOutput = addProcessToCollection({
+      collectionOutput = await addProcessToCollection({
         process: { name: fn.name },
-        collection: records,
+        collection: recordsToCollection(records),
       });
     } catch (e) {
       assertIsError(e);
       throw new BaseError("grpc error:", e);
     }
 
-    return collectionOutput as Collection;
+    const recordsOutput = collectionToRecords(
+      collectionOutput as Collection__Output
+    );
+
+    recordsOutput.records = fn(recordsOutput.records);
+
+    return recordsOutput;
   }
 
   async registerSecrets(secrets: string | string[]): Promise<void> {
@@ -130,7 +143,7 @@ class TurbineResource {
   async records(
     collection: string,
     connectorConfig: { [index: string]: string }
-  ): Promise<Collection> {
+  ): Promise<Records> {
     let cfgs: { field: string; value: string }[] = [];
     if (connectorConfig) {
       cfgs = Object.keys(connectorConfig).map((key) => {
@@ -159,11 +172,11 @@ class TurbineResource {
       throw new BaseError("grpc error:", e);
     }
 
-    return collectionOutput as Collection;
+    return collectionToRecords(collectionOutput as Collection__Output);
   }
 
   async write(
-    records: Collection,
+    records: Records,
     collection: string,
     connectorConfig: { [index: string]: string } = {}
   ): Promise<void> {
@@ -184,7 +197,7 @@ class TurbineResource {
     try {
       await writeCollection({
         resource: this.resource,
-        sourceCollection: records,
+        sourceCollection: recordsToCollection(records),
         targetCollection: collection,
         configs: {
           config: cfgs,
