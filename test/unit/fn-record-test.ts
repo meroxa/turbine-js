@@ -1,6 +1,6 @@
-import { Record } from "../../src/common";
-import CDCFixture from "@meroxa/turbine-js-cli/templates/javascript/fixtures/demo-cdc.json";
-import nonCDCFixture from "@meroxa/turbine-js-cli/templates/javascript/fixtures/demo-no-cdc.json";
+import { Record } from "../../src/function/records";
+import CDCFixture from "../fixtures/demo-cdc.json";
+import nonCDCFixture from "../fixtures/demo-no-cdc.json";
 
 QUnit.module("Unit | fn-record", () => {
   QUnit.test("#constructor", (assert) => {
