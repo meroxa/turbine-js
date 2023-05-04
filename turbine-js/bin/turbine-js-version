@@ -1,0 +1,13 @@
+#! /usr/bin/env node
+
+const { getTurbinePkgVersion } = require("../lib/index");
+
+(async function () {
+  try {
+    const version = await getTurbinePkgVersion();
+    console.log(version);
+  } catch (e) {
+    process.exitCode = 1;
+    console.error("Error getting turbine-js version", e);
+  }
+})();

@@ -9,6 +9,6 @@ const args = process.argv.slice(2);
     await record(args[0], args[1]);
   } catch (e) {
     process.exitCode = 1;
-    console.error("Error running turbine-js `record` client", e);
+    console.error("Error running turbine-js `run` client", e);
   }
 })();

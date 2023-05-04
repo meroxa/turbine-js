@@ -2,4 +2,5 @@
 const { bootFunction } = require("../lib/index");
 
 const args = process.argv.slice(2);
+
 bootFunction(args[0], args[1]);
