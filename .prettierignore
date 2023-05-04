@@ -108,3 +108,5 @@ lib
 
 nyc-coverage-report/
 .nyc_output/
+
+src/proto_types/
