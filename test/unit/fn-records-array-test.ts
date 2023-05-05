@@ -1,6 +1,6 @@
 import sinon from "sinon";
 import { RecordsArray } from "../../src/function/records";
-import CDCFixture from "@meroxa/turbine-js-cli/templates/javascript/fixtures/demo-cdc.json";
+import CDCFixture from "../fixtures/demo-cdc.json";
 
 QUnit.module("Unit | fn-records-array", () => {
   QUnit.test("#pushRecord", (assert) => {

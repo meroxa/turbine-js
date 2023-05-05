@@ -1,5 +1,4 @@
 import { assertIsError, BaseError } from "../../src/errors";
-import { AxiosResponse, AxiosError } from "axios";
 
 QUnit.module("Unit | Error", () => {
   QUnit.test("BaseError: create with message", (assert) => {

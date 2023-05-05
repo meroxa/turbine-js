@@ -1,23 +1,55 @@
 {
   "name": "@meroxa/turbine-js",
+  "description": "Turbine is a data application framework for building server-side applications that are event-driven, respond to data in real-time, and scale using cloud-native best practices.",
+  "version": "2.0.0-alpha.6",
+  "main": "lib/index.js",
+  "author": "James Martinez <james@meroxa.io>",
   "license": "SEE LICENSE IN LICENSE.MD",
-  "workspaces": [
-    "packages/*"
+  "files": [
+    "lib/**/*",
+    "templates/**/*",
+    "proto/**/*"
   ],
+  "bin": {
+    "turbine-js-dockerfile": "bin/turbine-js-dockerfile",
+    "turbine-js-function": "bin/turbine-js-function",
+    "turbine-js-record": "bin/turbine-js-record",
+    "turbine-js-run": "bin/turbine-js-run",
+    "turbine-js-version": "bin/turbine-js-version"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
-    "prettier": "2.8.8",
-    "turbo": "^1.9.3"
+    "@types/fs-extra": "^11.0.1",
+    "@types/get-value": "^3.0.2",
+    "@types/node": "^18.15.11",
+    "@types/set-value": "^4.0.1",
+    "nyc": "^15.1.0",
+    "prettier": "^2.8.8",
+    "qunit": "^2.19.4",
+    "sinon": "^15.0.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.13",
+    "@grpc/proto-loader": "^0.7.5",
+    "fs-extra": "^11.1.1",
+    "get-value": "^3.0.1",
+    "google-protobuf": "^3.21.1",
+    "grpc-js-health-check": "^1.1.0",
+    "set-value": "^4.1.0"
   },
   "scripts": {
-    "build:dev": "npx turbo build:dev",
-    "packages": "npm install -w packages",
-    "local:meroxa-js": "npm link @meroxa/meroxa-js -w packages/turbine-js-cli",
-    "prettier:check": "prettier --check 'packages/**/*.{js,ts,json}'",
-    "prettier:makeitpretty": "prettier --write 'packages/**/*.{js,ts,json}'",
-    "test": "turbo run test",
-    "test:coverage": "turbo run test:coverage && ./scripts/test-coverage.sh",
-    "version": "changeset version && npm install -w=packages",
-    "release": "turbo run build:prod && changeset publish"
+    "build:dev": "tsc",
+    "build:prod": "npm run clean-build && tsc --sourceMap false",
+    "clean-build": "node scripts/clean-build.js",
+    "version": "changeset version && npm install",
+    "release": "npm run build:prod && changeset publish",
+    "prettier:check": "prettier --check './**/*.{js,ts,json}'",
+    "prettier:makeitpretty": "prettier --write './**/*.{js,ts,json}'",
+    "test": "qunit --require ./test/setup.js test/**/*.ts",
+    "test:coverage": "nyc npm run test && npm run test:coverage-report:json && ./scripts/test-coverage.sh",
+    "test:coverage-report:json": "nyc report --reporter json-summary --temp-dir ./.nyc_output --report-dir ./nyc-coverage-report --exclude-after-remap false",
+    "test:coverage-report": "nyc report --reporter text --temp-dir ./.nyc_output --report-dir ./nyc-coverage-report --exclude-after-remap false"
   }
 }
