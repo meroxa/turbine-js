@@ -19,7 +19,13 @@ export class FunctionServer {
     this.functionName = functionName;
     this.functionAddress = functionAddress;
 
-    this.protoPath = path.resolve(__dirname, "..", "..", "proto", "service.proto");
+    this.protoPath = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "proto",
+      "service.proto"
+    );
 
     const DataApp = require(pathToDataApp).App;
     this.dataApp = new DataApp();

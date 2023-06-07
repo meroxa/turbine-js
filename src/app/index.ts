@@ -21,7 +21,13 @@ export async function getTurbinePkgVersion() {
 }
 
 export async function initServer(gitSHA: string) {
-  const protoPath = path.resolve(__dirname, "..", "..", "proto", "turbine.proto");
+  const protoPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "proto",
+    "turbine.proto"
+  );
   const packageDefinition = protoLoader.loadSync(protoPath, {
     keepCase: true,
     defaults: true,
