@@ -14,14 +14,20 @@ import { collectionToRecords, recordsToCollection } from "./utils";
 
 export async function getTurbinePkgVersion() {
   const turbinePkgJSON = await import(
-    path.join(__dirname, "../..", "package.json")
+    path.resolve(__dirname, "..", "..", "package.json")
   );
 
   return turbinePkgJSON.version;
 }
 
 export async function initServer(gitSHA: string) {
-  const protoPath = path.join(__dirname, "../..", "proto/turbine.proto");
+  const protoPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "proto",
+    "turbine.proto"
+  );
   const packageDefinition = protoLoader.loadSync(protoPath, {
     keepCase: true,
     defaults: true,
