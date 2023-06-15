@@ -39,6 +39,12 @@ export class Record {
     return !!(this.isJSONSchema && !!this.value.payload.source);
   }
 
+  get isMongo() {
+    return (
+      this.isCDCFormat && this.value.payload.source.connector === "mongodb"
+    );
+  }
+
   get(key: string) {
     if (this.isCDCFormat) {
       return get(this.value.payload.after, key);
@@ -52,12 +58,16 @@ export class Record {
       ? this.value.payload.after
       : this.value.payload;
 
+    if (!payload) {
+      return;
+    }
+
     let fieldExists = get(payload, key, {
       default: new Error("notFound"),
     });
 
     if (fieldExists instanceof Error && fieldExists.message === "notFound") {
-      const schema = get(this.value, "schema.fields");
+      const schema = get(this.value, "schema");
 
       const newSchemaField = {
         field: key,
@@ -66,14 +76,22 @@ export class Record {
       };
 
       if (this.isCDCFormat) {
-        const schemaFields = schema.find((f: any) => f.field === "after");
-        schemaFields.fields.unshift(newSchemaField);
+        const schemaFields = schema.fields?.find(
+          (f: any) => f.field === "after"
+        );
+        schemaFields.fields?.unshift(newSchemaField);
       } else {
-        schema.unshift(newSchemaField);
+        schema.fields?.unshift(newSchemaField);
       }
     }
 
-    return set(payload, key, value);
+    if (this.isMongo && typeof payload === "string") {
+      const parsed = JSON.parse(payload);
+      set(parsed, key, value);
+      this.value.payload.after = JSON.stringify(parsed);
+    } else {
+      set(payload, key, value);
+    }
   }
 
   unwrap() {
@@ -83,6 +101,7 @@ export class Record {
       const afterField = schemaFields.find(
         (field: any) => field.field === "after"
       );
+
       if (afterField) {
         delete afterField.field;
         afterField.name = this.value.schema.name;
@@ -95,12 +114,12 @@ export class Record {
 
   #typeOfValue(value: string) {
     const typeOfValue = typeof value;
+    // lol javascript
+    // we cannot safely infer int types
+    // but may be able to define them
     const typeMap: { [index: string]: string } = {
       boolean: "boolean",
       string: "string",
-      // lol javascript
-      // we cannot safely infer OR define int types
-      // we could consider custom user config that we validate
       number: "int32",
     };
 
