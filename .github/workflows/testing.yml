@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  test-app:
-    name: Running Tests
+  lint-app:
+    name: Linting
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +27,22 @@ jobs:
 
       - name: Check prettier
         run: yarn run prettier:check
+
+  test-app:
+    name: Running Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Use Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Running tests
         run: npm run test

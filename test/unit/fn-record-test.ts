@@ -83,7 +83,7 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(
       subject,
-      CDCFixture.collection_name[0].value.payload.after.customer_email
+      CDCFixture.collection_name[0].value.payload.after.customer_email,
     );
   });
 
@@ -98,7 +98,7 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(
       subject,
-      nonCDCFixture.collection_name[0].value.payload.customer_email
+      nonCDCFixture.collection_name[0].value.payload.customer_email,
     );
   });
 
@@ -113,7 +113,7 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(
       record.value.payload.after.customer_email,
-      "vessel@sleeptoken.com"
+      "vessel@sleeptoken.com",
     );
   });
 
@@ -128,7 +128,7 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(
       record.value.payload.after.customer_email_too,
-      "vessel@sleeptoken.com"
+      "vessel@sleeptoken.com",
     );
 
     assert.deepEqual(
@@ -139,7 +139,7 @@ QUnit.module("Unit | fn-record", () => {
         field: "customer_email_too",
         optional: true,
         type: "string",
-      }
+      },
     );
   });
 
@@ -154,7 +154,7 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(
       record.value.payload.customer_email,
-      "vessel@sleeptoken.com"
+      "vessel@sleeptoken.com",
     );
   });
 
@@ -169,7 +169,7 @@ QUnit.module("Unit | fn-record", () => {
 
     assert.strictEqual(
       record.value.payload.customer_email_too,
-      "vessel@sleeptoken.com"
+      "vessel@sleeptoken.com",
     );
 
     assert.deepEqual(
@@ -178,7 +178,7 @@ QUnit.module("Unit | fn-record", () => {
         field: "customer_email_too",
         optional: true,
         type: "string",
-      }
+      },
     );
   });
 
@@ -194,11 +194,11 @@ QUnit.module("Unit | fn-record", () => {
     assert.notOk(record.value.schema.after);
     assert.strictEqual(
       record.value.schema.name,
-      "resource.public.collection_name.Envelope"
+      "resource.public.collection_name.Envelope",
     );
     assert.strictEqual(
       record.value.payload.customer_email,
-      "usera@example.com"
+      "usera@example.com",
     );
   });
 
@@ -215,7 +215,7 @@ QUnit.module("Unit | fn-record", () => {
     assert.strictEqual(record.value.schema.name, "collection_name");
     assert.strictEqual(
       record.value.payload.customer_email,
-      "usera@example.com"
+      "usera@example.com",
     );
   });
 });
