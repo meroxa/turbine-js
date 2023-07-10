@@ -77,7 +77,7 @@ export class Record {
 
       if (this.isCDCFormat) {
         const schemaFields = schema.fields?.find(
-          (f: any) => f.field === "after"
+          (f: any) => f.field === "after",
         );
         schemaFields.fields?.unshift(newSchemaField);
       } else {
@@ -99,7 +99,7 @@ export class Record {
       const payload = this.value.payload;
       const schemaFields = this.value.schema.fields;
       const afterField = schemaFields.find(
-        (field: any) => field.field === "after"
+        (field: any) => field.field === "after",
       );
 
       if (afterField) {

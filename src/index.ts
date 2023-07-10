@@ -20,7 +20,7 @@ export function bootFunction(functionName: string, pathToApp = process.cwd()) {
   const functionServer = new FunctionServer(
     functionName,
     FUNCTION_ADDRESS as string,
-    pathToApp
+    pathToApp,
   );
 
   functionServer.start();
@@ -31,7 +31,7 @@ export async function createDockerfile(pathToApp = process.cwd()) {
     __dirname,
     "..",
     "templates",
-    "Dockerfile"
+    "Dockerfile",
   );
 
   await fs.copy(pathToDockerfile, path.join(pathToApp, "Dockerfile"));

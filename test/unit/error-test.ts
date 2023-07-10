@@ -35,7 +35,7 @@ QUnit.module("Unit | Error", () => {
         assertIsError("actuallyfine");
       },
       /actuallyfine/,
-      "it rethrows the error"
+      "it rethrows the error",
     );
   });
 });

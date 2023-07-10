@@ -14,7 +14,7 @@ export class FunctionServer {
   constructor(
     functionName: string,
     functionAddress: string,
-    pathToDataApp: string
+    pathToDataApp: string,
   ) {
     this.functionName = functionName;
     this.functionAddress = functionAddress;
@@ -24,7 +24,7 @@ export class FunctionServer {
       "..",
       "..",
       "proto",
-      "service.proto"
+      "service.proto",
     );
 
     const DataApp = require(pathToDataApp).App;
@@ -52,7 +52,7 @@ export class FunctionServer {
         });
 
         callback(null, { records });
-      }
+      },
     );
   }
 
@@ -84,7 +84,7 @@ export class FunctionServer {
       () => {
         server.start();
         console.log(`gRPC server started at ${this.functionAddress}`);
-      }
+      },
     );
   }
 }
