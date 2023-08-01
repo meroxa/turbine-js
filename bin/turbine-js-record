@@ -3,6 +3,7 @@
 const { record } = require("../lib/index");
 
 const args = process.argv.slice(2);
+process.env.IS_RECORDING = true;
 
 (async function () {
   try {
