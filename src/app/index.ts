@@ -26,7 +26,7 @@ export async function initServer(gitSHA: string) {
     "..",
     "..",
     "proto",
-    "turbine.proto"
+    "turbine.proto",
   );
   const packageDefinition = protoLoader.loadSync(protoPath, {
     keepCase: true,
@@ -34,12 +34,12 @@ export async function initServer(gitSHA: string) {
   });
 
   const proto = grpc.loadPackageDefinition(
-    packageDefinition
+    packageDefinition,
   ) as unknown as ProtoGrpcType;
 
   const coreServer = new proto.turbine_core.TurbineService(
     process.env["TURBINE_CORE_SERVER"] as string,
-    grpc.credentials.createInsecure()
+    grpc.credentials.createInsecure(),
   );
 
   const turbinePkgVersion = await getTurbinePkgVersion();
@@ -88,7 +88,7 @@ class TurbineApp {
 
   async process(
     records: Records,
-    fn: (rr: RecordsArray) => Promise<RecordsArray>
+    fn: (rr: RecordsArray) => Promise<RecordsArray>,
   ): Promise<Records> {
     const addProcessToCollection = util
       .promisify(this.coreServer.AddProcessToCollection)
@@ -107,7 +107,7 @@ class TurbineApp {
     }
 
     const recordsOutput = collectionToRecords(
-      collectionOutput as Collection__Output
+      collectionOutput as Collection__Output,
     );
 
     if (!process.env.IS_RECORDING) {
@@ -150,7 +150,7 @@ class TurbineResource {
 
   async records(
     collection: string,
-    connectorConfig: { [index: string]: string }
+    connectorConfig: { [index: string]: string },
   ): Promise<Records> {
     let cfgs: { field: string; value: string }[] = [];
     if (connectorConfig) {
@@ -186,7 +186,7 @@ class TurbineResource {
   async write(
     records: Records,
     collection: string,
-    connectorConfig: { [index: string]: string } = {}
+    connectorConfig: { [index: string]: string } = {},
   ): Promise<void> {
     let cfgs: { field: string; value: string }[] = [];
     if (connectorConfig) {
