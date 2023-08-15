@@ -88,7 +88,7 @@ class TurbineApp {
 
   async process(
     records: Records,
-    fn: (rr: RecordsArray) => RecordsArray,
+    fn: (rr: RecordsArray) => Promise<RecordsArray>,
   ): Promise<Records> {
     const addProcessToCollection = util
       .promisify(this.coreServer.AddProcessToCollection)
@@ -110,7 +110,9 @@ class TurbineApp {
       collectionOutput as Collection__Output,
     );
 
-    recordsOutput.records = fn(recordsOutput.records);
+    if (!process.env.IS_RECORDING) {
+      recordsOutput.records = await fn(recordsOutput.records);
+    }
 
     return recordsOutput;
   }
