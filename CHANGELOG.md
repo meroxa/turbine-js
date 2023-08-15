@@ -1,5 +1,11 @@
 # @meroxa/turbine-js
 
+## 2.0.2
+
+### Patch Changes
+
+- 87f939f: fix: async fn + function execution
+
 ## 2.0.1
 
 ### Patch Changes
